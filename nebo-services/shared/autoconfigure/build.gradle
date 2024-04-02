@@ -1,0 +1,14 @@
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.apache.commons:commons-lang3'
+    compileOnly "org.hibernate.orm:hibernate-jpamodelgen"
+    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
+    implementation "mysql:mysql-connector-java:${mysqlVersion}"
+    implementation 'com.microsoft.sqlserver:mssql-jdbc'
+    implementation  project(':shared:web')
+}

@@ -1,0 +1,15 @@
+rootProject.name = 'nebo-services'
+['lib','service','shared'].each { folder ->
+    new File(rootDir, folder).listFiles().each {
+        if (it.directory && new File(it, 'build.gradle').exists()) {
+            include ":${folder}:${it.name}"
+        }
+    }
+}
+include 'shared:web'
+findProject(':shared:web')?.name = 'web'
+include 'shared:autoconfigure'
+findProject(':shared:autoconfigure')?.name = 'autoconfigure'
+include 'shared:common'
+findProject(':shared:common')?.name = 'common'
+

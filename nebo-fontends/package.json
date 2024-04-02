@@ -1,0 +1,38 @@
+{
+  "name": "nebo-fontends",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "prettier": "^3.2.5",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "volta": {
+    "node": "18.13.0",
+    "yarn": "4.1.1"
+  },
+  "packageManager": "yarn@4.1.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "lint-staged": {
+    "*": "prettier --check"
+  },
+  "resolutions": {
+    "react-joyride@^2.7.0": "patch:react-joyride@npm%3A2.7.0#./.yarn/patches/react-joyride-npm-2.7.0-90c817673e.patch"
+  },
+  "dependencies": {
+    "typescript": "^5.4.3"
+  }
+}

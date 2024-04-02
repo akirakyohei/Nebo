@@ -1,0 +1,16 @@
+@import "grapesjs/dist/css/grapes.min.css";
+@import "grapesjs-rulers/dist/grapesjs-rulers.min.css";
+@import "grapesjs-rte-extensions/dist/grapesjs-rte-extensions.min.css";
+@import "grapesjs-template-manager/dist/grapesjs-template-manager.min.css";
+@import"grapick/dist/grapick.min.css";
+
+#gjs {
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.gjs-cv-canvas{
+    overflow: scroll !important;
+}

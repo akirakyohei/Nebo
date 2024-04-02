@@ -1,0 +1,103 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management'
+}
+
+repositories {
+    mavenCentral()
+}
+
+/* Java config */
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+
+/*
+store method parameter names for some case like spring-jpa, jackson constructor deserialize, ...
+See:
+    https://stackoverflow.com/questions/29048258/store-method-parameter-names-for-some-classes-when-building-with-gradle-java8
+    https://stackoverflow.com/questions/72893952/spring-data-not-working-for-gradle-projects-under-eclipse-without-param-annotat
+*/
+compileJava.options.compilerArgs.add '-parameters'
+compileTestJava.options.compilerArgs.add '-parameters'
+
+test {
+    useJUnitPlatform()
+}
+
+ext {
+    springBootVersion = "3.2.3"
+    springCloudVersion = "2022.0.3"
+    grpcVersion = "1.51.1"
+    antlrVersion = "4.10.1"
+    elasticsearchVersion = "5.6.12"
+    netflixDgsVersion = "6.0.1"
+    mapstructVersion = "1.5.3.Final"
+    mysqlVersion = "8.0.28"
+    kotlinVersion = "1.7.22"
+    testcontainersVersion = "1.17.6"
+    microMeter = "1.10.5"
+    resilience4jVersion = "2.0.2"
+    freefairVersion = "6.6.3"
+}
+
+/* deps */
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:${netflixDgsVersion}"
+        mavenBom "io.grpc:grpc-bom:${grpcVersion}"
+    }
+    dependencies {
+        dependency 'org.springframework.cloud:spring-cloud-starter-bootstrap:4.1.1'
+        dependency 'com.amazonaws:aws-java-sdk-s3:1.11.921'
+        dependency 'com.google.guava:guava:31.1-jre'
+        dependency 'nl.jqno.equalsverifier:equalsverifier:3.7.1'
+        dependency "org.antlr:antlr4:${antlrVersion}"
+        dependency "org.antlr:antlr4-runtime:${antlrVersion}"
+        dependency 'jakarta.mail:jakarta.mail-api:2.1.1'
+        dependency 'org.eclipse.angus:jakarta.mail:2.0.1'
+        dependency 'com.sendgrid:sendgrid-java:4.9.3'
+        dependency 'net.sizovs:pipelinr:0.7'
+        dependency 'com.github.fppt:jedis-mock:1.0.2'
+        dependency 'org.apache.poi:poi-ooxml:5.2.3'
+        dependency "org.elasticsearch:elasticsearch:${elasticsearchVersion}"
+        dependency "org.elasticsearch.client:transport:${elasticsearchVersion}"
+        dependency "org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}"
+        dependency "org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}"
+        dependency 'com.querydsl:querydsl-jpa:5.0.0'
+        dependency 'commons-validator:commons-validator:1.7'
+        dependency 'org.apache.tomcat:annotations-api:6.0.53'
+        dependency 'com.github.alexmojaki:s3-stream-upload:2.2.4'
+        dependency 'com.googlecode.libphonenumber:libphonenumber:8.13.3'
+        dependency 'com.github.vladimir-bukhtoyarov:bucket4j-redis:7.5.0'
+        dependency 'org.redisson:redisson:3.17.1'
+        dependency 'org.jsoup:jsoup:1.14.3'
+        dependency 'com.google.code.findbugs:jsr305:3.0.2'
+        dependency "org.mapstruct:mapstruct:${mapstructVersion}"
+        dependency "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+        dependency 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        dependency 'commons-io:commons-io:2.11.0'
+        dependency "org.testcontainers:mssqlserver:${testcontainersVersion}"
+        dependency "org.testcontainers:elasticsearch:${testcontainersVersion}"
+        dependency "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+        dependency 'io.hypersistence:hypersistence-utils-hibernate-62:3.4.3'
+        dependency "io.micrometer:micrometer-registry-prometheus:${microMeter}"
+        dependency "io.micrometer:micrometer-core:${microMeter}"
+        dependency "io.github.resilience4j:resilience4j-spring-boot3:${resilience4jVersion}"
+
+        //TODO: upgrade springCloudVersion to 2022.0.4
+        //temporary fix this issue https://github.com/spring-cloud/spring-cloud-config/issues/2274
+        //should remove this dependency when upgrade springCloudVersion
+        dependency 'org.springframework.cloud:spring-cloud-config-client:4.0.2'
+
+        // TODO: see spring-boot new version to resolve this
+        // fix https://stackoverflow.com/questions/52980064/maven-spring-boot-found-multiple-occurrences-of-org-json-jsonobject-on-the-cl
+        dependency("org.springframework.boot:spring-boot-starter-test:${springBootVersion}") {
+            exclude 'com.vaadin.external.google:android-json'
+        }
+    }
+}

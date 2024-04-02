@@ -1,0 +1,8 @@
+plugins {
+    id 'com.nebo.base'
+    id 'org.springframework.boot'
+}
+
+def getDate() {
+    return new Date().format('yyyy-MM-dd.HH-mm')
+}

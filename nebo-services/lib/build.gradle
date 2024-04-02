@@ -1,0 +1,26 @@
+subprojects {
+    apply plugin: 'com.nebo.lib'
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    group = "com.nebo"
+    version = "1.0.0-SNAPSHOT"
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
+            }
+        }
+    }
+}
