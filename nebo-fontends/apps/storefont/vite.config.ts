@@ -17,6 +17,7 @@ export default defineConfig({
   optimizeDeps: {
     // optimize for monorepo linked package see: https://v3.vitejs.dev/config/dep-optimization-options.html#optimizedeps-include
     include: ["@repo/web-builder"],
+    exclude: ["@mui/material/style"],
     esbuildOptions: {
       //ignore legalComments: This comment make CKEditor broken
       legalComments: "none",

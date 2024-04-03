@@ -114,7 +114,7 @@ export const WebBuilder = ({ isCreate, id, template }: Props) => {
         <Box id="block"></Box>
       </Box>
       <Box>
-        {isOpenSaveTemplate && (
+        {!isOpenSaveTemplate && (
           <TemplateSaveModal onClose={toggleSaveTemplate} />
         )}
       </Box>

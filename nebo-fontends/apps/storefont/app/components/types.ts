@@ -5,7 +5,7 @@ export type Action = {
   content: string;
   icon?: React.ReactNode;
   outline?: boolean;
-  onClick?: () => void;
+  onAction?: () => void;
 };
 
 export type LoadingAction = Action & {
@@ -20,4 +20,12 @@ export type ColorAction = Action & {
   color?: ButtonTypeMap["props"]["color"];
 };
 
-export type ComplexAction = LoadingAction & DisabledAction & ColorAction;
+export type ComplexAction = Action &
+  LoadingAction &
+  DisabledAction &
+  ColorAction;
+
+export type Option<T> = {
+  value: T;
+  label: React.ReactNode;
+};

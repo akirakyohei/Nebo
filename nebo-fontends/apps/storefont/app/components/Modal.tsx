@@ -1,13 +1,18 @@
 import {
   Box,
+  ButtonGroup,
   Modal as ModalMUI,
   ModalTypeMap,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { isElement } from "react-dom/test-utils";
 import { ComplexAction } from "./types";
 import { animated, useSpring } from "@react-spring/web";
+import { CloseOutlined } from "@mui/icons-material";
+import { filterNonNull } from "../utils/base";
+import { Button } from "./Button";
+
 interface FadeProps {
   children: React.ReactElement;
   in?: boolean;
@@ -51,27 +56,37 @@ const Fade = React.forwardRef<HTMLDivElement, FadeProps>(
   }
 );
 
-const style = {
-  position: "absolute" as "absolute",
+const style: CSSProperties = {
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+  background: "#ffffff",
+  boxShadow: "24",
+  borderRadius: 2,
 };
 
 interface Props
   extends Pick<ModalTypeMap["props"], "open" | "onClose" | "sx" | "children"> {
   onBackdropClick?: () => void;
-  size?: "small" | "medium" | "large";
+  size?: "xs" | "md" | "lg" | "xl";
   title?: string | React.ReactNode;
-  primary?: ComplexAction;
-  secondary?: ComplexAction[];
+  primaryAction?: ComplexAction;
+  secondaryActions?: ComplexAction[];
+  hideClose?: boolean;
 }
 const ModalSection = ({
+  flush,
+  children,
+}: {
+  flush?: boolean;
+  children: React.ReactNode;
+}) => {
+  return <Box padding={!flush ? 2 : undefined}>{children}</Box>;
+};
+
+const ModalHeader = ({
   flush,
   children,
 }: {
@@ -85,20 +100,76 @@ const ModalFooter = ({ children }: { children: React.ReactNode }) => {
   return <Box padding={2}>{children}</Box>;
 };
 
-export const Modal = ({ children, title, ...props }: Props) => {
+const MapSize = {
+  xs: "300px",
+  md: "500px",
+  lg: "800px",
+  xl: "1140px",
+};
+
+export const Modal = ({
+  children,
+  title,
+  size = "md",
+  primaryAction,
+  secondaryActions,
+  ...props
+}: Props) => {
+  const headerMarkup = (
+    <Box
+      display={"flex"}
+      justifyContent={"space-between"}
+      minWidth={"0"}
+      gap={(theme) => theme.spacing(3)}
+      paddingX={2}
+      paddingY={1}
+      paddingRight={1}
+    >
+      <Box flex={"1 1 auto"}>
+        {title &&
+          (isElement(title) ? (
+            <Typography component={"h3"} fontWeight={450}>
+              {title}
+            </Typography>
+          ) : (
+            <Box>{title}</Box>
+          ))}
+      </Box>
+      {!props.hideClose && (
+        <Box
+          display={"flex"}
+          onClick={(e) => {
+            if (props?.onClose) props?.onClose(e, "backdropClick");
+          }}
+          sx={{
+            ":hover": {
+              cursor: "pointer",
+              background: (theme) => theme.palette.grey[100],
+              borderRadius: 1,
+            },
+          }}
+        >
+          <CloseOutlined />
+        </Box>
+      )}
+    </Box>
+  );
+
+  const footerMarkup = filterNonNull<ComplexAction>([
+    ...(secondaryActions || []),
+    primaryAction ? primaryAction : null,
+  ]).map((item, index) => <Button key={index} {...item} />);
   return (
     <ModalMUI open={props.open} onClose={props.onClose}>
       <Fade in={open}>
-        <Box sx={{ ...style }}>
-          {title &&
-            (isElement(title) ? (
-              <Typography component={"h3"} fontWeight={450}>
-                {title}
-              </Typography>
-            ) : (
-              <Box>{title}</Box>
-            ))}
+        <Box sx={{ ...style, width: MapSize[size] }}>
+          {headerMarkup}
           {children}
+          {footerMarkup ? (
+            <ModalFooter>
+              <ButtonGroup>{footerMarkup}</ButtonGroup>
+            </ModalFooter>
+          ) : null}
         </Box>
       </Fade>
     </ModalMUI>
@@ -106,6 +177,7 @@ export const Modal = ({ children, title, ...props }: Props) => {
 };
 
 export default Object.assign(Modal, {
+  Header: ModalHeader,
   Section: ModalSection,
   Footer: ModalFooter,
 });
