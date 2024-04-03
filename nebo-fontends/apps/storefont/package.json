@@ -17,6 +17,7 @@
     "@fontsource/roboto": "^5.0.12",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
+    "@react-spring/web": "^9.7.3",
     "@reduxjs/toolkit": "^2.2.2",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",

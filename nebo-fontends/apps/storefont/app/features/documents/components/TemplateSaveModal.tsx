@@ -1,4 +1,5 @@
-import { Box, Modal, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import Modal from "../../../components/Modal";
 
 interface Props {
   onClose: () => void;
