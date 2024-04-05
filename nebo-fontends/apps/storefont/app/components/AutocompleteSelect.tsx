@@ -36,7 +36,7 @@ export function AutocompleteSelect<T extends Value>({
   const ListBoxComponent = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLElement>
-  >((props) => <ListBox total={0} children={[]} loading={false} />);
+  >((props) => <ListBox total={0} children={[]} loading={false} {...props} />);
 
   return (
     <Autocomplete
