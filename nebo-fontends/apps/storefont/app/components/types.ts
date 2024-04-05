@@ -27,5 +27,6 @@ export type ComplexAction = Action &
 
 export type Option<T> = {
   value: T;
-  label: React.ReactNode;
+  label: string;
+  disabled?: boolean;
 };

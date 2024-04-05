@@ -3951,7 +3951,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-window@npm:^1":
+"@types/react-window-infinite-loader@npm:^1":
+  version: 1.0.9
+  resolution: "@types/react-window-infinite-loader@npm:1.0.9"
+  dependencies:
+    "@types/react": "npm:*"
+    "@types/react-window": "npm:*"
+  checksum: 10c0/d4f0b1c36cbca7d01c50740c942275f3e6dadb13b0aa563c266e8ecdfbaa338fdb623cc59635fcbb7e37938dc295cb6d2949e9f9aff6098faf2089d2e3752da6
+  languageName: node
+  linkType: hard
+
+"@types/react-window@npm:*, @types/react-window@npm:^1":
   version: 1.8.8
   resolution: "@types/react-window@npm:1.8.8"
   dependencies:
@@ -12538,6 +12548,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-virtualized-auto-sizer@npm:^1.0.24":
+  version: 1.0.24
+  resolution: "react-virtualized-auto-sizer@npm:1.0.24"
+  peerDependencies:
+    react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+    react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+  checksum: 10c0/d400489e5005a2ad0635228958379aa26b66fdae62a5b9fbf4dcb5fecd4e99454990b1cd59fe55ff277419b37bdf098c26e7185e0ef1b6ca775a477f913bb763
+  languageName: node
+  linkType: hard
+
+"react-window-infinite-loader@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "react-window-infinite-loader@npm:1.0.9"
+  peerDependencies:
+    react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+    react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+  checksum: 10c0/4ffe7e31cde1e9fc353beb5b0a0c9a2a3b20459d13fbda8f0501d8fa4a1e869342dd276f3cb5538527a598eb5d669d8629dccf42d13f114faf0a8ad611de0bf7
+  languageName: node
+  linkType: hard
+
 "react-window@npm:^1.8.10":
   version: 1.8.10
   resolution: "react-window@npm:1.8.10"
@@ -13759,6 +13789,7 @@ __metadata:
     "@types/react": "npm:^18.2.20"
     "@types/react-dom": "npm:^18.2.7"
     "@types/react-window": "npm:^1"
+    "@types/react-window-infinite-loader": "npm:^1"
     "@typescript-eslint/eslint-plugin": "npm:^6.7.4"
     "@typescript-eslint/parser": "npm:^6.7.4"
     axios: "npm:^1.6.8"
@@ -13776,7 +13807,9 @@ __metadata:
     react-hook-form: "npm:^7.51.2"
     react-redux: "npm:^9.1.0"
     react-spring: "npm:^9.7.3"
+    react-virtualized-auto-sizer: "npm:^1.0.24"
     react-window: "npm:^1.8.10"
+    react-window-infinite-loader: "npm:^1.0.9"
     remix-utils: "npm:^7.5.0"
     typescript: "npm:^5.1.6"
     use-debounce: "npm:^10.0.0"

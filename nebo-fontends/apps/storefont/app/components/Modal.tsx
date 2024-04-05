@@ -110,6 +110,7 @@ const MapSize = {
 export const Modal = ({
   children,
   title,
+  open,
   size = "md",
   primaryAction,
   secondaryActions,
@@ -160,7 +161,7 @@ export const Modal = ({
     primaryAction ? primaryAction : null,
   ]).map((item, index) => <Button key={index} {...item} />);
   return (
-    <ModalMUI open={props.open} onClose={props.onClose}>
+    <ModalMUI open={open} onClose={props.onClose}>
       <Fade in={open}>
         <Box sx={{ ...style, width: MapSize[size] }}>
           {headerMarkup}
