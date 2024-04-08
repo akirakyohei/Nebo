@@ -1,6 +1,5 @@
 import {
   Box,
-  ButtonGroup,
   Modal as ModalMUI,
   ModalTypeMap,
   Typography,
@@ -12,6 +11,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { CloseOutlined } from "@mui/icons-material";
 import { filterNonNull } from "../utils/base";
 import { Button } from "./Button";
+import { ButtonGroup } from "./ButonGroup";
 
 interface FadeProps {
   children: React.ReactElement;
@@ -157,8 +157,8 @@ export const Modal = ({
   );
 
   const footerMarkup = filterNonNull<ComplexAction>([
-    ...(secondaryActions || []),
-    primaryAction ? primaryAction : null,
+    ...(secondaryActions?.map((item) => ({ ...item, outline: true })) || []),
+    primaryAction ? { ...primaryAction, color: "primary" } : null,
   ]).map((item, index) => <Button key={index} {...item} />);
   return (
     <ModalMUI open={open} onClose={props.onClose}>

@@ -36,23 +36,23 @@ export const WebBuilder = ({ isCreate, id, template }: Props) => {
       page: page,
       query: debounceQuery,
     });
-  const [createTemplate] = useCreateTemplateMutation();
-  const [updateTemplate] = useUpdateTemplateMutation();
-  const handleSubmit = async (data: Template) => {
-    if (isCreate) {
-      await createTemplate(data).unwrap();
-    } else {
-      await updateTemplate({ id: id || 0, request: data }).unwrap();
-    }
-  };
 
   useEffect(() => {
     return () => {
       const editor = WebEditor({
         title: "moiws",
-        // storageManager: {
-        //   type: "remote",
-        // },
+        storageManager: {
+          type: "local",
+        },
+        deviceManager: {
+          devices: [
+            {
+              name: "custom",
+              width: `${template.width}px`,
+              height: `${template.height}px`,
+            },
+          ],
+        },
         plugins: [
           usePlugin(TemplateManagerPlugin, {
             onSaveTemplate(editor) {
@@ -61,49 +61,53 @@ export const WebBuilder = ({ isCreate, id, template }: Props) => {
           }),
         ],
       });
-      editor;
-      // editor.loadData(template.data);
-      editor.Panels.addPanel({
-        id: "left-group-actions-panel",
-        el: ".panel__left-group-actions",
-      });
-      const leftGroupPanel = editor.Panels.addPanel({
-        id: "left-group-btn-actions",
-        el: ".left-group-btn-actions",
-        buttons: [],
-      });
-      const leftGroupButtons = leftGroupPanel?.get("buttons");
-      if (!leftGroupButtons?.get("back-btn")) {
-        leftGroupButtons?.add(
-          [
-            {
-              id: "back-btn",
-              className: "btn-toggle-borders",
-              attributes: {
-                title: "back",
+      editor.onReady(() => {
+        editor.Panels.addPanel({
+          id: "left-group-actions-panel",
+          el: ".panel__left-group-actions",
+        });
+        const leftGroupPanel = editor.Panels.addPanel({
+          id: "left-group-btn-actions",
+          el: ".left-group-btn-actions",
+          buttons: [],
+        });
+        const leftGroupButtons = leftGroupPanel?.get("buttons");
+        if (!leftGroupButtons?.get("back-btn")) {
+          leftGroupButtons?.add(
+            [
+              {
+                id: "back-btn",
+                className: "btn-toggle-borders",
+                attributes: {
+                  title: "back",
+                },
+                label: `${renderToString(
+                  <a href="/" className="link-btn">
+                    <i
+                      className="fa fa-chevron-circle-left"
+                      aria-hidden="true"
+                    ></i>
+                    back
+                  </a>
+                )}`,
+                command: (_editor: any) => {
+                  navigate("/");
+                },
               },
-              label: `${renderToString(
-                <a href="/" className="link-btn">
-                  <i
-                    className="fa fa-chevron-circle-left"
-                    aria-hidden="true"
-                  ></i>
-                  back
-                </a>
-              )}`,
-              command: (_editor: any) => {
-                navigate("/");
-              },
-            },
-          ],
-          { merge: true, temporary: true }
-        );
-        editor.render();
-      }
-      ref.current = editor;
+            ],
+            { merge: true, temporary: true }
+          );
+          editor.render();
+        }
+        ref.current = editor;
+      });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log(ref.current?.storeData());
+  }, [ref.current?.storeData]);
   return (
     <Box>
       <Box>
@@ -114,8 +118,13 @@ export const WebBuilder = ({ isCreate, id, template }: Props) => {
         <Box id="block"></Box>
       </Box>
       <Box>
-        {!isOpenSaveTemplate && (
-          <TemplateSaveModal onClose={toggleSaveTemplate} />
+        {isOpenSaveTemplate && (
+          <TemplateSaveModal
+            onClose={toggleSaveTemplate}
+            isCreate={isCreate}
+            id={id}
+            template={{ ...template, data: ref.current?.storeData() }}
+          />
         )}
       </Box>
     </Box>

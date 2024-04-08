@@ -5,7 +5,7 @@ export type Template = {
   name: string;
   width: number;
   height: number;
-  data: object;
+  data: any;
   category_ids: number[];
   params?: object;
   size: number;

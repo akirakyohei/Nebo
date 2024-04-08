@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/autoconfigure" />
             <option value="$PROJECT_DIR$/shared/common" />
+            <option value="$PROJECT_DIR$/shared/sercurity" />
             <option value="$PROJECT_DIR$/shared/web" />
           </set>
         </option>

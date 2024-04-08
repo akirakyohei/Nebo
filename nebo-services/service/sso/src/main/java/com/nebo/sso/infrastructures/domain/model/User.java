@@ -60,7 +60,7 @@ public class User implements Serializable {
     @UpdateTimestamp
     private Instant updatedOn;
 
-    public static enum AuthProvider {
+    public enum AuthProvider {
         local,
         facebook,
         google,

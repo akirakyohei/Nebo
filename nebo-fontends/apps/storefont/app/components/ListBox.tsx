@@ -2,17 +2,12 @@ import React, { CSSProperties } from "react";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { Box, Container, ContainerOwnProps, makeStyles } from "@mui/material";
+import { Box, BoxProps, Container, ContainerOwnProps } from "@mui/material";
 import { CommonProps } from "@mui/material/OverridableComponent";
 import { JSX } from "react/jsx-runtime";
+import { isArray } from "lodash-es";
 
-const useStyles = makeStyles({
-  container: {
-    position: "relative",
-  },
-});
-
-const ListRow = ({
+const ListRowWrapper = ({
   index,
   style,
   data,
@@ -22,6 +17,10 @@ const ListRow = ({
   data: React.ReactNode[];
 }) => {
   return <Box sx={{ style }}>{data[index]}</Box>;
+};
+
+const Row = ({ children, ...props }: BoxProps) => {
+  return <Box {...props}>{children}</Box>;
 };
 
 const ListContainer = (
@@ -45,44 +44,48 @@ const ListContainer = (
 };
 
 interface Props {
+  ref: React.LegacyRef<any>;
   total: number;
-  children: React.ReactNode[];
+  children: React.ReactNode;
   onLoadMore?: () => void;
-  loading: boolean;
-  moreItem?: boolean;
+  loading?: boolean;
+  willLoadMoreResults?: boolean;
 }
 
-export const ListBox = ({
+const ListBox = ({
+  ref,
   total,
   children,
   onLoadMore,
-  moreItem,
+  willLoadMoreResults,
   loading,
 }: Props) => {
+  const data = isArray(children) ? children : [children];
   const isItemLoaded = (index: number) =>
-    index < children.length && children[index] !== null;
-  const itemCount = total;
+    index < data.length && data[index] !== null;
   return (
-    <AutoSizer>
+    <AutoSizer ref={ref}>
       {({ height, width }) => (
         <InfiniteLoader
           isItemLoaded={isItemLoaded}
-          itemCount={itemCount}
-          loadMoreItems={!moreItem && onLoadMore ? onLoadMore : () => {}}
+          itemCount={total}
+          loadMoreItems={
+            willLoadMoreResults && onLoadMore ? onLoadMore : () => {}
+          }
         >
           {({ onItemsRendered, ref }) => (
             <List
               className="List"
               height={height}
               width={width}
-              itemCount={children.length}
+              itemCount={data.length}
               itemSize={230}
-              itemData={children}
+              itemData={data}
               innerElementType={ListContainer}
               onItemsRendered={onItemsRendered}
               ref={ref}
             >
-              {ListRow}
+              {ListRowWrapper}
             </List>
           )}
         </InfiniteLoader>
@@ -90,3 +93,7 @@ export const ListBox = ({
     </AutoSizer>
   );
 };
+
+export default Object.assign(ListBox, {
+  Row: Row,
+});

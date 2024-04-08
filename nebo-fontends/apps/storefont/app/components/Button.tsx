@@ -10,7 +10,7 @@ export const Button = ({ ...props }: ComplexAction) => {
       color={props.color}
       onClick={props.onAction}
       href={props.url}
-      variant={props.outline ? "outlined" : undefined}
+      variant={props.outline ? "outlined" : "contained"}
     >
       {!props.loading ? props.content : <Spinner />}
     </ButtonUI>

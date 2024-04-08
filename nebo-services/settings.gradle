@@ -12,4 +12,6 @@ include 'shared:autoconfigure'
 findProject(':shared:autoconfigure')?.name = 'autoconfigure'
 include 'shared:common'
 findProject(':shared:common')?.name = 'common'
+include 'shared:sercurity'
+findProject(':shared:sercurity')?.name = 'sercurity'
 

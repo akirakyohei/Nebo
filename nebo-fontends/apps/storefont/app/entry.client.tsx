@@ -12,6 +12,7 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { Provider as StoreProvider } from "react-redux";
 import { store } from "./store/store";
+import { NotificationProvider } from "./components/notification/NotificationContext";
 
 const theme = createTheme({
   components: {
@@ -33,7 +34,9 @@ startTransition(() => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <StoreProvider store={store}>
-          <RemixBrowser />
+          <NotificationProvider>
+            <RemixBrowser />
+          </NotificationProvider>
         </StoreProvider>
       </ThemeProvider>
     </StrictMode>
