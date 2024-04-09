@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 @AllArgsConstructor
-public class JwtAuthenticationToken implements NeboAuthentication {
+public class JwtAuthenticationToken implements NeboAuthenticationToken {
 
     private boolean isAuthenticated;
 

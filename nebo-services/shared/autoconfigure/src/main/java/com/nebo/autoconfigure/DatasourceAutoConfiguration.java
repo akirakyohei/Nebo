@@ -20,7 +20,7 @@ public class DatasourceAutoConfiguration {
 
     @Bean("main")
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.datasource-tenantdb")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }

@@ -29,7 +29,7 @@ test {
 
 ext {
     springBootVersion = "3.2.3"
-    springCloudVersion = "2022.0.3"
+    springCloudVersion = "2023.0.1"
     grpcVersion = "1.51.1"
     antlrVersion = "4.10.1"
     elasticsearchVersion = "5.6.12"
@@ -92,7 +92,7 @@ dependencyManagement {
         //TODO: upgrade springCloudVersion to 2022.0.4
         //temporary fix this issue https://github.com/spring-cloud/spring-cloud-config/issues/2274
         //should remove this dependency when upgrade springCloudVersion
-        dependency 'org.springframework.cloud:spring-cloud-config-client:4.0.2'
+        dependency 'org.springframework.cloud:spring-cloud-config-client:4.1.1'
 
         // TODO: see spring-boot new version to resolve this
         // fix https://stackoverflow.com/questions/52980064/maven-spring-boot-found-multiple-occurrences-of-org-json-jsonobject-on-the-cl

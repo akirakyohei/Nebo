@@ -1,7 +1,7 @@
 package com.nebo.applications.config;
 
 import com.nebo.applications.constant.TokenType;
-import com.nebo.applications.tokens.NeboAuthentication;
+import com.nebo.applications.tokens.NeboAuthenticationToken;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
@@ -17,13 +17,13 @@ public class TokenTypeRequestMatcher implements RequestMatcher {
     @Override
     public boolean matches(HttpServletRequest request) {
         var principal = request.getUserPrincipal();
-        if (principal instanceof NeboAuthentication user) {
+        if (principal instanceof NeboAuthenticationToken user) {
             return tokenType.equals(user.getTokenType());
         }
         return false;
     }
 
-    public static TokenTypeRequestMatcher builder(TokenType tokenType) {
+    public static TokenTypeRequestMatcher matcher(TokenType tokenType) {
         return new TokenTypeRequestMatcher(tokenType);
     }
 }

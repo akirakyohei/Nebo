@@ -1,4 +1,17 @@
 spring:
-  cloud:
-    config:
-      enabled: false
+  config:
+    import: "optional:configserver:http://configserver:8088"
+    activate:
+      on-profile: production
+---
+spring:
+  application:
+    name: sso
+  config:
+    import: "optional:configserver:http://localhost:8088"
+  datasource:
+    datasource-tenantdb:
+      url:  jdbc:mariadb://localhost:3306/tenantdb
+      user: root
+      password: root
+      driver-class-name: org.mariadb.jdbc.Driver

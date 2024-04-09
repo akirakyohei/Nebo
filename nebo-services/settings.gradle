@@ -14,4 +14,6 @@ include 'shared:common'
 findProject(':shared:common')?.name = 'common'
 include 'shared:sercurity'
 findProject(':shared:sercurity')?.name = 'sercurity'
+include 'lib:fiegn-client'
+findProject(':lib:fiegn-client')?.name = 'fiegn-client'
 

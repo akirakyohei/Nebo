@@ -3,13 +3,12 @@ package com.nebo.applications.tokens;
 import com.nebo.applications.constant.TokenType;
 import com.nebo.applications.model.BasicAuthDetail;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 @AllArgsConstructor
-public class BasicAuthenticationToken implements NeboAuthentication {
+public class BasicAuthenticationToken implements NeboAuthenticationToken {
 
     private boolean isAuthenticated;
     private BasicAuthDetail basicAuthDetail;
