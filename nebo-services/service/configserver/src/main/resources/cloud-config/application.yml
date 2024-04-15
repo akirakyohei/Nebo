@@ -1,0 +1,22 @@
+spring:
+  datasource-tenantdb:
+    jdbc-url: jdbc:mariadb://localhost:3306/tenantdb
+    username: admin
+    password: jfnjvfd943njcdnfda
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    open-in-view: false
+    show-sql: false
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        id:
+          new_generator_mappings: false
+        type.preferred_instant_jdbc_type: TIMESTAMP
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+nebo:
+  default-user-id: 1

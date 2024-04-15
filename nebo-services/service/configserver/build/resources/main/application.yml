@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: configserver
-  profiles:
-    active: native
-server:
-  port: 8088

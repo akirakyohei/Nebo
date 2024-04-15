@@ -41,11 +41,6 @@ public class AppFeignConfig implements BeanDefinitionRegistryPostProcessor, Envi
     }
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
-    }
-
-    @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }

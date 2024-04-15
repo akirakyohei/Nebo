@@ -1,0 +1,43 @@
+plugins {
+    id("com.google.protobuf") version "0.9.4"
+}
+
+dependencies {
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+//    implementation 'io.grpc:protoc-gen-grpc-java:1.62.2'
+    compileOnly 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    implementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+protobuf {
+    protoc {
+        if (osdetector.os == "osx") {
+            artifact = "com.google.protobuf:protoc:${protobufVersion}:${protoc_platform}"
+        } else {
+            artifact = "com.google.protobuf:protoc:${protobufVersion}"
+        }
+    }
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+
+test {
+    useJUnitPlatform()
+}

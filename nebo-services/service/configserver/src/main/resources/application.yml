@@ -3,5 +3,13 @@ spring:
     name: configserver
   profiles:
     active: native
+  cloud:
+    config:
+      server:
+        native:
+          add-label-locations: false
+          search-locations:
+            - classpath:/cloud-config # Config files for all microservices
+            - classpath:/cloud-config/{application} # Config files for specific applications
 server:
   port: 8088

@@ -1,0 +1,44 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 55001,
+            "askForPassword": true,
+            "driver": "MySQL",
+            "name": "mysql",
+            "database": "sale",
+            "username": "root"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "MariaDB",
+            "name": "doan",
+            "username": "root",
+            "password": "ajdhjewjhredbdbbd",
+            "connectString": "mariadb://root:ajdhjewjhredbdbbd@localhost:3306/"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "testdoan",
+            "database": "tenantdb",
+            "username": "admin",
+            "password": "jfnjvfd943njcdnfda"
+        }
+    ]
+}

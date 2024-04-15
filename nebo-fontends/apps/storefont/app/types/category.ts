@@ -11,8 +11,8 @@ export type Category = {
   id: number;
   name: string;
   group_id: number;
-  createdOn: string;
-  updatedOn: string;
+  created_on: string;
+  updated_on: string;
 };
 
 export type CategoryByGroup = {

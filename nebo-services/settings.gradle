@@ -16,4 +16,5 @@ include 'shared:sercurity'
 findProject(':shared:sercurity')?.name = 'sercurity'
 include 'lib:fiegn-client'
 findProject(':lib:fiegn-client')?.name = 'fiegn-client'
+include 'grpc'
 

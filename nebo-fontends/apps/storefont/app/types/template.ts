@@ -9,8 +9,8 @@ export type Template = {
   category_ids: number[];
   params?: object;
   size: number;
-  createdOn: string;
-  updatedOn: string;
+  created_on: string;
+  updated_on: string;
 };
 
 export type TemplateResponse = {

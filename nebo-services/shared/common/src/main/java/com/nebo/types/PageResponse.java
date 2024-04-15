@@ -16,8 +16,10 @@ public class PageResponse<T> {
     private List<T> data;
     private Metadata metadata;
 
-    public PageResponse(Page<T> page) {
-        this.data = page.getContent();
-        this.metadata = new Metadata(page.getNumber() + 1, page.getSize(), page.getTotalElements());
+    public static <K, T extends PageResponse<K>> T build(Page<K> page) {
+        var response = new PageResponse<K>();
+        response.setData(page.getContent());
+        response.setMetadata(new Metadata(page.getNumber() + 1, page.getSize(), page.getTotalElements()));
+        return (T) response;
     }
 }

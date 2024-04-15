@@ -16,18 +16,16 @@ dependencies {
     implementation 'org.mapstruct:mapstruct'
     compileOnly "org.hibernate.orm:hibernate-jpamodelgen"
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
-    implementation "mysql:mysql-connector-java:${mysqlVersion}"
-    implementation 'com.microsoft.sqlserver:mssql-jdbc'
+    implementation 'net.devh:grpc-server-spring-boot-starter:3.0.0.RELEASE'
+//
+//    implementation "mysql:mysql-connector-java:${mysqlVersion}"
+//    implementation 'com.microsoft.sqlserver:mssql-jdbc'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'org.elasticsearch:elasticsearch:8.8.1'
-    implementation 'org.elasticsearch.client:transport:7.17.11'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-client:7.17.11'
-    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.11'
-    implementation 'co.elastic.clients:elasticsearch-java:8.8.1'
     implementation 'com.google.guava:guava'
     implementation project(':shared:web')
     implementation project(':shared:autoconfigure')
     implementation project(':shared:common')
+    implementation project(':shared:grpc')
 
     testCompileOnly 'org.projectlombok:lombok'
     testCompileOnly "org.mapstruct:mapstruct"

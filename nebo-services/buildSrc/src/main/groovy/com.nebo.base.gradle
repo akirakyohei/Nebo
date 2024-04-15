@@ -30,9 +30,10 @@ test {
 ext {
     springBootVersion = "3.2.3"
     springCloudVersion = "2023.0.1"
-    grpcVersion = "1.51.1"
+    grpcVersion = "1.59.1"
+    protobufVersion="4.26.1"
     antlrVersion = "4.10.1"
-    elasticsearchVersion = "5.6.12"
+//    elasticsearchVersion = "5.6.12"
     netflixDgsVersion = "6.0.1"
     mapstructVersion = "1.5.3.Final"
     mysqlVersion = "8.0.28"
@@ -64,11 +65,11 @@ dependencyManagement {
         dependency 'net.sizovs:pipelinr:0.7'
         dependency 'com.github.fppt:jedis-mock:1.0.2'
         dependency 'org.apache.poi:poi-ooxml:5.2.3'
-        dependency "org.elasticsearch:elasticsearch:${elasticsearchVersion}"
-        dependency "org.elasticsearch.client:transport:${elasticsearchVersion}"
-        dependency "org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}"
-        dependency "org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}"
-        dependency 'com.querydsl:querydsl-jpa:5.0.0'
+//        dependency "org.elasticsearch:elasticsearch:${elasticsearchVersion}"
+//        dependency "org.elasticsearch.client:transport:${elasticsearchVersion}"
+//        dependency "org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}"
+//        dependency "org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}"
+//        dependency 'com.querydsl:querydsl-jpa:5.0.0'
         dependency 'commons-validator:commons-validator:1.7'
         dependency 'org.apache.tomcat:annotations-api:6.0.53'
         dependency 'com.github.alexmojaki:s3-stream-upload:2.2.4'
