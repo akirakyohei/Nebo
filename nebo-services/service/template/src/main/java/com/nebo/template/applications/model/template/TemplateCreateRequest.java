@@ -21,10 +21,7 @@ import java.util.Map;
 public class TemplateCreateRequest {
     @NotBlank
     private String name;
-    @Min(1)
-    private float width;
-    @Min(1)
-    private float height;
+    private int paperTypeId;
     private List<Integer> categoryIds;
     @NotNull
     private Map<String, Object> data;

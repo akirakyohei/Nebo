@@ -7,7 +7,7 @@ option java_package = "com.nebo.grpc.lib";
 option java_outer_classname = "SecurityProto";
 
 service AuthenticationService{
-  rpc authenticate(AuthenticationRequest) returns(UserResponse){
+  rpc authenticate(AuthenticationRequest) returns(UserCredentialResponse){
   }
 }
 
@@ -15,15 +15,13 @@ message AuthenticationRequest {
   string token = 1;
 }
 
-message UserResponse {
-  User user = 1;
+message UserCredentialResponse {
+  UserCredential user_credential = 1;
 }
 
-message User{
+message UserCredential{
   int64 id = 1;
-  string first_name = 2;
-  string last_name = 3;
-  string image_url = 4;
-  string email = 5;
-  string phone_number = 6;
+  string first_name = 3;
+  string last_name = 4;
+  repeated string permissions = 2;
 }

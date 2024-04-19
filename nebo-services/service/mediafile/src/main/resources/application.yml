@@ -1,0 +1,11 @@
+spring:
+  config:
+    import: "optional:configserver:http://configserver:8088"
+    activate:
+      on-profile: production
+---
+spring:
+  application:
+    name: mediafile
+  config:
+    import: "optional:configserver:http://localhost:8088"

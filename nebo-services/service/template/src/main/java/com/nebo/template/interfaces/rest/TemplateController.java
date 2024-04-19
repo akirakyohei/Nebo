@@ -53,8 +53,13 @@ public class TemplateController {
 
 
     @DeleteMapping("/{id}")
-    public void deleteTemplate(@UserId long userId,@PathVariable("id") int categoryId) {
-        templateService.deleteTemplate(userId, categoryId);
+    public void deleteTemplate(@UserId long userId,@PathVariable("id") int templateId) {
+        templateService.deleteTemplate(userId, templateId);
+    }
+
+    @PostMapping("/{id}/print")
+    public void print(@UserId long userId,@PathVariable("id") int templateId){
+
     }
 
 

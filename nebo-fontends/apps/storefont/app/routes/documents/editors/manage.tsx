@@ -32,14 +32,14 @@ export default function EditorManager() {
         template={{
           id: 0,
           name: "",
-          width: 0,
-          height: 0,
+          width: 1000,
+          height: 1000,
           data: [],
           category_ids: [],
           params: undefined,
           size: 0,
-          createdOn: "",
-          updatedOn: "",
+          created_on: "",
+          updated_on: "",
         }}
       />
     );

@@ -30,15 +30,15 @@ public final class SecurityProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_nebo_grpc_security_AuthenticationRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_nebo_grpc_security_UserResponse_descriptor;
+    internal_static_com_nebo_grpc_security_UserCredentialResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_nebo_grpc_security_UserResponse_fieldAccessorTable;
+      internal_static_com_nebo_grpc_security_UserCredentialResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_nebo_grpc_security_User_descriptor;
+    internal_static_com_nebo_grpc_security_UserCredential_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_nebo_grpc_security_User_fieldAccessorTable;
+      internal_static_com_nebo_grpc_security_UserCredential_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -50,15 +50,16 @@ public final class SecurityProto {
     java.lang.String[] descriptorData = {
       "\n\016security.proto\022\026com.nebo.grpc.security" +
       "\"&\n\025AuthenticationRequest\022\r\n\005token\030\001 \001(\t" +
-      "\":\n\014UserResponse\022*\n\004user\030\001 \001(\0132\034.com.neb" +
-      "o.grpc.security.User\"q\n\004User\022\n\n\002id\030\001 \001(\003" +
-      "\022\022\n\nfirst_name\030\002 \001(\t\022\021\n\tlast_name\030\003 \001(\t\022" +
-      "\021\n\timage_url\030\004 \001(\t\022\r\n\005email\030\005 \001(\t\022\024\n\014pho" +
-      "ne_number\030\006 \001(\t2~\n\025AuthenticationService" +
-      "\022e\n\014authenticate\022-.com.nebo.grpc.securit" +
-      "y.AuthenticationRequest\032$.com.nebo.grpc." +
-      "security.UserResponse\"\000B$\n\021com.nebo.grpc" +
-      ".libB\rSecurityProtoP\001b\006proto3"
+      "\"Y\n\026UserCredentialResponse\022?\n\017user_crede" +
+      "ntial\030\001 \001(\0132&.com.nebo.grpc.security.Use" +
+      "rCredential\"X\n\016UserCredential\022\n\n\002id\030\001 \001(" +
+      "\003\022\022\n\nfirst_name\030\003 \001(\t\022\021\n\tlast_name\030\004 \001(\t" +
+      "\022\023\n\013permissions\030\002 \003(\t2\210\001\n\025Authentication" +
+      "Service\022o\n\014authenticate\022-.com.nebo.grpc." +
+      "security.AuthenticationRequest\032..com.neb" +
+      "o.grpc.security.UserCredentialResponse\"\000" +
+      "B$\n\021com.nebo.grpc.libB\rSecurityProtoP\001b\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -70,18 +71,18 @@ public final class SecurityProto {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_nebo_grpc_security_AuthenticationRequest_descriptor,
         new java.lang.String[] { "Token", });
-    internal_static_com_nebo_grpc_security_UserResponse_descriptor =
+    internal_static_com_nebo_grpc_security_UserCredentialResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_nebo_grpc_security_UserResponse_fieldAccessorTable = new
+    internal_static_com_nebo_grpc_security_UserCredentialResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_nebo_grpc_security_UserResponse_descriptor,
-        new java.lang.String[] { "User", });
-    internal_static_com_nebo_grpc_security_User_descriptor =
+        internal_static_com_nebo_grpc_security_UserCredentialResponse_descriptor,
+        new java.lang.String[] { "UserCredential", });
+    internal_static_com_nebo_grpc_security_UserCredential_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_com_nebo_grpc_security_User_fieldAccessorTable = new
+    internal_static_com_nebo_grpc_security_UserCredential_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_nebo_grpc_security_User_descriptor,
-        new java.lang.String[] { "Id", "FirstName", "LastName", "ImageUrl", "Email", "PhoneNumber", });
+        internal_static_com_nebo_grpc_security_UserCredential_descriptor,
+        new java.lang.String[] { "Id", "FirstName", "LastName", "Permissions", });
     descriptor.resolveAllFeaturesImmutable();
   }
 

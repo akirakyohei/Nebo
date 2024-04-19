@@ -1,8 +1,8 @@
 package com.nebo.sso.applications.services;
 
 import com.nebo.sso.infrastructures.config.NeboJwtConfigureProperties;
-import com.nebo.sso.infrastructures.domain.model.RefreshToken;
-import com.nebo.sso.infrastructures.domain.repository.JpaRefreshTokenRepository;
+import com.nebo.sso.infrastructures.domain.model.Session;
+import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
 import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
 import jakarta.transaction.Transactional;
@@ -16,21 +16,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenService {
     private final NeboJwtConfigureProperties jwtProperties;
-    private final JpaRefreshTokenRepository refreshTokenRepository;
+    private final JpaSessionRepository refreshTokenRepository;
     private final JpaUserRepository userRepository;
 
-    public RefreshToken findByToken(String token) {
+    public Session findByToken(String token) {
         return refreshTokenRepository.findByRefreshToken(token).orElse(null);
     }
 
-    public RefreshToken createRefreshToken(Long userId) {
+    public Session createRefreshToken(Long userId) {
         var user = userRepository.findById(userId).orElse(null);
-        var refreshToken = new RefreshToken(user, UUID.randomUUID().toString(), Instant.now().plusMillis(jwtProperties.getRefreshExpiration()));
+        var refreshToken = new Session(user, UUID.randomUUID().toString(), Instant.now().plusMillis(jwtProperties.getRefreshExpiration()));
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }
 
-    public RefreshToken verifyExpiration(String token) throws ExpiredTokenRefreshException {
+    public Session verifyExpiration(String token) throws ExpiredTokenRefreshException {
         var refreshToken = findByToken(token);
         if (token == null)
             throw new ExpiredTokenRefreshException();
@@ -50,7 +50,7 @@ public class RefreshTokenService {
     }
 
 
-    private RefreshToken verifyExpiration(RefreshToken token) throws ExpiredTokenRefreshException {
+    private Session verifyExpiration(Session token) throws ExpiredTokenRefreshException {
         if (token.getExpiredDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new ExpiredTokenRefreshException();

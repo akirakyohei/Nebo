@@ -1,7 +1,9 @@
 package com.nebo.sso.applications.services;
 
 import com.nebo.sso.applications.model.JwtResponse;
+import com.nebo.sso.applications.model.UserCredentialResponse;
 import com.nebo.sso.applications.model.UserDetailsImpl;
+import com.nebo.sso.applications.model.UserResponse;
 import com.nebo.sso.infrastructures.config.NeboJwtConfigureProperties;
 import com.nebo.sso.infrastructures.domain.model.User;
 import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
@@ -11,11 +13,13 @@ import io.jsonwebtoken.security.SecureDigestAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -28,7 +32,7 @@ public class AuthenticateProvider {
 
     private final RefreshTokenService refreshTokenService;
 
-    public JwtResponse generateJwtToken(User user) {
+    public JwtResponse generateJwtToken(User user, String ipAddress, String userAgent) {
         var userDetail = new UserDetailsImpl(user);
         var token = generateJwtToken(userDetail);
         var refreshToken = refreshTokenService.createRefreshToken(userDetail.getId());
@@ -64,6 +68,8 @@ public class AuthenticateProvider {
                         .issuedAt(issuedAt)
                         .expiration(expiredDate)
                         .add("id", userDetails.getId())
+                        .add("firstName", userDetails.getFirstName())
+                        .add("lastName", userDetails.getLastName())
                         .add("permissions", userDetails.getAuthorities() != null ? userDetails.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.joining(",")) : "")
@@ -90,5 +96,22 @@ public class AuthenticateProvider {
         }
 
         return false;
+    }
+
+    public UserCredentialResponse getUserCredential(String token) {
+        var claims = Jwts.parser()
+                .decryptWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseSignedClaims(token).getPayload();
+        var userId = claims.get("id", Long.class);
+        var firstName = claims.get("firstName", String.class);
+        var lastName = claims.get("lastNamt", String.class);
+        var permissions = Arrays.stream(StringUtils.split(StringUtils.defaultIfBlank(claims.get("permissions", String.class), ""), ",")).toList();
+        return UserCredentialResponse.builder()
+                .userId(userId)
+                .firstName(firstName)
+                .lastName(lastName)
+                .permissions(permissions)
+                .build();
     }
 }

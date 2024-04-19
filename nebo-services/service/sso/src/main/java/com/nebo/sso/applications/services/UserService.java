@@ -1,15 +1,16 @@
 package com.nebo.sso.applications.services;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.nebo.sso.applications.model.JwtResponse;
-import com.nebo.sso.applications.model.UserLoginRequest;
-import com.nebo.sso.applications.model.UserCreateRequest;
-import com.nebo.sso.applications.model.UserResponse;
+import com.nebo.sso.applications.model.*;
 import com.nebo.sso.infrastructures.domain.model.User;
+import com.nebo.sso.infrastructures.domain.model.User_;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
+import com.nebo.sso.infrastructures.domain.specifiation.UserSpecification;
 import com.nebo.web.applications.exception.AuthenticationException;
 import com.nebo.web.applications.exception.ConstraintViolationException;
+import com.nebo.web.applications.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,22 +33,42 @@ public class UserService {
         var user = userMapper.toUser(request);
         user.setProvider(User.AuthProvider.local);
         userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        return userMapper.fromDomainToResponse(user);
+    }
+
+    public UserResponse getUser(long userId) {
+        var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        return userMapper.fromDomainToResponse(user);
+    }
+
+    public UsersResponse getUsers(UserFilterRequest request) {
+        var spec = UserSpecification.toFilter(request);
+        var pageable = request.toPageable(Sort.by(Sort.Order.desc(User_.CREATED_ON)));
+        var page = userRepository.findAll(spec, pageable);
+        return UsersResponse.build(page.map(userMapper::fromDomainToResponse));
     }
 
     @Transactional
-    public JwtResponse signup(UserCreateRequest request) throws ConstraintViolationException {
+    public UserResponse changeStatus(long userId, boolean status) {
+        var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        user.setStatus(status);
+        user = userRepository.save(user);
+        return userMapper.fromDomainToResponse(user);
+    }
+
+    @Transactional
+    public JwtResponse signup(UserCreateRequest request, String ipAddress, String userAgent) throws ConstraintViolationException {
         validateCreateRequest(request);
         var user = userMapper.toUser(request);
         user.setProvider(User.AuthProvider.local);
         user = userRepository.save(user);
-        return authenticateProvider.generateJwtToken(user);
+        return authenticateProvider.generateJwtToken(user, ipAddress, userAgent);
     }
 
 
-    public JwtResponse authenticate(UserLoginRequest request) throws AuthenticationException, ConstraintViolationException {
+    public JwtResponse authenticate(UserLoginRequest request, String ipAddress, String userAgent) throws AuthenticationException, ConstraintViolationException {
         var user = validateLoginRequest(request);
-        return authenticateProvider.generateJwtToken(user);
+        return authenticateProvider.generateJwtToken(user, ipAddress, userAgent);
     }
 
     private void validateCreateRequest(UserCreateRequest request) throws ConstraintViolationException {

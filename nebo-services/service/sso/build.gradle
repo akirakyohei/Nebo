@@ -17,9 +17,7 @@ dependencies {
     compileOnly "org.hibernate.orm:hibernate-jpamodelgen"
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
     implementation 'net.devh:grpc-server-spring-boot-starter:3.0.0.RELEASE'
-//
-//    implementation "mysql:mysql-connector-java:${mysqlVersion}"
-//    implementation 'com.microsoft.sqlserver:mssql-jdbc'
+    implementation 'com.google.protobuf:protobuf-java-util:4.26.1'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.google.guava:guava'
     implementation project(':shared:web')

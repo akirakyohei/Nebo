@@ -21,11 +21,10 @@ import java.util.Map;
 public class Template {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private long userId;
     private String name;
-    private float width;
-    private float height;
+    private int paperTypeId;
     @Convert(converter = ListIntegerConverter.class)
     private List<Integer> categoryIds;
     @Type(JsonType.class)

@@ -11,8 +11,6 @@ import java.util.Map;
 @Getter
 public class TemplateUpdateRequest {
     private String name;
-    private Float width;
-    private Float height;
     private List<Integer> categoryIds;
     private Map<String, Object> data;
     private Map<String, Object> params;

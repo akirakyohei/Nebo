@@ -34,6 +34,14 @@ public class UserDetailsImpl implements UserDetails {
         return user.getPassword();
     }
 
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
     @Override
     public String getUsername() {
         return User.getFullName(user.getFirstName(), user.getLastName());

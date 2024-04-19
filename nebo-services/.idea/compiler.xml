@@ -6,6 +6,13 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="nebo-services.lib.fiegn-client.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct-processor/1.5.3.Final/dce418bedafd71ff8dd2cef15006c0fee788b073/mapstruct-processor-1.5.3.Final.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok-mapstruct-binding/0.2.0/2f1cf9ced7b720ba4996c942b816669e63f0fa4f/lombok-mapstruct-binding-0.2.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.orm/hibernate-jpamodelgen/6.4.4.Final/7fd6e2c75fb71d071ed43597c9467237599ea482/hibernate-jpamodelgen-6.4.4.Final.jar" />
@@ -29,10 +36,14 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/4.0.4/cfd2bcf08782673ac370694fdf2cf76dbaa607ef/txw2-4.0.4.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.istack/istack-commons-runtime/4.1.2/18ec117c85f3ba0ac65409136afa8e42bc74e739/istack-commons-runtime-4.1.2.jar" />
         </processorPath>
+        <module name="nebo-services.service.reports.test" />
+        <module name="nebo-services.service.mediafile.main" />
+        <module name="nebo-services.service.mediafile.test" />
+        <module name="nebo-services.service.reports.main" />
+        <module name="nebo-services.service.template.main" />
         <module name="nebo-services.service.sso.test" />
         <module name="nebo-services.service.template.test" />
         <module name="nebo-services.service.sso.main" />
-        <module name="nebo-services.service.template.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
@@ -70,23 +81,15 @@
         <module name="nebo-services.shared.web.main" />
         <module name="nebo-services.shared.security.main" />
       </profile>
-      <profile name="Gradle Imported" enabled="true">
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
-        </processorPath>
-        <module name="nebo-services.lib.fiegn-client.main" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17">
       <module name="buildSrc.main" target="17" />
       <module name="buildSrc.test" target="17" />
-      <module name="com.nebo.sso.main" target="21" />
-      <module name="com.nebo.sso.test" target="21" />
       <module name="common.main" target="21" />
       <module name="common.test" target="21" />
       <module name="configserver.main" target="21" />
       <module name="configserver.test" target="21" />
+      <module name="reports" target="22" />
       <module name="sso" target="21" />
       <module name="sso.main" target="21" />
       <module name="sso.test" target="21" />

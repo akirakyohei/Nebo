@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EntityScan(basePackages = "com.nebo.template.infrastructures")
-@EnableJpaRepositories(basePackages = {"com.nebo.template.infrastructures.domain.repository"},
+@EnableJpaRepositories(basePackages = {"com.nebo.template.infrastructures.domain.model"},
         transactionManagerRef = "templateTransactionManager",
         entityManagerFactoryRef = "templateEntityManagerFactory")
 public class DatasourceConfig {
@@ -46,10 +46,5 @@ public class DatasourceConfig {
         var transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
         return transactionManager;
-    }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
     }
 }

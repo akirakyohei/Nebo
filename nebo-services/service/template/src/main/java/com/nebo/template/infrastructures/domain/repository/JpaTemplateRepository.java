@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface JpaTemplateRepository extends JpaRepository<Template, Integer>, JpaSpecificationExecutor<Template> {
-    Optional<Template> findTemplateByUserIdAndId(long userId, int id);
+public interface JpaTemplateRepository extends JpaRepository<Template, Long>, JpaSpecificationExecutor<Template> {
+    Optional<Template> findTemplateByUserIdAndId(long userId, long id);
 }

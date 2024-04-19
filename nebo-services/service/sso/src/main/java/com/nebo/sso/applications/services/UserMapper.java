@@ -10,5 +10,5 @@ public interface UserMapper {
 
     User toUser(UserCreateRequest request);
 
-    UserResponse toUserResponse(User user);
+    UserResponse fromDomainToResponse(User user);
 }

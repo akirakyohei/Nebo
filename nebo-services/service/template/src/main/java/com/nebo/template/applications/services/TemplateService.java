@@ -43,7 +43,7 @@ public class TemplateService {
     }
 
     @Transactional
-    public TemplateResponse updateTemplate(long userId, int templateId, TemplateUpdateRequest request) throws ConstraintViolationException {
+    public TemplateResponse updateTemplate(long userId, long templateId, TemplateUpdateRequest request) throws ConstraintViolationException {
         validateTemplateRequest(userId, request);
         var template = templateRepository.findTemplateByUserIdAndId(userId, templateId)
                 .orElseThrow(NotFoundException::new);
@@ -52,13 +52,13 @@ public class TemplateService {
         return templateMapper.fromDomainToResponse(template);
     }
 
-    public TemplateResponse getTemplate(long userId, int templateId) {
+    public TemplateResponse getTemplate(long userId, long templateId) {
         var template = templateRepository.findTemplateByUserIdAndId(userId, templateId)
                 .orElseThrow(NotFoundException::new);
         return templateMapper.fromDomainToResponse(template);
     }
 
-    public TemplateResponse getDefaultTemplate(int templateId) {
+    public TemplateResponse getDefaultTemplate(long templateId) {
         return getTemplate(defaultUserId, templateId);
     }
 

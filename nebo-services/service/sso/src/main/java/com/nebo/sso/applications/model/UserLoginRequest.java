@@ -1,5 +1,6 @@
 package com.nebo.sso.applications.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.nebo.annotations.PhoneNumber;
 import jakarta.validation.constraints.Email;

@@ -1,6 +1,5 @@
 package com.nebo.applications.model;
 
-import com.nebo.applications.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
