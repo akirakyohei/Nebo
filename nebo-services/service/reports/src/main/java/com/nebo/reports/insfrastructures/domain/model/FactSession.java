@@ -12,7 +12,6 @@ import java.time.Instant;
 @Entity
 public class FactSession {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long userKey;
     private String ipAddress;

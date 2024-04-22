@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface JpaFactUsedTemplateRepository extends JpaRepository<FactUsedTemplate, Long> {
+public interface JpaFactUsedTemplateRepository extends JpaRepository<FactUsedTemplate, Long>, UsedTemplateRepository {
     Optional<FactUsedTemplate> findFactUsedTemplateByDateKeyAndUserKeyAndTemplateKey(long dateKey, long userKey, long templateKey);
 
     @Modifying

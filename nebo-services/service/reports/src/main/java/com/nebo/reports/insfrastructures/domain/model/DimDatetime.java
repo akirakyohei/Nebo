@@ -12,7 +12,7 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DimDateTime {
+public class DimDatetime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long dateKey;
@@ -21,6 +21,7 @@ public class DimDateTime {
     private int dayOfMonth;
     private String dayOfWeek;
     private int dayOfYear;
+    private Instant firstHourOfDay;
     private Instant firstDayOfMonth;
     private Instant firstDayOfWeek;
     private Instant firstDayOfYear;

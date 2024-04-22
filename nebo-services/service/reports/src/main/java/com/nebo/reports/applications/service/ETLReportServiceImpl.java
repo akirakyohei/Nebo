@@ -1,11 +1,9 @@
 package com.nebo.reports.applications.service;
 
-import com.nebo.reports.applications.model.PrintLog;
-import com.nebo.reports.applications.model.StorageModel;
-import com.nebo.reports.applications.model.Template;
-import com.nebo.reports.applications.model.User;
+import com.nebo.reports.applications.model.*;
 import com.nebo.reports.applications.service.mapper.DimTemplateMapper;
 import com.nebo.reports.applications.service.mapper.DimUserMapper;
+import com.nebo.reports.applications.service.mapper.FactSessionMapper;
 import com.nebo.reports.insfrastructures.domain.model.*;
 import com.nebo.reports.insfrastructures.domain.repository.*;
 import com.nebo.types.DebeziumOperation;
@@ -22,6 +20,7 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class ETLReportServiceImpl implements ETLReportService {
+    private final static ZoneOffset ZONE_VN = ZoneOffset.ofHours(7);
     private final JpaDimDateTimeRepository dimDateTimeRepository;
     private final JpaDimUserRepository dimUserRepository;
     private final JpaDimPaperTypeRepository dimPaperTypeRepository;
@@ -30,6 +29,7 @@ public class ETLReportServiceImpl implements ETLReportService {
     private final JpaFactUsedPaperTypeRepository factUsedPaperTypeRepository;
     private final JpaFactUsedTemplateRepository factUsedTemplateRepository;
     private final JpaFactSessionRepository factSessionRepository;
+    private final FactSessionMapper factSessionMapper;
     private final DimTemplateMapper dimTemplateMapper;
     private final DimUserMapper dimUserMapper;
 
@@ -95,15 +95,23 @@ public class ETLReportServiceImpl implements ETLReportService {
         factUsedTemplateRepository.updateTotalUsedById(factUsedTemplate.getId(), 1);
     }
 
-    private DimDateTime getDimDateTime(Instant date) {
+    @Override
+    public void loadSession(Session session) {
+        var dimUser = getDimUser(session.getUserId());
+        Assert.notNull(dimUser, "dim user not null");
+        var factSession = factSessionMapper.fromModelToDomain(session);
+        factSession.setUserKey(dimUser.getUserKey());
+    }
+
+    private DimDatetime getDimDateTime(Instant date) {
         var localDate = LocalDateTime.ofInstant(date, ZoneId.of("Asia/Ho_Chi_Minh"))
                 .withMinute(0)
                 .withSecond(0)
                 .withNano(0);
-        var standardDate = localDate.toInstant(ZoneOffset.ofHours(7));
+        var standardDate = localDate.toInstant(ZONE_VN);
         return dimDateTimeRepository.findDimDateTimeByDate(standardDate).orElseGet(() -> {
             try {
-                var entity = DimDateTime.builder()
+                var entity = DimDatetime.builder()
                         .date(standardDate)
                         .hour(localDate.getHour())
                         .dayOfWeek(localDate.getDayOfWeek().name().toLowerCase(Locale.ROOT))
@@ -111,9 +119,10 @@ public class ETLReportServiceImpl implements ETLReportService {
                         .dayOfYear(localDate.getDayOfYear())
                         .monthOfYear(localDate.getMonthValue())
                         .year(localDate.getYear())
-                        .firstDayOfMonth(localDate.with(TemporalAdjusters.firstDayOfMonth()).withHour(0).toInstant(ZoneOffset.ofHours(7)))
-                        .firstDayOfWeek(localDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).withHour(0).toInstant(ZoneOffset.ofHours(7)))
-                        .firstDayOfYear(localDate.with(TemporalAdjusters.firstDayOfYear()).withHour(0).toInstant(ZoneOffset.ofHours(7)))
+                        .firstHourOfDay(localDate.withHour(0).toInstant(ZONE_VN))
+                        .firstDayOfMonth(localDate.with(TemporalAdjusters.firstDayOfMonth()).withHour(0).toInstant(ZONE_VN))
+                        .firstDayOfWeek(localDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).withHour(0).toInstant(ZONE_VN))
+                        .firstDayOfYear(localDate.with(TemporalAdjusters.firstDayOfYear()).withHour(0).toInstant(ZONE_VN))
                         .build();
                 return dimDateTimeRepository.save(entity);
             } catch (Exception ex) {

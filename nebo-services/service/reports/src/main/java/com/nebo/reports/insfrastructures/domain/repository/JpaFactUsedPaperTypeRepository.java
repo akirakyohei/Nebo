@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface JpaFactUsedPaperTypeRepository extends JpaRepository<FactUsedPaperType, Long> {
+public interface JpaFactUsedPaperTypeRepository extends JpaRepository<FactUsedPaperType, Long>, UsedPaperTypeRepository {
     Optional<FactUsedPaperType> findFactUsedPaperTypeByDateKeyAndUserKeyAndPaperTypeKey(long dateKey, long userKey, int paperKey);
 
     @Modifying

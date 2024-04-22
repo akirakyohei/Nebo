@@ -1,9 +1,6 @@
 package com.nebo.reports.applications.service;
 
-import com.nebo.reports.applications.model.PrintLog;
-import com.nebo.reports.applications.model.StorageModel;
-import com.nebo.reports.applications.model.Template;
-import com.nebo.reports.applications.model.User;
+import com.nebo.reports.applications.model.*;
 import com.nebo.reports.insfrastructures.domain.model.DimUser;
 import com.nebo.types.DebeziumOperation;
 
@@ -15,4 +12,6 @@ public interface ETLReportService {
     void aggregateStorageData(StorageModel model);
 
     void loadUsedTemplate(PrintLog printLog);
+
+    void loadSession(Session session);
 }
