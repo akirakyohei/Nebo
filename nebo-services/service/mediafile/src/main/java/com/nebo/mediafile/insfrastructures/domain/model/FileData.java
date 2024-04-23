@@ -9,7 +9,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Builder
-@Table(name = "files")
+@Table(name = "file_datas")
 @NoArgsConstructor
 @AllArgsConstructor
 public class FileData {

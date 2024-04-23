@@ -31,7 +31,7 @@ public class Template {
     private Map<String, Object> data;
     @Type(JsonType.class)
     private Map<String, Object> params;
-    private double size;
+    private long size;
     private Timestamp createdOn;
     private Timestamp updatedOn;
 }

@@ -22,7 +22,7 @@ public class Template {
     private List<Integer> categoryIds;
     private Map<String, Object> data;
     private Map<String, Object> params;
-    private double size;
+    private long size;
     private Instant createdOn;
     private Instant updatedOn;
 }

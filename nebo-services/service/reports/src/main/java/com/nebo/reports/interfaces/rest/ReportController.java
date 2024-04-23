@@ -38,17 +38,17 @@ public class ReportController {
 
     @GetMapping("/top-used-template")
     List<TopUsedTemplateResponse> getTopUsedTemplateResponse(@UserId Long userId, long top, TimeRequest timeRequest){
-        return reportService.getTopUsedTemplateResponse(userId, top, timeRequest)
+        return reportService.getTopUsedTemplateResponse(userId, top, timeRequest);
     }
 
     @GetMapping("/used-template")
     UsedTemplatesResponse getUsedTemplates(@UserId Long userId, List<Long> templateIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest){
-        return reportService.getUsedTemplates(userId, templateIds, timeRequest, pagingFilterRequest)
+        return reportService.getUsedTemplates(userId, templateIds, timeRequest, pagingFilterRequest);
     }
 
     @GetMapping("/used-paper-type")
     UsedPaperTypesResponse getUsedPaperTypes(@UserId Long userId, List<Integer> paperTypeIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest){
-        return reportService.getUsedPaperTypes(userId, paperTypeIds, timeRequest, pagingFilterRequest)
+        return reportService.getUsedPaperTypes(userId, paperTypeIds, timeRequest, pagingFilterRequest);
     }
 
 

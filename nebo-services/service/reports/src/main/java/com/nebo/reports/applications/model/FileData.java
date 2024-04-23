@@ -2,14 +2,16 @@ package com.nebo.reports.applications.model;
 
 import lombok.*;
 
-import java.time.Instant;
-
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StorageModel {
+public class FileData {
+    private Long id;
     private long userId;
-    private long adjustTotalData;
+    private String fileName;
+    private String key;
+    private String extension;
+    private long size;
 }
