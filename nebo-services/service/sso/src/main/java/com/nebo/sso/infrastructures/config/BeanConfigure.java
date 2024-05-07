@@ -1,6 +1,8 @@
 package com.nebo.sso.infrastructures.config;
 
 import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.security.authentication.BasicGrpcAuthenticationReader;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +21,14 @@ import javax.sql.DataSource;
 
 @Slf4j
 @Configuration
-public class BeanConfig {
+public class BeanConfigure {
 
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public GrpcAuthenticationReader grpcAuthenticationReader(){
+        return new BasicGrpcAuthenticationReader();
     }
 }

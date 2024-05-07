@@ -105,7 +105,7 @@ public class AuthenticateProvider {
                 .parseSignedClaims(token).getPayload();
         var userId = claims.get("id", Long.class);
         var firstName = claims.get("firstName", String.class);
-        var lastName = claims.get("lastNamt", String.class);
+        var lastName = claims.get("lastName", String.class);
         var permissions = Arrays.stream(StringUtils.split(StringUtils.defaultIfBlank(claims.get("permissions", String.class), ""), ",")).toList();
         return UserCredentialResponse.builder()
                 .userId(userId)

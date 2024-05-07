@@ -50,9 +50,15 @@ public class NeboRequestMatcher implements RequestMatcher {
     }
 
     public NeboRequestMatcher(TokenType tokenType, HttpMethod httpMethod, String... patterns) {
+        Assert.notEmpty(patterns, "pattern cannot be empty");
         this.tokenTypeRequestMatcher = TokenTypeRequestMatcher.matcher(tokenType);
         this.requestMatchers = RequestMatchers.anyOf(Arrays.stream(patterns)
-                .map(pattern -> RegexRequestMatcher.regexMatcher(httpMethod, pattern))
+                .map(pattern -> {
+                    if (httpMethod == null) {
+                        return RegexRequestMatcher.regexMatcher(pattern);
+                    }
+                    return RegexRequestMatcher.regexMatcher(httpMethod, pattern);
+                })
                 .toArray(RequestMatcher[]::new));
     }
 

@@ -12,17 +12,17 @@ public abstract class DimTemplate_ {
 
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getName
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#name
 	 **/
 	public static volatile SingularAttribute<DimTemplate, String> name;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getUpdatedOn
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#updatedOn
 	 **/
 	public static volatile SingularAttribute<DimTemplate, Instant> updatedOn;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getTemplateId
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#templateId
 	 **/
 	public static volatile SingularAttribute<DimTemplate, Long> templateId;
 	
@@ -32,22 +32,22 @@ public abstract class DimTemplate_ {
 	public static volatile EntityType<DimTemplate> class_;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getCreatedOn
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#createdOn
 	 **/
 	public static volatile SingularAttribute<DimTemplate, Instant> createdOn;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getUserKey
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#userKey
 	 **/
 	public static volatile SingularAttribute<DimTemplate, Long> userKey;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getTemplateKey
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#templateKey
 	 **/
 	public static volatile SingularAttribute<DimTemplate, Long> templateKey;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#getPaperTypeKey
+	 * @see com.nebo.reports.insfrastructures.domain.model.DimTemplate#paperTypeKey
 	 **/
 	public static volatile SingularAttribute<DimTemplate, Integer> paperTypeKey;
 

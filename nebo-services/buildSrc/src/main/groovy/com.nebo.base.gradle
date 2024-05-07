@@ -31,8 +31,7 @@ ext {
     springBootVersion = "3.2.3"
     springCloudVersion = "2023.0.1"
     grpcVersion = "1.59.1"
-    protobufVersion="4.26.1"
-    antlrVersion = "4.10.1"
+    protobufVersion="3.25.3"
 //    elasticsearchVersion = "5.6.12"
     netflixDgsVersion = "6.0.1"
     mapstructVersion = "1.5.3.Final"
@@ -57,8 +56,6 @@ dependencyManagement {
         dependency 'com.amazonaws:aws-java-sdk-s3:1.11.921'
         dependency 'com.google.guava:guava:31.1-jre'
         dependency 'nl.jqno.equalsverifier:equalsverifier:3.7.1'
-        dependency "org.antlr:antlr4:${antlrVersion}"
-        dependency "org.antlr:antlr4-runtime:${antlrVersion}"
         dependency 'jakarta.mail:jakarta.mail-api:2.1.1'
         dependency 'org.eclipse.angus:jakarta.mail:2.0.1'
         dependency 'com.sendgrid:sendgrid-java:4.9.3'

@@ -9,13 +9,18 @@ spring:
     username: admin
     password: jfnjvfd943njcdnfda
     driver-class-name: org.mariadb.jdbc.Driver
+  datasource-reportdb:
+    jdbc-url: jdbc:mariadb://localhost:3306/reportdb
+    username: admin
+    password: jfnjvfd943njcdnfda
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     open-in-view: false
     show-sql: false
     database-platform: org.hibernate.dialect.MariaDB103Dialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
+        dialect: org.hibernate.dialect.MariaDB103Dialect
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         id:
           new_generator_mappings: false
@@ -24,6 +29,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   kafka:
+    bootstrap: localhost:9092
     topic:
       user: kafka.topic.user
       session: kafka.topic.user

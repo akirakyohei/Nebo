@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8073
 nebo:
   mediafile:
     default-folder-name: resources

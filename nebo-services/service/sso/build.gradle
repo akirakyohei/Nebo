@@ -17,13 +17,13 @@ dependencies {
     compileOnly "org.hibernate.orm:hibernate-jpamodelgen"
     annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
     implementation 'net.devh:grpc-server-spring-boot-starter:3.0.0.RELEASE'
-    implementation 'com.google.protobuf:protobuf-java-util:4.26.1'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.google.guava:guava'
     implementation project(':shared:web')
     implementation project(':shared:autoconfigure')
     implementation project(':shared:common')
     implementation project(':shared:grpc')
+    implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
 
     testCompileOnly 'org.projectlombok:lombok'
     testCompileOnly "org.mapstruct:mapstruct"
