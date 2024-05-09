@@ -18,7 +18,7 @@ public class FileDataStorageConsumer {
 
     @KafkaListener(
             groupId = "nebo.kafka.groupId.file-data-total-storage",
-            topics = "#{'${spring.kafka.topics.file-data-raw-log}'.split(',')}",
+            topics = "#{'${spring.kafka.topic.file-data-raw-log}'.split(',')}",
             concurrency = "5"
     )
     public void process(ConsumerRecord<String, String> record) {

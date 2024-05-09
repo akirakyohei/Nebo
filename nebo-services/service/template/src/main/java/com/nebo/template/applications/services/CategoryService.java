@@ -23,7 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CategoryService {
     @Value("${nebo.default-user-id}")
-    private final Integer defaultUserId;
+    private Integer defaultUserId;
 
     private final JpaCategoryRepository categoryRepository;
 

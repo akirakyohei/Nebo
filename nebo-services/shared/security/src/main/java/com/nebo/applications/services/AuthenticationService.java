@@ -1,17 +1,36 @@
 package com.nebo.applications.services;
 
+import com.nebo.applications.config.NeboJwtConfigureProperties;
+import com.nebo.applications.model.UserCredentialResponse;
+import com.nebo.grpc.NeboGrpc;
+import com.nebo.grpc.lib.AuthenticationRequest;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class AuthenticationService {
+
+    private final NeboJwtConfigureProperties jwtProperties;
+
+    private final NeboGrpc neboGrpc;
+
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
+            var claims = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                     .build()
-                    .parse(authToken);
-            return true;
+                    .parseSignedClaims(authToken).getPayload();
+            var userId = claims.get("id", Long.class);
+            return !neboGrpc.authenticationService.isBlackListToken(AuthenticationRequest.newBuilder().setToken(authToken).setUserId(userId).build()).getBlock();
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {

@@ -79,6 +79,17 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int USER_ID_FIELD_NUMBER = 2;
+  private long userId_ = 0L;
+  /**
+   * <code>int64 user_id = 2;</code>
+   * @return The userId.
+   */
+  @java.lang.Override
+  public long getUserId() {
+    return userId_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -96,6 +107,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, token_);
     }
+    if (userId_ != 0L) {
+      output.writeInt64(2, userId_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -107,6 +121,10 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(token_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, token_);
+    }
+    if (userId_ != 0L) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(2, userId_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -125,6 +143,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getToken()
         .equals(other.getToken())) return false;
+    if (getUserId()
+        != other.getUserId()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -138,6 +158,9 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + TOKEN_FIELD_NUMBER;
     hash = (53 * hash) + getToken().hashCode();
+    hash = (37 * hash) + USER_ID_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        getUserId());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -270,6 +293,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       bitField0_ = 0;
       token_ = "";
+      userId_ = 0L;
       return this;
     }
 
@@ -305,6 +329,9 @@ private static final long serialVersionUID = 0L;
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.token_ = token_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.userId_ = userId_;
       }
     }
 
@@ -357,6 +384,9 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000001;
         onChanged();
       }
+      if (other.getUserId() != 0L) {
+        setUserId(other.getUserId());
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -388,6 +418,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 10
+            case 16: {
+              userId_ = input.readInt64();
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 16
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -473,6 +508,38 @@ private static final long serialVersionUID = 0L;
       checkByteStringIsUtf8(value);
       token_ = value;
       bitField0_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+
+    private long userId_ ;
+    /**
+     * <code>int64 user_id = 2;</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public long getUserId() {
+      return userId_;
+    }
+    /**
+     * <code>int64 user_id = 2;</code>
+     * @param value The userId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserId(long value) {
+
+      userId_ = value;
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int64 user_id = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUserId() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      userId_ = 0L;
       onChanged();
       return this;
     }

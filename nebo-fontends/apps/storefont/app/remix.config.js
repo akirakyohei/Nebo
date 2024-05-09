@@ -2,7 +2,11 @@
 export default {
   routes(defineRoutes) {
     return defineRoutes((route) => {
-      route("/", "routes/_index.tsx", { index: true });
+      route("", "routes/_index.tsx", { index: true });
+      route("users", "routes/users/_index.tsx", () => {
+        route("login", "routes/users/login.tsx");
+        route("signup", "routes/users/signup.tsx");
+      });
       route("workspace", "routes/workspace/workspace.tsx", () => {
         route("", "routes/workspace/_index.tsx", { index: true });
         route("projects", "routes/workspace/projects.tsx");

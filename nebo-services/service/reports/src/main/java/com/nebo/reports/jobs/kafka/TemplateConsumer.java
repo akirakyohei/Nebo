@@ -21,7 +21,7 @@ public class TemplateConsumer {
 
     @KafkaListener(
             groupId = "nebo.kafka.groupId.sync-template",
-            topics = "#{'${spring.kafka.topics.template-raw-log}'.split(',')}",
+            topics = "#{'${spring.kafka.topic.template-raw-log}'.split(',')}",
             concurrency = "5"
     )
     public void process(ConsumerRecord<String, String> record) {

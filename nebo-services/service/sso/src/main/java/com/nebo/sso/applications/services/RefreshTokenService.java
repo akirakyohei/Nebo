@@ -1,6 +1,6 @@
 package com.nebo.sso.applications.services;
 
-import com.nebo.sso.infrastructures.config.NeboJwtConfigureProperties;
+import com.nebo.applications.config.NeboJwtConfigureProperties;
 import com.nebo.sso.infrastructures.domain.model.Session;
 import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
@@ -23,9 +23,9 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByRefreshToken(token).orElse(null);
     }
 
-    public Session createRefreshToken(Long userId) {
+    public Session createRefreshToken(Long userId, String ipAddress, String userAgent) {
         var user = userRepository.findById(userId).orElse(null);
-        var refreshToken = new Session(user, UUID.randomUUID().toString(), Instant.now().plusMillis(jwtProperties.getRefreshExpiration()));
+        var refreshToken = new Session(user, UUID.randomUUID().toString(), ipAddress, userAgent, Instant.now().plusMillis(jwtProperties.getRefreshExpiration()));
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }

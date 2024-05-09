@@ -26,7 +26,7 @@ public abstract class Template_ {
 	/**
 	 * @see com.nebo.template.infrastructures.domain.model.Template#size
 	 **/
-	public static volatile SingularAttribute<Template, Double> size;
+	public static volatile SingularAttribute<Template, Long> size;
 	
 	/**
 	 * @see com.nebo.template.infrastructures.domain.model.Template#paperTypeId

@@ -21,15 +21,10 @@ public final class SecurityProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_nebo_grpc_security_AuthenticationRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_nebo_grpc_security_UserCredentialResponse_descriptor;
+    internal_static_com_nebo_grpc_security_BlackListResultResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_nebo_grpc_security_UserCredentialResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_nebo_grpc_security_UserCredential_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_nebo_grpc_security_UserCredential_fieldAccessorTable;
+      internal_static_com_nebo_grpc_security_BlackListResultResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -40,17 +35,14 @@ public final class SecurityProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\016security.proto\022\026com.nebo.grpc.security" +
-      "\"&\n\025AuthenticationRequest\022\r\n\005token\030\001 \001(\t" +
-      "\"Y\n\026UserCredentialResponse\022?\n\017user_crede" +
-      "ntial\030\001 \001(\0132&.com.nebo.grpc.security.Use" +
-      "rCredential\"X\n\016UserCredential\022\n\n\002id\030\001 \001(" +
-      "\003\022\022\n\nfirst_name\030\003 \001(\t\022\021\n\tlast_name\030\004 \001(\t" +
-      "\022\023\n\013permissions\030\002 \003(\t2\210\001\n\025Authentication" +
-      "Service\022o\n\014authenticate\022-.com.nebo.grpc." +
-      "security.AuthenticationRequest\032..com.neb" +
-      "o.grpc.security.UserCredentialResponse\"\000" +
-      "B$\n\021com.nebo.grpc.libB\rSecurityProtoP\001b\006" +
-      "proto3"
+      "\"7\n\025AuthenticationRequest\022\r\n\005token\030\001 \001(\t" +
+      "\022\017\n\007user_id\030\002 \001(\003\"(\n\027BlackListResultResp" +
+      "onse\022\r\n\005block\030\001 \001(\0102\215\001\n\025AuthenticationSe" +
+      "rvice\022t\n\020isBlackListToken\022-.com.nebo.grp" +
+      "c.security.AuthenticationRequest\032/.com.n" +
+      "ebo.grpc.security.BlackListResultRespons" +
+      "e\"\000B$\n\021com.nebo.grpc.libB\rSecurityProtoP" +
+      "\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -61,19 +53,13 @@ public final class SecurityProto {
     internal_static_com_nebo_grpc_security_AuthenticationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_nebo_grpc_security_AuthenticationRequest_descriptor,
-        new java.lang.String[] { "Token", });
-    internal_static_com_nebo_grpc_security_UserCredentialResponse_descriptor =
+        new java.lang.String[] { "Token", "UserId", });
+    internal_static_com_nebo_grpc_security_BlackListResultResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_nebo_grpc_security_UserCredentialResponse_fieldAccessorTable = new
+    internal_static_com_nebo_grpc_security_BlackListResultResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_nebo_grpc_security_UserCredentialResponse_descriptor,
-        new java.lang.String[] { "UserCredential", });
-    internal_static_com_nebo_grpc_security_UserCredential_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_com_nebo_grpc_security_UserCredential_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_nebo_grpc_security_UserCredential_descriptor,
-        new java.lang.String[] { "Id", "FirstName", "LastName", "Permissions", });
+        internal_static_com_nebo_grpc_security_BlackListResultResponse_descriptor,
+        new java.lang.String[] { "Block", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

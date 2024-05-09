@@ -19,4 +19,10 @@ public interface AuthenticationRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getTokenBytes();
+
+  /**
+   * <code>int64 user_id = 2;</code>
+   * @return The userId.
+   */
+  long getUserId();
 }

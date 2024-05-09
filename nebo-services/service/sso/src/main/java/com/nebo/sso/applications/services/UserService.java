@@ -4,10 +4,12 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.nebo.sso.applications.model.*;
 import com.nebo.sso.infrastructures.domain.model.User;
 import com.nebo.sso.infrastructures.domain.model.User_;
+import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
 import com.nebo.sso.infrastructures.domain.specifiation.UserSpecification;
 import com.nebo.web.applications.exception.AuthenticationException;
 import com.nebo.web.applications.exception.ConstraintViolationException;
+import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
 import com.nebo.web.applications.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -71,12 +73,14 @@ public class UserService {
         return authenticateProvider.generateJwtToken(user, ipAddress, userAgent);
     }
 
+    public JwtResponse refreshJwtToken(User user, String refreshToken) throws ExpiredTokenRefreshException {
+        return authenticateProvider.refreshJwtToken(user, refreshToken);
+    }
+
     private void validateCreateRequest(UserCreateRequest request) throws ConstraintViolationException {
         if (request.getPhoneNumber() == null || request.getEmail() == null)
             throw new ConstraintViolationException("user", "Required email or phone number");
-        if (request.getPhoneNumber() != null) {
-            request.setPhoneNumber(PhoneNumberUtil.normalizeDigitsOnly(request.getPhoneNumber()));
-        }
+        request.setPhoneNumber(PhoneNumberUtil.normalizeDigitsOnly(request.getPhoneNumber()));
         request.setFirstName(request.getFirstName().trim());
         if (request.getLastName() != null)
             request.setLastName(request.getLastName().trim());

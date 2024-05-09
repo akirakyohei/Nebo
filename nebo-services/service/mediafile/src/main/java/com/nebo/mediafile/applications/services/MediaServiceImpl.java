@@ -31,7 +31,7 @@ public class MediaServiceImpl implements MediaService {
     private final FileStorageService storageService;
     private final MediaMapper mediaMapper;
     @Value("${nebo.mediafile.default-folder-name}")
-    private final String defaultFolderName;
+    private String defaultFolderName;
 
     @Override
     public FileDataUploadResponse saveFile(long userId, FileDataUploadRequest request) throws ConstraintViolationException {

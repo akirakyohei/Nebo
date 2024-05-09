@@ -41,7 +41,7 @@ public class NeboSecurityUtils {
         return null;
     }
 
-    public static NeboAuthenticationToken getNebAuthenticationToken() {
+    public static NeboAuthenticationToken getNeboAuthenticationToken() {
         var context = SecurityContextHolder.getContext();
         if (context == null || context.getAuthentication() == null)
             return null;

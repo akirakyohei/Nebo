@@ -13,9 +13,7 @@ import com.nebo.reports.insfrastructures.domain.specification.FactSessionSpecifi
 import com.nebo.types.PagingFilterRequest;
 import com.nebo.utils.Lists;
 import com.nebo.web.applications.exception.NotFoundException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -116,7 +114,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public UsedPaperTypesResponse getUsedPaperTypes(long userId, List<Integer> paperTypeIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest) {
         var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
-        var paperTypeKeys = !CollectionUtils.isEmpty(paperTypeIds) ? dimPaperTypeRepository.findAllByUserKeyAndPaperTypeIdIn(dimUser.getUserKey(), paperTypeIds)
+        var paperTypeKeys = !CollectionUtils.isEmpty(paperTypeIds) ? dimPaperTypeRepository.findAllByPaperTypeIdIn(paperTypeIds)
                 .stream().map(DimPaperType::getPaperTypeKey).toList() : null;
         var page = factUsedPaperTypeRepository.getUsedPaperTypes(dimUser.getUserKey(), paperTypeKeys, timeRequest, pagingFilterRequest);
         var aggregate = factUsedPaperTypeRepository.aggregateUsedPaperTypes(dimUser.getUserKey(), paperTypeKeys, timeRequest);

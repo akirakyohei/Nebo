@@ -24,7 +24,7 @@ import java.util.Objects;
 public class TemplateService {
 
     @Value("${nebo.default-user-id}")
-    private final Integer defaultUserId;
+    private Integer defaultUserId;
 
     private final JpaTemplateRepository templateRepository;
 

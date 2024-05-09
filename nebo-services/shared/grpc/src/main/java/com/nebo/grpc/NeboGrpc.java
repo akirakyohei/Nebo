@@ -1,5 +1,6 @@
 package com.nebo.grpc;
 
+import com.nebo.grpc.lib.AuthenticationRequest;
 import com.nebo.grpc.lib.AuthenticationServiceGrpc;
 import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.security.CallCredentialsHelper;
@@ -19,9 +20,10 @@ public class NeboGrpc {
             channelBuilder = channelBuilder.usePlaintext();
         }
         var channel = channelBuilder.build();
-        this.authenticationService = AuthenticationServiceGrpc.newBlockingStub(channel).withCallCredentials(
-                CallCredentialsHelper.basicAuth(builder.userName, builder.password)
-        );
+        this.authenticationService = AuthenticationServiceGrpc.newBlockingStub(channel);
+//                .withCallCredentials(
+//                CallCredentialsHelper.basicAuth(builder.userName, builder.password)
+//        );
     }
 
 

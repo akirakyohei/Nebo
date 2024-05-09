@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface JpaDimPaperTypeRepository extends JpaRepository<DimPaperType, Integer> {
     Optional<DimPaperType> findDimPaperTypeByPaperTypeId(int paperTypeId);
 
-    List<DimPaperType> findAllByUserKeyAndPaperTypeIdIn(long userKey, List<Integer> paperTypeIds);
+    List<DimPaperType> findAllByPaperTypeIdIn( List<Integer> paperTypeIds);
 }

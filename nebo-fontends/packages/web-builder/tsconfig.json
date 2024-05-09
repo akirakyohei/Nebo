@@ -1,9 +1,10 @@
 {
     "extends": "@repo/typescript-config/react-library.json",
     "compilerOptions": {
+      "baseUrl": "app",
       "outDir": "dist",
     },
-    "include": ["src"],
+    "include": ["app"],
     "exclude": ["node_modules", "dist"]
   }
   

@@ -18,7 +18,7 @@ public class PrintLogConsumer {
 
     @KafkaListener(
             groupId = "nebo.kafka.groupId.sync-used-template",
-            topics = "#{'${spring.kafka.topics.print-log}'.split(',')}",
+            topics = "#{'${spring.kafka.topic.print-log}'.split(',')}",
             concurrency = "5"
     )
     public void process(ConsumerRecord<String, String> record) {

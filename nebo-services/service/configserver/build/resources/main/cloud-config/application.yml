@@ -31,7 +31,16 @@ spring:
   kafka:
     bootstrap: localhost:9092
     topic:
-      user: kafka.topic.user
-      session: kafka.topic.user
+      user-log: kafka.topic.user
+      session-log: kafka.topic.session
+      file-data-raw-log: kafka.topic.session
+      template-raw-log: kafka.topic.session
+      print-log: kafka.topic.session
+  redis:
+    host: localhost
+    port: 6379
+  grpc:
+    url: http://localhost:9090
+
 nebo:
   default-user-id: 1

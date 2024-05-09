@@ -18,7 +18,7 @@ public class SessionConsumer {
 
     @KafkaListener(
             groupId = "nebo.kafka.groupId.sync-session",
-            topics = "#{'${spring.kafka.topics.session-log}'.split(',')}",
+            topics = "#{'${spring.kafka.topic.session-log}'.split(',')}",
             concurrency = "5"
     )
     public void process(ConsumerRecord<String, String> record) {

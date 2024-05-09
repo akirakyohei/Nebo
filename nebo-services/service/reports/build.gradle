@@ -23,6 +23,7 @@ dependencies {
     implementation project(':shared:web')
     implementation project(':shared:autoconfigure')
     implementation project(':shared:common')
+    implementation project(':shared:grpc')
     implementation project(':shared:security')
 
     testCompileOnly 'org.projectlombok:lombok'

@@ -14,10 +14,10 @@ import java.util.Collection;
 @AllArgsConstructor
 public class UserDetail implements UserDetails {
 
-    private User user;
+    private UserCredentialResponse user;
 
     public Long getUserId() {
-        return user.getId();
+        return user.getUserId();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class UserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return null;
     }
 
     @Override

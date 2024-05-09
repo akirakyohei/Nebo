@@ -15,7 +15,7 @@ public class CategoryGroupUtils {
 
     public static List<CategoryGroup> loadData() {
         try {
-            var file = ResourceUtils.getFile("classpath:static.category-groups.json");
+            var file = ResourceUtils.getFile("classpath:static/category-groups.json");
             var inputStream = new FileInputStream(file);
             objectmapper.readValue(inputStream, objectmapper.getTypeFactory().constructCollectionType(ArrayList.class, CategoryGroup.class));
         } catch (IOException e) {

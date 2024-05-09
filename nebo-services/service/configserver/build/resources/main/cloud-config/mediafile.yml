@@ -10,7 +10,7 @@ nebo:
       thread_name_prefix: StorageMedia
       wait_for_tasks_to_compile_on_shutdown: true
     minio:
-      url: localhost:9001
+      url: http://localhost:9000
       bucket: nebo-template
       access_key: H8vEw5lieGA7TxMObD12
       secret_key: LKZ7PIf9PR9WoY2vOh2d5jORnl6vkmKHycqvbfOW
