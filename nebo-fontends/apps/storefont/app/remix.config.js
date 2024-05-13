@@ -23,4 +23,5 @@ export default {
   },
   ssr: false,
   manifest: true,
+  serverDependenciesToBundle: [],
 };

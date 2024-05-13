@@ -24,10 +24,11 @@ spring:
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         id:
           new_generator_mappings: false
-        type.preferred_instant_jdbc_type: TIMESTAMP
+        type.preferred_instant_jdbc_type:
     hibernate:
       naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
   kafka:
     bootstrap: localhost:9092
     topic:

@@ -1,5 +1,5 @@
-import { UserCredentials } from "./user";
+import { User } from "./user";
 
 export type Workspace = {
-  user: UserCredentials;
+  user: User;
 };

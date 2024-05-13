@@ -37,7 +37,8 @@ public class AuthController {
         var ipAddress = httpServletRequest.getRemoteAddr();
         var userAgent = httpServletRequest.getHeader("User-Agent");
         var res = userService.signup(request, ipAddress, userAgent);
-        CookieUtils.addCookie(jwtConfigureProperties.getHeaderToken(), res.getToken(), "/*", httpServletRequest, httpServletResponse);
+        CookieUtils.addCookie(
+                jwtConfigureProperties.getHeaderToken(), res.getToken(), "/*", httpServletRequest, httpServletResponse);
         return res;
     }
 

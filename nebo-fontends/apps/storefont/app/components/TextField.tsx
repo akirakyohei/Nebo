@@ -4,7 +4,7 @@ export const TextField = ({ ...props }: TextFieldProps) => {
   return (
     <TextFieldMUI
       {...props}
-      InputLabelProps={{ sx: { top: "-6px" } }}
+      InputLabelProps={{ sx: { top: "-6px" }, ...props.InputLabelProps }}
       InputProps={{
         sx: {
           height: "41px",
@@ -12,8 +12,9 @@ export const TextField = ({ ...props }: TextFieldProps) => {
             padding: "0 16px !important",
             height: "100% !important",
           },
-          ...props.sx,
+          ...props?.InputProps?.sx,
         },
+        ...props.InputProps,
       }}
     />
   );

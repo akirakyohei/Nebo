@@ -24,6 +24,7 @@
   "packageManager": "yarn@4.1.1",
   "workspaces": [
     "apps/*",
+    "packages/web-builder/*",
     "packages/*"
   ],
   "lint-staged": {

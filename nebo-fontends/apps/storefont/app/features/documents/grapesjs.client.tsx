@@ -6,11 +6,7 @@ import { Box } from "@mui/material";
 import { useNavigate } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 import { Template } from "../../types";
-import {
-  useCreateTemplateMutation,
-  useGetTemplatesWithInfiniteQuery,
-  useUpdateTemplateMutation,
-} from "../../data/template.api";
+import { useGetTemplatesWithInfiniteQuery } from "../../data/template.api";
 import { useSimpleFilters } from "../../utils/useSimpleFilters";
 import { TemplateManagerPlugin } from "./plugin/template-manage/template.manage";
 import { useToggle } from "../../utils/useToggle";

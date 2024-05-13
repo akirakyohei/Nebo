@@ -24,29 +24,27 @@ public class ReportController {
         return reportService.getHistorySession(userId, request);
     }
 
-    ;
-
     @GetMapping
     AggregateReportResponse getAggregateReport(@UserId Long userId) {
         return reportService.getAggregateReport(userId);
     }
 
-    @GetMapping("/top-used-paper-type")
+    @GetMapping("/top_used_paper_type")
     List<TopUsedPaperTypeResponse> getTopUsedPaperTypeResponse(@UserId Long userId, long top, TimeRequest timeRequest) {
         return reportService.getTopUsedPaperTypeResponse(userId, top, timeRequest);
     }
 
-    @GetMapping("/top-used-template")
+    @GetMapping("/top_used_template")
     List<TopUsedTemplateResponse> getTopUsedTemplateResponse(@UserId Long userId, long top, TimeRequest timeRequest){
         return reportService.getTopUsedTemplateResponse(userId, top, timeRequest);
     }
 
-    @GetMapping("/used-template")
+    @GetMapping("/used_template")
     UsedTemplatesResponse getUsedTemplates(@UserId Long userId, List<Long> templateIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest){
         return reportService.getUsedTemplates(userId, templateIds, timeRequest, pagingFilterRequest);
     }
 
-    @GetMapping("/used-paper-type")
+    @GetMapping("/used_paper_type")
     UsedPaperTypesResponse getUsedPaperTypes(@UserId Long userId, List<Integer> paperTypeIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest){
         return reportService.getUsedPaperTypes(userId, paperTypeIds, timeRequest, pagingFilterRequest);
     }

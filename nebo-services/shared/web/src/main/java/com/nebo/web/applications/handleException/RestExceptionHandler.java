@@ -4,6 +4,7 @@ import com.nebo.web.applications.exception.AuthenticationException;
 import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
 import com.nebo.web.applications.exception.NotFoundException;
 import com.nebo.web.applications.model.Error;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.core.Ordered;

@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token == null) {
             filterChain.doFilter(request, response);
+            return;
         }
         try {
             var authentication = authenticationManager.authenticate(new JwtAuthenticationToken(token));

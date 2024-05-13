@@ -125,6 +125,7 @@ const config = [
         dir: "dist",
         format: "cjs",
         sourcemap: true,
+        preserveModules: true,
         exports: "named",
       },
       {

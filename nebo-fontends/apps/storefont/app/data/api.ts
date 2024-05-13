@@ -1,5 +1,5 @@
 import { ClientError, parseErrorBody } from "../utils/client";
-import { UserCredentials } from "../types";
+import { User } from "../types";
 import {
   BaseQueryFn,
   FetchArgs,
@@ -57,9 +57,15 @@ export const storefontApi = createApi({
   reducerPath: "storefontApi",
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    getCurrentUser: builder.query<UserCredentials, void>({
-      query: () => `/api/storefont/currentUser`,
-      transformResponse: (response: { user: UserCredentials }) => response.user,
+    getCurrentUser: builder.query<User, void>({
+      query: () => {
+        return {
+          url: `/api/users/current_user`,
+          method: "GET",
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      transformResponse: (response: { user: User }) => response.user,
     }),
   }),
 });

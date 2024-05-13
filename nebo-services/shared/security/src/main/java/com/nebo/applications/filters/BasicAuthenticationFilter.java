@@ -28,6 +28,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
         var appId = NumberUtils.isCreatable(appIdStr) ? NumberUtils.createLong(appIdStr) : null;
         if (token == null) {
             filterChain.doFilter(request, response);
+            return;
         }
         try {
             var authentication = authenticationManager.authenticate(new BasicAuthenticationToken(token, userId, appId));

@@ -9,9 +9,9 @@ export type UserCredentials = {
 export type UserCreateRequest = {
   first_name: string;
   last_name: string;
-  email: string;
+  email?: string;
   password: string;
-  phone_number: string;
+  phone_number?: string;
 };
 
 export type UserLoginRequest = {
@@ -25,4 +25,18 @@ export type UserToken = {
   permissions: string[];
   token: string;
   refresh_token: string;
+};
+
+export type CredentialProvider = "local" | "facebook" | "google";
+
+export type User = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  image_url: string;
+  email: string;
+  phone_number: string;
+  permissions: string[];
+  provider: CredentialProvider;
+  provider_id: string;
 };

@@ -75,7 +75,7 @@ services:
       CONFIG_STORAGE_TOPIC: kafka-connect-configs
       OFFSET_STORAGE_TOPIC: kafka-connect-offsets
       STATUS_STORAGE_TOPIC: kafka-connect-statuses
-      BOOTSTRAP_SERVERS: kafka:9091
+      BOOTSTRAP_SERVERS: kafka:29092
       CONNECT_TOPIC_CREATION_ENABLE: true
       CONNECT_TOPIC_CREATION_DEFAULT_REPLICATION_FACTOR: "3"
       CONNECT_TOPIC_CREATION_DEFAULT_PARTITIONS: "10"
@@ -94,7 +94,7 @@ services:
       MARIADB_ROOT_PASSWORD: "ajdhjewjhredbdbbd"
     command:
       - --log-bin
-      - --binlog-format=MIXED
+      - --binlog-format=ROW
   schema-registry:
     image: confluentinc/cp-schema-registry:5.4.0
     ports:
@@ -228,6 +228,7 @@ services:
   kong:
     image: "${KONG_DOCKER_TAG:-kong:latest}"
     user: "${KONG_USER:-kong}"
+    hostname: kong
     container_name: kong
     depends_on:
       - postgresdb

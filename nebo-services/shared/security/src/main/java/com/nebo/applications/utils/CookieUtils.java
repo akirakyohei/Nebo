@@ -9,10 +9,10 @@ import java.util.Arrays;
 public class CookieUtils {
 
     public static String getCookieByName(HttpServletRequest httpServletRequest, String name) {
-        return Arrays.stream(httpServletRequest.getCookies())
+        return httpServletRequest.getCookies() != null ? Arrays.stream(httpServletRequest.getCookies())
                 .filter(cookie -> StringUtils.equals(cookie.getName(), name))
                 .map(Cookie::getValue)
                 .findFirst()
-                .orElse(null);
+                .orElse(null) : null;
     }
 }

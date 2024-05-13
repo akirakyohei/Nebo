@@ -1,8 +1,17 @@
-import { Box, Container, Grid, Paper, Stack } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import type { MetaFunction } from "@remix-run/node";
+import { LoginCard } from "app/features/users/login/components/LoginCard";
 // eslint-disable-next-line import/no-unresolved
 import logoImage from "app/assets/img/logo.png";
-import { Controller, useForm } from "react-hook-form";
+import backgroundImage from "/app/assets/img/background.jpeg";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Đăng nhập" }];
@@ -10,25 +19,25 @@ export const meta: MetaFunction = () => {
 
 export default function LoginPage() {
   return (
-    <Paper>
-      <Container maxWidth="sm">
-        <Stack>
-          <Box>
-            <Box
-              component={"img"}
-              src={logoImage}
-              sx={{ width: "60px", height: "60px" }}
-            />
-          </Box>
-          <Box>
-            <Grid container>
-              <Grid item xs={8}>
-                <LoginCard />
-              </Grid>
-            </Grid>
-          </Box>
-        </Stack>
-      </Container>
+    <Paper
+      elevation={0}
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        background: `url(${backgroundImage})`,
+      }}
+    >
+      <Grid
+        container
+        width={"100%"}
+        height={"100%"}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item md={4}>
+          <LoginCard />
+        </Grid>
+      </Grid>
     </Paper>
   );
 }

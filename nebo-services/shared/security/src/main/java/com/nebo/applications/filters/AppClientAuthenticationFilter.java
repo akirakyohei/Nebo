@@ -25,6 +25,7 @@ public class AppClientAuthenticationFilter extends OncePerRequestFilter {
         var apiSecret = request.getHeader("X-Nebo-Secret-Key");
         if (apikey == null || apiSecret == null) {
             filterChain.doFilter(request, response);
+            return;
         }
         try {
             var authentication = authenticationManager.authenticate(new AppClientAuthenticationToken(apikey, apiSecret));

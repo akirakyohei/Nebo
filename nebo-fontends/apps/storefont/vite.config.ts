@@ -23,4 +23,12 @@ export default defineConfig({
       legalComments: "none",
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http:nebo.com:8000",
+        changeOrigin: true,
+      },
+    },
+  },
 });
