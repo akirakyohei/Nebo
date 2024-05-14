@@ -14,8 +14,4 @@ public interface JpaUserRepository extends JpaRepository<User, Long>, JpaSpecifi
 
     Optional<User> findFirstByPhoneNumber(String phoneNumber);
 
-    Optional<User> findFirstByEmailAndPassword(String email, String password);
-
-    Optional<User> findFirstByPhoneNumberAndPassword(String phoneNumber, String password);
-
 }

@@ -2,6 +2,7 @@ package com.nebo.applications.filters;
 
 import com.nebo.applications.tokens.AppClientAuthenticationToken;
 import com.nebo.applications.tokens.BasicAuthenticationToken;
+import com.nebo.applications.utils.NeboSecurityUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class AppClientAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var apikey = request.getHeader("X-Nebo-Api-Key");
         var apiSecret = request.getHeader("X-Nebo-Secret-Key");
-        if (apikey == null || apiSecret == null) {
+        if (apikey == null || apiSecret == null || NeboSecurityUtils.isAuthenticated()) {
             filterChain.doFilter(request, response);
             return;
         }

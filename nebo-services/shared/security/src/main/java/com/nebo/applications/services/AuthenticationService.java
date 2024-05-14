@@ -47,8 +47,7 @@ public class AuthenticationService {
     }
 
     public UserCredentialResponse getUserCredential(String token) {
-        var claims = Jwts.parser()
-                .decryptWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
+        var claims = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .build()
                 .parseSignedClaims(token).getPayload();
         var userId = claims.get("id", Long.class);

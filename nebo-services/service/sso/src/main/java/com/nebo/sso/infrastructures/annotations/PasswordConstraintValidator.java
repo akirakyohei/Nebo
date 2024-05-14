@@ -19,6 +19,8 @@ public class PasswordConstraintValidator implements ConstraintValidator<Password
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+       if(value==null)
+           return true;
         var result = validator.validate(new PasswordData(value));
         if (result.isValid()) {
             return true;

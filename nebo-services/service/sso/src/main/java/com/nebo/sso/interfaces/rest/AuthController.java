@@ -16,11 +16,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.util.IOTools;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -33,6 +37,7 @@ public class AuthController {
     private final NeboJwtConfigureProperties jwtConfigureProperties;
 
     @PostMapping("/signup")
+    @Validated
     public JwtResponse signup(@RequestBody @Valid UserCreateRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ConstraintViolationException {
         var ipAddress = httpServletRequest.getRemoteAddr();
         var userAgent = httpServletRequest.getHeader("User-Agent");

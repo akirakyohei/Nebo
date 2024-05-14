@@ -17,18 +17,18 @@ spring:
   jpa:
     open-in-view: false
     show-sql: false
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
     properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MariaDB103Dialect
+#      hibernate:
+#        dialect: org.hibernate.dialect.MariaDBDialect
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         id:
           new_generator_mappings: false
-        type.preferred_instant_jdbc_type:
+        type.preferred_instant_jdbc_type: TIMESTAMP
     hibernate:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
   kafka:
     bootstrap: localhost:9092
     topic:
@@ -42,6 +42,12 @@ spring:
     port: 6379
   grpc:
     url: http://localhost:9090
-
 nebo:
   default-user-id: 1
+  app:
+    jwt:
+      header_token: X-Nebo-Access-Token
+      header_refresh_token: X-Nebo-Refresh-Token
+      secret_key: 5jhbfdjhbvdhjvdfous9586jgfn9854ongjk4354589t5bsddsuj4jbsj43jf3jsj4jnbjsk4tp4k08897h6fgo5
+      expiration: 60000
+      refresh_expiration: 86400000

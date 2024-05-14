@@ -52,4 +52,10 @@ public class NeboSecurityUtils {
         }
         return null;
     }
+
+    public static boolean isAuthenticated() {
+        return SecurityContextHolder.getContext() != null &&
+                SecurityContextHolder.getContext().getAuthentication() != null &&
+                SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    }
 }

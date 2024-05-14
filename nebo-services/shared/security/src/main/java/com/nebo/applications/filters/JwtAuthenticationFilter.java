@@ -2,6 +2,7 @@ package com.nebo.applications.filters;
 
 import com.nebo.applications.tokens.JwtAuthenticationToken;
 import com.nebo.applications.utils.CookieUtils;
+import com.nebo.applications.utils.NeboSecurityUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = CookieUtils.getCookieByName(request, "X-Nebo-Access-Token");
         }
 
-        if (token == null) {
+        if (token == null || NeboSecurityUtils.isAuthenticated()) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Setter
 @Getter
@@ -30,6 +31,7 @@ public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 14783475456456L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
@@ -68,7 +70,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     public static String getFullName(String firstName, String lastName) {
-        return List.of(firstName, lastName).stream()
+        return Stream.of(firstName, lastName)
                 .filter(Objects::nonNull).collect(Collectors.joining(" "));
     }
 }

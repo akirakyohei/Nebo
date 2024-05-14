@@ -7,4 +7,10 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 @FunctionalInterface
 public interface NeboSecurityCustomizer {
     void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authz);
+
+    default void getConfigure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authz) {
+        authz.requestMatchers("/error").permitAll();
+        configure(authz);
+    }
+
 }

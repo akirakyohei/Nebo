@@ -2,6 +2,7 @@ package com.nebo.sso.applications.model;
 
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.nebo.annotations.PhoneNumber;
 import com.nebo.sso.infrastructures.annotations.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -24,8 +25,10 @@ public class UserCreateRequest {
     private String email;
 
     @Password
+    @NotBlank
     private String password;
 
+    @PhoneNumber
     private String phoneNumber;
 
 }

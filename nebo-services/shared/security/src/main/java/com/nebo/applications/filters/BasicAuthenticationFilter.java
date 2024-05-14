@@ -1,6 +1,7 @@
 package com.nebo.applications.filters;
 
 import com.nebo.applications.tokens.BasicAuthenticationToken;
+import com.nebo.applications.utils.NeboSecurityUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
         var appIdStr = request.getHeader("X-App-Id");
         var userId = NumberUtils.isCreatable(userIdStr) ? NumberUtils.createLong(userIdStr) : null;
         var appId = NumberUtils.isCreatable(appIdStr) ? NumberUtils.createLong(appIdStr) : null;
-        if (token == null) {
+        if (token == null || NeboSecurityUtils.isAuthenticated()) {
             filterChain.doFilter(request, response);
             return;
         }

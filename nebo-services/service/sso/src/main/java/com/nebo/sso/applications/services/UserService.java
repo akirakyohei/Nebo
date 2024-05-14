@@ -78,9 +78,10 @@ public class UserService {
     }
 
     private void validateCreateRequest(UserCreateRequest request) throws ConstraintViolationException {
-        if (request.getPhoneNumber() == null || request.getEmail() == null)
+        if (request.getPhoneNumber() == null && request.getEmail() == null)
             throw new ConstraintViolationException("user", "Required email or phone number");
-        request.setPhoneNumber(PhoneNumberUtil.normalizeDigitsOnly(request.getPhoneNumber()));
+        if (request.getPhoneNumber() != null)
+            request.setPhoneNumber(PhoneNumberUtil.normalizeDigitsOnly(request.getPhoneNumber()));
         request.setFirstName(request.getFirstName().trim());
         if (request.getLastName() != null)
             request.setLastName(request.getLastName().trim());
@@ -88,7 +89,7 @@ public class UserService {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
         }
         if (request.getEmail() != null) {
-            if (userRepository.findFirstByEmail(request.getEmail()).isEmpty())
+            if (userRepository.findFirstByEmail(request.getEmail()).isPresent())
                 throw new ConstraintViolationException("user", "Email already existed");
         }
         if (request.getPhoneNumber() != null) {
@@ -98,25 +99,22 @@ public class UserService {
     }
 
     private User validateLoginRequest(UserLoginRequest request) throws ConstraintViolationException, AuthenticationException {
-        if (request.getPhoneNumber() == null || request.getEmail() == null)
+        if (request.getPhoneNumber() == null && request.getEmail() == null)
             throw new ConstraintViolationException("user", "Required email or phone number");
         if (request.getPhoneNumber() != null) {
             request.setPhoneNumber(PhoneNumberUtil.normalizeDigitsOnly(request.getPhoneNumber()));
         }
-        if (request.getPassword() != null) {
-            request.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
         if (request.getEmail() != null) {
-            var user = userRepository.findFirstByEmailAndPassword(request.getEmail(), request.getPassword())
+            var user = userRepository.findFirstByEmail(request.getEmail())
                     .orElse(null);
-            if (user == null)
+            if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword()))
                 throw new AuthenticationException("Email or password incorrect");
             return user;
         }
         if (request.getPhoneNumber() != null) {
-            var user = userRepository.findFirstByPhoneNumberAndPassword(request.getPhoneNumber(), request.getPassword())
+            var user = userRepository.findFirstByPhoneNumber(request.getPhoneNumber())
                     .orElse(null);
-            if (user == null)
+            if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword()))
                 throw new AuthenticationException("Phone number or password incorrect");
             return user;
         }

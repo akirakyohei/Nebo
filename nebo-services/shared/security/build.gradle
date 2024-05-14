@@ -3,10 +3,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework:spring-webmvc:6.1.4'
-    implementation 'org.springframework.security:spring-security-core:6.2.3'
-    implementation 'org.springframework.security:spring-security-web:6.2.3'
-    implementation 'org.springframework.security:spring-security-config:6.2.3'
+//    implementation 'org.springframework:spring-webmvc:6.1.4'
+    api 'org.springframework.security:spring-security-core:6.2.3'
+    api 'org.springframework.security:spring-security-web:6.2.3'
+    api 'org.springframework.security:spring-security-config:6.2.3'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
     implementation 'javax.validation:validation-api:2.0.1.Final'
@@ -14,7 +14,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.4'
     implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
-    implementation project(':shared:grpc')
+    api project(':shared:grpc')
 
     testImplementation 'junit:junit:4.11'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'

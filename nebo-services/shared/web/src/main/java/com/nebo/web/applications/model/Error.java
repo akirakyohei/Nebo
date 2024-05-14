@@ -1,5 +1,6 @@
 package com.nebo.web.applications.model;
 
+import com.nebo.web.applications.utils.JsonUtils;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,5 +28,10 @@ public class Error {
         private String message;
         private List<String> fields;
         private String code;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtils.unmarshall(this);
     }
 }

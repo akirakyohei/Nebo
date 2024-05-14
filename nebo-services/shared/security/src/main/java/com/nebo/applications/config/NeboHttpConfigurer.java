@@ -6,6 +6,7 @@ import com.nebo.applications.filters.JwtAuthenticationFilter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class NeboHttpConfigurer extends AbstractHttpConfigurer<NeboHttpConfigurer, HttpSecurity> {
@@ -26,5 +27,6 @@ public class NeboHttpConfigurer extends AbstractHttpConfigurer<NeboHttpConfigure
         http.addFilterBefore(basicAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(appClientFilter, BasicAuthenticationFilter.class);
         http.addFilterBefore(jwtFilter, AppClientAuthenticationFilter.class);
+        http.sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     }
 }

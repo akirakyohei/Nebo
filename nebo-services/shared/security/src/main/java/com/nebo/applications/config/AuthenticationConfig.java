@@ -9,6 +9,7 @@ import com.nebo.applications.providers.BasicAuthenticationProvider;
 import com.nebo.applications.providers.JwtAuthenticationProvider;
 import com.nebo.applications.services.AuthenticationService;
 import com.nebo.grpc.NeboGrpc;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AuthenticationConfig {
 
     private final AuthenticationService authenticationService;
-    
+
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -63,7 +64,7 @@ public class AuthenticationConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, NeboSecurityCustomizer neboSecurityCustomizer) throws Exception {
         http.with(new NeboHttpConfigurer(), cus -> {
-        }).authorizeHttpRequests(neboSecurityCustomizer::configure);
+        }).authorizeHttpRequests(neboSecurityCustomizer::getConfigure);
         return http.build();
     }
 }

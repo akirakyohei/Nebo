@@ -24,5 +24,6 @@ public class AuthenticationGrpcController extends AuthenticationServiceGrpc.Auth
     public void isBlackListToken(AuthenticationRequest request, StreamObserver<BlackListResultResponse> responseObserver) {
         var result = blackListService.isBlackList(request.getUserId(), request.getToken());
         responseObserver.onNext(BlackListResultResponse.newBuilder().setBlock(result).build());
+        responseObserver.onCompleted();
     }
 }

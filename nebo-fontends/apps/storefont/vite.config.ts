@@ -16,7 +16,20 @@ export default defineConfig({
   },
   optimizeDeps: {
     // optimize for monorepo linked package see: https://v3.vitejs.dev/config/dep-optimization-options.html#optimizedeps-include
-    include: ["@repo/web-builder"],
+    include: [
+      "@repo/web-builder",
+      // "@emotion/react",
+      // "@mui/material",
+      // "react-redux",
+      // "@mui/icons-material",
+      // "react-hook-form",
+      // "validator/lib/isEmpty",
+      // "@reduxjs/toolkit/query/react",
+      // "axios",
+      // "@reduxjs/toolkit",
+      // "@reduxjs/toolkit/query",
+      // "notistack",
+    ],
     exclude: ["@mui/material/style"],
     esbuildOptions: {
       //ignore legalComments: This comment make CKEditor broken
