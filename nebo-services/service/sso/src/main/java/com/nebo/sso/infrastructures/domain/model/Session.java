@@ -38,8 +38,9 @@ public class Session {
     @CreationTimestamp
     private Instant createdOn;
 
-    public Session(User user, String refreshToken, String ipAddress, String userAgent, Instant expiredDate) {
+    public Session(User user, String refreshToken,String token, String ipAddress, String userAgent, Instant expiredDate) {
         this.user = user;
+        this.token= token;
         this.refreshToken = refreshToken;
         this.ipAddress = ipAddress;
         this.userAgent = userAgent;

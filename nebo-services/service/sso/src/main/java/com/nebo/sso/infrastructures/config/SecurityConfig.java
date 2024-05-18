@@ -13,11 +13,12 @@ public class SecurityConfig {
     @Bean
     public NeboSecurityCustomizer defaultNeboSecurityConfig() {
         var authPatternApi = getAuthPatternApi();
+        var userPatternApi = getUserPatternApi();
         return authz -> authz
                 .requestMatchers(authPatternApi).permitAll()
-                .requestMatchers(NeboRequestMatcher.matcher(TokenType.cookie_token, "/*")).authenticated()
-                .requestMatchers(NeboRequestMatcher.matcher(TokenType.basic_auth, "/*")).authenticated()
-                .requestMatchers(NeboRequestMatcher.matcher(TokenType.app_client, "/*")).authenticated()
+                .requestMatchers(NeboRequestMatcher.matcher(TokenType.cookie_token,userPatternApi)).authenticated()
+                .requestMatchers(NeboRequestMatcher.matcher(TokenType.basic_auth, userPatternApi)).authenticated()
+                .requestMatchers(NeboRequestMatcher.matcher(TokenType.app_client, userPatternApi)).authenticated()
                 .anyRequest().denyAll();
     }
 
@@ -26,6 +27,12 @@ public class SecurityConfig {
                 "/api/auth/signup",
                 "/api/auth/signin",
                 "/api/auth/refresh_token"
+        };
+    }
+
+    private String[] getUserPatternApi() {
+        return new String[]{
+                "/api/users/**"
         };
     }
 }

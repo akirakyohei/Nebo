@@ -55,9 +55,9 @@ public class AuthenticationConfig {
     @Bean
     @ConditionalOnMissingBean(NeboSecurityCustomizer.class)
     public NeboSecurityCustomizer defaultNeboSecurityConfig() {
-        return authz -> authz.requestMatchers(NeboRequestMatcher.matcher(TokenType.cookie_token, "/*")).authenticated()
-                .requestMatchers(NeboRequestMatcher.matcher(TokenType.basic_auth, "/*")).authenticated()
-                .requestMatchers(NeboRequestMatcher.matcher(TokenType.app_client, "/*")).authenticated()
+        return authz -> authz.requestMatchers(NeboRequestMatcher.matcher(TokenType.cookie_token,"/**")).authenticated()
+                .requestMatchers(NeboRequestMatcher.matcher(TokenType.basic_auth,"/**")).authenticated()
+                .requestMatchers(NeboRequestMatcher.matcher(TokenType.app_client,"/**")).authenticated()
                 .anyRequest().denyAll();
     }
 

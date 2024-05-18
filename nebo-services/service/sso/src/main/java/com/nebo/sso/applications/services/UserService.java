@@ -68,8 +68,10 @@ public class UserService {
     }
 
 
-    public JwtResponse authenticate(UserLoginRequest request, String ipAddress, String userAgent) throws AuthenticationException, ConstraintViolationException {
+    public JwtResponse authenticate(Long userId,UserLoginRequest request, String ipAddress, String userAgent) throws AuthenticationException, ConstraintViolationException {
         var user = validateLoginRequest(request);
+        if(userId==user.getId())
+            throw  new ConstraintViolationException("authenticated","Authenticated");
         return authenticateProvider.generateJwtToken(user, ipAddress, userAgent);
     }
 
@@ -93,7 +95,7 @@ public class UserService {
                 throw new ConstraintViolationException("user", "Email already existed");
         }
         if (request.getPhoneNumber() != null) {
-            if (userRepository.findFirstByPhoneNumber(request.getPhoneNumber()).isEmpty())
+            if (userRepository.findFirstByPhoneNumber(request.getPhoneNumber()).isPresent())
                 throw new ConstraintViolationException("user", "Phone number already existed");
         }
     }

@@ -42,17 +42,19 @@ public class AuthController {
         var ipAddress = httpServletRequest.getRemoteAddr();
         var userAgent = httpServletRequest.getHeader("User-Agent");
         var res = userService.signup(request, ipAddress, userAgent);
-        CookieUtils.addCookie(
-                jwtConfigureProperties.getHeaderToken(), res.getToken(), "/*", httpServletRequest, httpServletResponse);
+        CookieUtils.addCookie(jwtConfigureProperties.getHeaderToken(), res.getToken(), "/", httpServletRequest, httpServletResponse);
+        CookieUtils.addCookie(jwtConfigureProperties.getHeaderRefreshToken(), res.getRefreshToken(), "/", httpServletRequest, httpServletResponse);
+
         return res;
     }
 
     @PostMapping("/signin")
-    public JwtResponse signin(@RequestBody @Valid UserLoginRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ConstraintViolationException, AuthenticationException {
+    public JwtResponse signin(@UserId Long userId, @RequestBody @Valid UserLoginRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ConstraintViolationException, AuthenticationException {
         var ipAddress = httpServletRequest.getRemoteAddr();
         var userAgent = httpServletRequest.getHeader("User-Agent");
-        var res = userService.authenticate(request, ipAddress, userAgent);
-        CookieUtils.addCookie(jwtConfigureProperties.getHeaderToken(), res.getToken(), "/*", httpServletRequest, httpServletResponse);
+        var res = userService.authenticate(userId,request, ipAddress, userAgent);
+        CookieUtils.addCookie(jwtConfigureProperties.getHeaderToken(), res.getToken(), "/", httpServletRequest, httpServletResponse);
+        CookieUtils.addCookie(jwtConfigureProperties.getHeaderRefreshToken(), res.getRefreshToken(), "/", httpServletRequest, httpServletResponse);
         return res;
     }
 

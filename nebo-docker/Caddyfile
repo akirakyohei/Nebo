@@ -1,0 +1,6 @@
+nebo.com
+tls internal
+reverse_proxy localhost:5173
+route /api/* {
+	reverse_proxy localhost:8000
+}

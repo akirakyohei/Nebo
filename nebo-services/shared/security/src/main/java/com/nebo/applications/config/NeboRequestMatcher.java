@@ -4,7 +4,7 @@ import com.nebo.applications.constant.TokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatchers;
 import org.springframework.util.Assert;
@@ -34,9 +34,20 @@ public class NeboRequestMatcher implements RequestMatcher {
     public static NeboRequestMatcher matcher(TokenType tokenType, HttpMethod method) {
         Assert.notNull(tokenType, "Token type cannot be null");
         Assert.notNull(method, "method cannot be null");
-        return new NeboRequestMatcher(tokenType, method, ".*");
+        return new NeboRequestMatcher(tokenType, method, "/**");
     }
 
+
+    public static NeboRequestMatcher matcher(TokenType tokenType, HttpMethod method, String... patterns) {
+        Assert.notNull(method, "method cannot be null");
+        Assert.notEmpty(patterns, "patterns cannot be empty");
+        return new NeboRequestMatcher(tokenType, method, patterns);
+    }
+
+    public static NeboRequestMatcher matcher(TokenType tokenType, String... patterns) {
+        Assert.notEmpty(patterns, "patterns cannot be empty");
+        return new NeboRequestMatcher(tokenType, null, patterns);
+    }
 
     public static NeboRequestMatcher matcher(TokenType tokenType, HttpMethod method, String pattern) {
         Assert.notNull(method, "method cannot be null");
@@ -55,9 +66,9 @@ public class NeboRequestMatcher implements RequestMatcher {
         this.requestMatchers = RequestMatchers.anyOf(Arrays.stream(patterns)
                 .map(pattern -> {
                     if (httpMethod == null) {
-                        return RegexRequestMatcher.regexMatcher(pattern);
+                        return AntPathRequestMatcher.antMatcher(pattern);
                     }
-                    return RegexRequestMatcher.regexMatcher(httpMethod, pattern);
+                    return AntPathRequestMatcher.antMatcher(httpMethod, pattern);
                 })
                 .toArray(RequestMatcher[]::new));
     }

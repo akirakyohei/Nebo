@@ -22,6 +22,10 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(NeboSecurityUtils.isOptionsRequest(request)){
+            NeboSecurityUtils.setResponseForOptionsRequest(response);
+            return;
+        }
         var token = request.getHeader("Authorization");
         var userIdStr = request.getHeader("X-Author-Id");
         var appIdStr = request.getHeader("X-App-Id");
@@ -34,11 +38,11 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
         try {
             var authentication = authenticationManager.authenticate(new BasicAuthenticationToken(token, userId, appId));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);
         } catch (Exception ex) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             // If you want to immediatelly return an error response, you can do it like this:
             response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
+        filterChain.doFilter(request, response);
     }
 }

@@ -22,6 +22,10 @@ public class AppClientAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(NeboSecurityUtils.isOptionsRequest(request)){
+            NeboSecurityUtils.setResponseForOptionsRequest(response);
+            return;
+        }
         var apikey = request.getHeader("X-Nebo-Api-Key");
         var apiSecret = request.getHeader("X-Nebo-Secret-Key");
         if (apikey == null || apiSecret == null || NeboSecurityUtils.isAuthenticated()) {
@@ -37,5 +41,6 @@ public class AppClientAuthenticationFilter extends OncePerRequestFilter {
             // If you want to immediatelly return an error response, you can do it like this:
             response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
+        filterChain.doFilter(request, response);
     }
 }

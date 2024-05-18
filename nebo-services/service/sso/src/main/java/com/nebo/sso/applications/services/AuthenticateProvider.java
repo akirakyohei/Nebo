@@ -36,7 +36,7 @@ public class AuthenticateProvider {
     public JwtResponse generateJwtToken(User user, String ipAddress, String userAgent) {
         var userDetail = new UserDetailsImpl(user);
         var token = generateJwtToken(userDetail);
-        var refreshToken = refreshTokenService.createRefreshToken(userDetail.getId(), ipAddress, userAgent);
+        var refreshToken = refreshTokenService.createRefreshToken(userDetail.getId(), ipAddress, userAgent,token);
         return JwtResponse.builder()
                 .id(user.getId())
                 .permissions(user.getPermissions())
@@ -48,6 +48,7 @@ public class AuthenticateProvider {
     public JwtResponse refreshJwtToken(User user, String refreshToken) {
         var userDetail = new UserDetailsImpl(user);
         var token = generateJwtToken(userDetail);
+        refreshTokenService.updateRefreshToken(user.getId(),refreshToken,token);
         return JwtResponse.builder()
                 .id(user.getId())
                 .permissions(user.getPermissions())

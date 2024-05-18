@@ -17,6 +17,7 @@ public class Error {
     public final static String NOT_FOUND = "not_found";
     public final static String UNAUTHORIZED = "unauthorized";
     public final static String FORBIDDEN = "forbidden";
+    public final static String ACCESS_DENIED = "access_denied";
 
     private Map<String, String> error;
     private List<ErrorMessage> errors;

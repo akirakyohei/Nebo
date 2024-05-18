@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                             .build();
                 })
                 .toList();
-        return ResponseEntity.ofNullable(Error.builder()
+
+        return ResponseEntity.unprocessableEntity()
+                .body(Error.builder()
                 .errors(errors)
                 .build());
     }
@@ -56,6 +59,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodValidationException(MethodValidationException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return super.handleMethodValidationException(ex, headers, status, request);
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Error handleAccessionDe(AccessDeniedException exception) {
+        return Error.builder()
+                .error(Map.of(Error.ACCESS_DENIED, StringUtils.defaultIfBlank(exception.getMessage(), "Access denied")))
+                .build();
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -92,7 +104,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             return ResponseEntity.ofNullable(Error.builder()
                     .error(Map.of(Error.INVALID, exception.getMessage()))
                     .build());
-        return ResponseEntity.ofNullable(exception.getError());
+        return ResponseEntity.unprocessableEntity().body(exception.getError());
     }
 
     @ExceptionHandler(AuthenticationException.class)

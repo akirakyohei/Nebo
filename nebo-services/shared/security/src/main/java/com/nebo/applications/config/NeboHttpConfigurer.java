@@ -1,13 +1,23 @@
 package com.nebo.applications.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.nebo.applications.filters.AppClientAuthenticationFilter;
 import com.nebo.applications.filters.BasicAuthenticationFilter;
 import com.nebo.applications.filters.JwtAuthenticationFilter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class NeboHttpConfigurer extends AbstractHttpConfigurer<NeboHttpConfigurer, HttpSecurity> {
 
@@ -27,6 +37,15 @@ public class NeboHttpConfigurer extends AbstractHttpConfigurer<NeboHttpConfigure
         http.addFilterBefore(basicAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(appClientFilter, BasicAuthenticationFilter.class);
         http.addFilterBefore(jwtFilter, AppClientAuthenticationFilter.class);
-        http.sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.exceptionHandling(customizer -> customizer.accessDeniedHandler(new AccessDeniedHandler() {
+            @Override
+            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+                var objectMapper = new ObjectMapper();
+                objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write(objectMapper.writeValueAsString(Map.of("error", Map.of("access_denied", accessDeniedException.getMessage()))));
+            }
+        }));
     }
 }
