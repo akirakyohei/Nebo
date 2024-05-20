@@ -10,16 +10,16 @@ import { Box } from "@mui/material";
 const cookies = new Cookies();
 export const Layout = () => {
   const [isFirstLoading, setIsFirstLoading] = useState(false);
+  const {} = useRefreshTokenQuery(undefined, {
+    skip: !cookies.get(TOKEN_HEADER),
+    pollingInterval: 180000,
+  });
   const { data: user, isLoading: isLoadingUser } = useGetCurrentUserQuery(
     undefined,
     {
       skip: !cookies.get(TOKEN_HEADER),
     }
   );
-  const {} = useRefreshTokenQuery(undefined, {
-    skip: !cookies.get(TOKEN_HEADER),
-    pollingInterval: 180000,
-  });
   useEffect(() => {
     if (isLoadingUser && !isFirstLoading) {
       setIsFirstLoading(true);

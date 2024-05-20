@@ -20,13 +20,20 @@ const EXCLUDE_URLS = [
   "/api/auth/signup",
   "/api/auth/refresh_token",
 ];
-axios.interceptors.response.use(async (res) => {
-  if (res.config.url && EXCLUDE_URLS.includes(res.config.url)) {
-    if (res.status === 200) cookies.set(TOKEN_HEADER, true, { path: "/" });
-    if (res.status === 403) cookies.set(TOKEN_HEADER, false, { path: "/" });
+axios.interceptors.response.use(
+  async (res) => {
+    if (res.config.url && EXCLUDE_URLS.includes(res.config.url)) {
+      if (res.status === 200) cookies.set(TOKEN_HEADER, true, { path: "/" });
+    }
+    return res;
+  },
+  (error) => {
+    if (error.config.url && EXCLUDE_URLS.includes(error.config.url)) {
+      if (error.response.status === 403)
+        cookies.set(TOKEN_HEADER, false, { path: "/" });
+    }
   }
-  return res;
-});
+);
 
 axiosRetry(axios, {
   retries: 2,

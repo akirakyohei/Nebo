@@ -34,6 +34,6 @@
     "react-joyride@^2.7.0": "patch:react-joyride@npm%3A2.7.0#./.yarn/patches/react-joyride-npm-2.7.0-90c817673e.patch"
   },
   "dependencies": {
-    "typescript": "^5.4.3"
+    "typescript": "^5.2.2"
   }
 }

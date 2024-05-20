@@ -11,12 +11,22 @@
       <change beforePath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/buckets/.usage.json/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/buckets/.usage.json/xl.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/buckets/nebo-template/.usage-cache.bin.bkp/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/buckets/nebo-template/.usage-cache.bin.bkp/xl.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/buckets/nebo-template/.usage-cache.bin/xl.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/buckets/nebo-template/.usage-cache.bin/xl.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/tmp/e14c4590-2fbd-4b61-92e3-e47f92fc6fb8" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-docker/storage/.minio.sys/tmp/23a7eba4-90f7-49be-ad08-dcb1114ca3d8" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/.eslintrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/.yarn/install-state.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/.yarn/install-state.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/admin/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/storefont/app/root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/storefont/app/root.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/storefont/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/storefont/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/.eslintrc.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/.eslintrc.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/data/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/data/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/layout/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/layout/Layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/EditorManagePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/EditorManagePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/WebBuilder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/WebBuilder.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/rollup.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/rollup.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/executionHistory/executionHistory.lock" afterDir="false" />
@@ -25,129 +35,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/.gradle/8.6/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/.gradle/8.6/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/configserver/build/resources/main/cloud-config/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/service/configserver/build/resources/main/cloud-config/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/configserver/src/main/resources/cloud-config/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/service/configserver/src/main/resources/cloud-config/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/SsoApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/ImageRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/JwtResponse$JwtResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/JwtResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/RefreshTokenResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/TokenRefreshRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserCreateRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserCredentialResponse$UserCredentialResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserCredentialResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserDetailsImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserFilterRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserLoginRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UserUpdateRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/model/UsersResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/AuthenticateProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/BlackListService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/RefreshTokenService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/UserMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/UserMapperImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/annotations/Password.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/annotations/PasswordConstraintValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/config/BeanConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/config/GrpcConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/config/RedisConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/converter/ListStringConverter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/App.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/App_.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/Session.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/Session_.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/User$AuthProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/model/User_.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/repository/JpaAppRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/repository/JpaSessionRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/repository/JpaUserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/domain/specifiation/UserSpecification.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/infrastructures/util/CookieUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/interfaces/grpc/AuthenticationGrpcController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/interfaces/rest/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/interfaces/rest/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/job/scheduler/CleanFreshTokenConsumer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/generated/sources/annotationProcessor/java/main/com/nebo/sso/applications/services/UserMapperImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/generated/sources/annotationProcessor/java/main/com/nebo/sso/infrastructures/domain/model/App_.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/generated/sources/annotationProcessor/java/main/com/nebo/sso/infrastructures/domain/model/Session_.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/generated/sources/annotationProcessor/java/main/com/nebo/sso/infrastructures/domain/model/User_.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/resources/main/application.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/AuthenticateProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/AuthenticateProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/RefreshTokenService.class" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/build/classes/java/main/com/nebo/sso/applications/services/RefreshTokenService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/sso/build/tmp/compileJava/compileTransaction/stash-dir/AuthController.class.uniqueId1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/sso/build/tmp/compileJava/compileTransaction/stash-dir/SsoApplication.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/sso/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/RefreshTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/RefreshTokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/infrastructures/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/infrastructures/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/infrastructures/domain/model/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/infrastructures/domain/model/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/infrastructures/domain/repository/JpaSessionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/infrastructures/domain/repository/JpaSessionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/interfaces/rest/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/interfaces/rest/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/autoconfigure/build/classes/java/main/com/nebo/autoconfigure/Jackson2HttpMessageConverterAutoConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared/autoconfigure/build/classes/java/main/com/nebo/autoconfigure/Jackson2HttpMessageConverterAutoConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/autoconfigure/build/libs/autoconfigure.jar" beforeDir="false" afterPath="$PROJECT_DIR$/shared/autoconfigure/build/libs/autoconfigure.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/autoconfigure/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/shared/autoconfigure/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/autoconfigure/src/main/java/com/nebo/autoconfigure/Jackson2HttpMessageConverterAutoConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/autoconfigure/src/main/java/com/nebo/autoconfigure/Jackson2HttpMessageConverterAutoConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/common/build/classes/java/main/com/nebo/utils/JsonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared/common/build/classes/java/main/com/nebo/utils/JsonUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/common/build/libs/common.jar" beforeDir="false" afterPath="$PROJECT_DIR$/shared/common/build/libs/common.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/common/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/shared/common/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/common/src/main/java/com/nebo/utils/JsonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/common/src/main/java/com/nebo/utils/JsonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/config/AuthenticationConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/config/NeboHttpConfigurer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/config/NeboJwtConfigureProperties.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/config/NeboRequestMatcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/config/NeboSecurityCustomizer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/config/TokenTypeRequestMatcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/constant/TokenType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/filters/AppClientAuthenticationFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/filters/BasicAuthenticationFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/filters/JwtAuthenticationFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/AppClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/AppClientDetail.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/BasicAuthDetail.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/User$AuthProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/UserCredentialResponse$UserCredentialResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/UserCredentialResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/model/UserDetail.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/providers/AppClientAuthenticationProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/providers/BasicAuthenticationProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/providers/JwtAuthenticationProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/services/AuthenticationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/tokens/AppClientAuthenticationToken.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/tokens/BasicAuthenticationToken.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/tokens/JwtAuthenticationToken.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/tokens/NeboAuthenticationToken.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/utils/CookieUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/classes/java/main/com/nebo/applications/utils/NeboSecurityUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/libs/security.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/compileTransaction/stash-dir/AppClientAuthenticationFilter.class.uniqueId1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationConfig.class.uniqueId3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/compileTransaction/stash-dir/BasicAuthenticationFilter.class.uniqueId0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/compileTransaction/stash-dir/JwtAuthenticationFilter.class.uniqueId5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/compileTransaction/stash-dir/NeboHttpConfigurer.class.uniqueId2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/compileTransaction/stash-dir/NeboSecurityUtils.class.uniqueId4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/build/tmp/jar/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/config/AuthenticationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/config/AuthenticationConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/config/NeboHttpConfigurer.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/config/NeboHttpConfigurer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/config/NeboRequestMatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/config/NeboRequestMatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/filters/AppClientAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/filters/AppClientAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/filters/BasicAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/filters/BasicAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/filters/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/filters/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/utils/NeboSecurityUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/security/src/main/java/com/nebo/applications/utils/NeboSecurityUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/handleException/RestExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/handleException/RestExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/model/Error$ErrorMessage$ErrorMessageBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/model/Error$ErrorMessage$ErrorMessageBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/model/Error$ErrorMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/model/Error$ErrorMessage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/model/Error.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/build/classes/java/main/com/nebo/web/applications/model/Error.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/build/libs/web.jar" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/build/libs/web.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/src/main/java/com/nebo/web/applications/handleException/RestExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/src/main/java/com/nebo/web/applications/handleException/RestExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/web/src/main/java/com/nebo/web/applications/model/Error.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/web/src/main/java/com/nebo/web/applications/model/Error.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -392,7 +291,9 @@
       <workItem from="1715660197018" duration="33387000" />
       <workItem from="1715779614349" duration="10984000" />
       <workItem from="1715912813858" duration="19876000" />
-      <workItem from="1715994093864" duration="5958000" />
+      <workItem from="1715994093864" duration="6613000" />
+      <workItem from="1716077892845" duration="2156000" />
+      <workItem from="1716195700000" duration="166000" />
     </task>
     <servers />
   </component>
@@ -434,6 +335,11 @@
           <url>file://$PROJECT_DIR$/shared/web/src/main/java/com/nebo/web/applications/handleException/RestExceptionHandler.java</url>
           <line>55</line>
           <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/service/sso/src/main/java/com/nebo/sso/applications/services/RefreshTokenService.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="70" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

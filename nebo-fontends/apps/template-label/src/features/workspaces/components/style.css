@@ -1,10 +1,11 @@
-@import "grapesjs/dist/css/grapes.min.css";
+/* @import "grapesjs/dist/css/grapes.min.css";
 @import "grapesjs-rulers/dist/grapesjs-rulers.min.css";
 @import "grapesjs-rte-extensions/dist/grapesjs-rte-extensions.min.css";
 @import "grapesjs-template-manager/dist/grapesjs-template-manager.min.css";
-@import"grapick/dist/grapick.min.css";
+@import"grapick/dist/grapick.min.css"; */
+/* @import "@repo/web-builder/dist/style.css"; */
 
-#gjs {
+/* #gjs {
     width: 100vw !important;
     height: 100vh !important;
     position: fixed;
@@ -52,4 +53,4 @@
     display: flex;
     gap: 4px;
     align-items: center;
-  }
+  } */

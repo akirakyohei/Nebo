@@ -5,14 +5,16 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.tsx"
   },
   "files": [
     "dist/"
   ],
   "dependencies": {
     "@types/jest": "^27.5.2",
+    "@types/jquery": "^3.5.30",
     "@types/node": "^16.18.91",
+    "bootstrap": "^5.3.3",
     "grapesjs": "^0.21.9",
     "grapesjs-blocks-basic": "^1.0.2",
     "grapesjs-blocks-flexbox": "^1.0.1",
@@ -30,28 +32,28 @@
     "grapesjs-template-manager": "^1.0.7",
     "grapesjs-tui-image-editor": "^1.0.2",
     "grapesjs-typed": "^2.0.1",
-    "grapesjs-zoom-plugin": "^1.0.5",
+    "jquery": "^3.7.1",
+    "jsbarcode": "^3.11.6",
+    "node-sass": "^9.0.0",
+    "react-bootstrap": "^2.10.2",
     "typescript": "^4.9.5"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^3.0.2",
     "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-inject": "^5.0.5",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/react": "^18.2.73",
-    "@types/react-dom": "^18.2.22",
+    "@types/bootstrap": "^5",
     "@types/rollup-plugin-peer-deps-external": "^2",
     "deepmerge": "^4.3.1",
     "rimraf": "^5.0.5",
     "rollup": "^4.13.0",
-    "rollup-plugin-dts": "^6.1.0",
-    "rollup-plugin-node-externals": "^7.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-styles": "^4.0.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-sass": "^1.12.22",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "build": "rimraf dist && rollup -c"

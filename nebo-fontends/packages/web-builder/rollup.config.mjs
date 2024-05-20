@@ -5,9 +5,8 @@ import commonjs from "@rollup/plugin-commonjs";
 import postcss from "rollup-plugin-postcss";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import terser from "@rollup/plugin-terser";
-import styles from "rollup-plugin-styles";
 import typescript from "@rollup/plugin-typescript";
-import dts from "rollup-plugin-dts";
+import sass from "rollup-plugin-sass";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
@@ -83,7 +82,7 @@ const config = [
   //   ],
   // },
   {
-    input: "src/index.ts",
+    input: "src/index.tsx",
     plugins: [
       nodeResolve({
         extensions,
@@ -107,11 +106,12 @@ const config = [
         declarationDir: "dist",
       }),
       peerDepsExternal(),
-      postcss({
-        extensions: [".css"],
-        extract: path.resolve("dist/style.css"),
-        sourceMap: true,
-      }),
+      sass(),
+      // postcss({
+      //   extensions: [".css"],
+      //   extract: path.resolve("dist/style.css"),
+      //   sourceMap: true,
+      // }),
       terser(),
       // styles({ mode: "extract", dts: true, modules: true, sourceMap: true }),
     ],

@@ -23,21 +23,21 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByRefreshToken(token).orElse(null);
     }
 
-    public Session createRefreshToken(Long userId, String ipAddress, String userAgent,String token) {
+    public Session createRefreshToken(Long userId, String ipAddress, String userAgent, String token) {
         var user = userRepository.findById(userId).orElse(null);
-        var refreshToken = new Session(user, UUID.randomUUID().toString(),token, ipAddress, userAgent, Instant.now().plusMillis(jwtProperties.getRefreshExpiration()));
+        var refreshToken = new Session(user, UUID.randomUUID().toString(), token, ipAddress, userAgent, Instant.now().plusMillis(jwtProperties.getRefreshExpiration()));
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }
 
     @Transactional
-    public void updateRefreshToken(Long userId,String refreshToken,String token){
-        refreshTokenRepository.updateRefreshToken(userId,refreshToken,token);
+    public void updateRefreshToken(Long userId, String refreshToken, String token) {
+        refreshTokenRepository.updateRefreshToken(userId, refreshToken, token);
     }
 
     public Session verifyExpiration(String token) throws ExpiredTokenRefreshException {
         var refreshToken = findByToken(token);
-        if (token == null)
+        if (token == null || refreshToken == null)
             throw new ExpiredTokenRefreshException();
         return verifyExpiration(refreshToken);
     }

@@ -1,26 +1,19 @@
-import "./style.css";
+import "./style.scss";
 import blockBasicPlugin from "grapesjs-blocks-basic";
-import zoomPlugin from "grapesjs-zoom-plugin";
-import blockFlexPlugin from "grapesjs-blocks-flexbox";
-import typedPlugin from "grapesjs-typed";
-import customCodePlugin from "grapesjs-custom-code";
+// import blockFlexPlugin from "grapesjs-blocks-flexbox";
+// import typedPlugin from "grapesjs-typed";
+// import customCodePlugin from "grapesjs-custom-code";
 import styleGradientPlugin from "grapesjs-style-gradient";
 import imageEditorPlugin from "grapesjs-tui-image-editor";
 import rulersPlugin from "grapesjs-rulers";
-import templateManagerPlugin from "grapesjs-template-manager";
 import ckePlugin from "grapesjs-plugin-ckeditor";
 import styleBgPlugin from "grapesjs-style-bg";
 import borderPlugin from "grapesjs-style-border";
 import iconPlugin from "grapesjs-icons";
-import grapesjs, {
-  Editor as EditorEx,
-  EditorConfig,
-  usePlugin,
-} from "grapesjs";
-
-export type WebEditorConfig = EditorConfig & {
-  title: string;
-};
+import grapesjs, { EditorConfig, usePlugin } from "grapesjs";
+import zoomPlugin from "./plugins/zoom";
+import draggableDocumentPlugin from "./plugins/draggable-document";
+import barcodePlugin from "./plugins/barcode/barcode";
 
 export const ckeConfig = {
   toolbarGroups: [
@@ -85,7 +78,7 @@ export const ckeConfig = {
   ],
 };
 
-export const WebEditor = ({ ...props }: WebEditorConfig | undefined) => {
+export const WebEditor = ({ ...props }: EditorConfig | undefined) => {
   var editor = grapesjs.init({
     container: "#gjs",
     pageManager: {},
@@ -93,16 +86,25 @@ export const WebEditor = ({ ...props }: WebEditorConfig | undefined) => {
     storageManager: {
       type: "indexeddb",
     },
+    panels: {
+      defaults: [{}],
+    },
     ...props,
     plugins: [
       usePlugin(blockBasicPlugin, {
-        blocks: ["column1", "column2", "column3", "text", "image"],
+        category: "Nội dung",
+        blocks: ["text", "image"],
         flexGrid: true,
       }),
+      // usePlugin(blockBasicPlugin, {
+      //   category: "Bố cục",
+      //   blocks: ["column1", "column2", "column3"],
+      //   flexGrid: true,
+      // }),
       // presetWebpagePlugin,
-      blockFlexPlugin,
-      typedPlugin,
-      customCodePlugin,
+      // blockFlexPlugin,
+      // typedPlugin,
+      // customCodePlugin,
       styleGradientPlugin,
       usePlugin(imageEditorPlugin, {
         config: {
@@ -114,8 +116,10 @@ export const WebEditor = ({ ...props }: WebEditorConfig | undefined) => {
       styleBgPlugin,
       borderPlugin,
       rulersPlugin,
-      // templateManagerPlugin,
       usePlugin(iconPlugin, {
+        block: {
+          category: "Nội dung",
+        },
         collections: [
           "ri", // Remix Icon by Remix Design,
           "mdi", // Material Design Icons by Pictogrammers
@@ -123,19 +127,12 @@ export const WebEditor = ({ ...props }: WebEditorConfig | undefined) => {
           "streamline-emojis", // Streamline Emojis by Streamline
         ],
       }),
+      usePlugin(barcodePlugin, { blockBarcode: { category: "Nội dung" } }),
+      usePlugin(zoomPlugin),
+      usePlugin(draggableDocumentPlugin),
       usePlugin(ckePlugin, { options: ckeConfig }),
-      (_editor: any) => zoomPlugin(_editor),
       ...(props?.plugins || []),
     ],
-  });
-
-  editor.Panels.removePanel("devices-c");
-
-  editor.BlockManager.add("my-first-block", {
-    label: "Simple block",
-    content: `<div class="my-block margin-only"
-              style="box-sizing: border-box; height: 100px; margin: 10vh 0 0 0; text-align: center;">
-              This is a simple block 2</div>`,
   });
 
   // Add gradient picker as a single input
@@ -152,44 +149,6 @@ export const WebEditor = ({ ...props }: WebEditorConfig | undefined) => {
     extend: "background-image", // <- extend the built-in type
     name: "Gradient Background",
   });
-
-  const pn = editor.Panels;
-  const panelViews = pn.addPanel({
-    id: "options",
-  });
-  panelViews?.get("buttons")?.add([
-    {
-      attributes: {
-        title: "Toggle Rulers",
-      },
-      context: "toggle-rulers", //prevents rulers from being toggled when another views-panel button is clicked
-      label: `<svg width="18" viewBox="0 0 16 16"><path d="M0 8a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5A.5.5 0 0 1 0 8z"/><path d="M4 3h8a1 1 0 0 1 1 1v2.5h1V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2.5h1V4a1 1 0 0 1 1-1zM3 9.5H2V12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9.5h-1V12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/></svg>`,
-      command: "ruler-visibility",
-      id: "ruler-visibility",
-    },
-  ]);
   editor.on("run:preview", () => editor.stopCommand("ruler-visibility"));
-
-  pn.addButton("options", {
-    id: "open-templates",
-    className: "fa fa-folder-o",
-    attributes: {
-      title: "Open projects and templates",
-    },
-    command: "open-templates", //Open modal
-  });
-  pn.addButton("views", {
-    id: "open-pages",
-    className: "fa fa-file-o",
-    attributes: {
-      title: "Take Screenshot",
-    },
-    command: "open-pages",
-    togglable: false,
-  });
   return editor;
 };
-
-export type Editor = EditorEx;
-export * from "grapesjs";
-export default WebEditor;

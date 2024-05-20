@@ -36,7 +36,7 @@ export const WebBuilder = ({ isCreate, id, template }: Props) => {
   useEffect(() => {
     return () => {
       const editor = WebEditor({
-        title: "moiws",
+        container: "#gjs",
         storageManager: {
           type: "local",
         },
