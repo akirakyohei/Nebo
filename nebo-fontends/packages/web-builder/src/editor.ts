@@ -96,11 +96,11 @@ export const WebEditor = ({ ...props }: EditorConfig | undefined) => {
         blocks: ["text", "image"],
         flexGrid: true,
       }),
-      // usePlugin(blockBasicPlugin, {
-      //   category: "Bố cục",
-      //   blocks: ["column1", "column2", "column3"],
-      //   flexGrid: true,
-      // }),
+      usePlugin(blockBasicPlugin, {
+        category: "Bố cục",
+        blocks: ["column1", "column2", "column3"],
+        flexGrid: true,
+      }),
       // presetWebpagePlugin,
       // blockFlexPlugin,
       // typedPlugin,

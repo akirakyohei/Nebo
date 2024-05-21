@@ -38,7 +38,11 @@ export const ZoomButton = ({
         placement="bottom"
         overlay={<Tooltip id="zoom-out">Thu nhỏ</Tooltip>}
       >
-        <Button variant="outline-secondary" onClick={onZoomOut}>
+        <Button
+          variant="outline-secondary"
+          onClick={onZoomOut}
+          className="nebo-border-btn"
+        >
           <i className="fa fa-minus"></i>
         </Button>
       </OverlayTrigger>
@@ -62,7 +66,11 @@ export const ZoomButton = ({
         placement="bottom"
         overlay={<Tooltip id="zoom-in">Phóng to</Tooltip>}
       >
-        <Button variant="outline-secondary" onClick={onZoomIn}>
+        <Button
+          variant="outline-secondary"
+          onClick={onZoomIn}
+          className="nebo-border-btn"
+        >
           <i className="fa fa-plus"></i>
         </Button>
       </OverlayTrigger>

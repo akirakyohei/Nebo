@@ -19,7 +19,11 @@ import $ from "jquery";
 import { ToolButton, ToolButtonProps } from "./compoents/ToolButton";
 import { ZoomButton } from "./compoents/ZoomButton";
 
-export const WebBuilderContainer = () => {
+interface Props {
+  designingMode?: boolean;
+}
+
+export const WebBuilderContainer = ({ designingMode = true }: Props) => {
   const ref = useRef<Editor | null>(null);
   const [hasUndo, setHasUndo] = useState(false);
   const [hasRedo, setHasRedo] = useState(false);
@@ -28,6 +32,7 @@ export const WebBuilderContainer = () => {
   );
   const [isActiveRuler, setIsActiveRulers] = useState(false);
   const [isActiveOutline, setIsActiveOutline] = useState(false);
+
   useEffect(() => {
     setInterval(() => {
       const _hasUndo = ref.current?.UndoManager.hasUndo() || false;
@@ -37,55 +42,74 @@ export const WebBuilderContainer = () => {
     }, 1000);
   }, []);
   useEffect(() => {
-    // return () => {
-    const editor = WebEditor({
-      container: "#nebo-editor",
-      blockManager: {
-        appendTo: "#nebo-block",
-      },
-      styleManager: {
-        appendTo: "#nebo-style",
-      },
-      layerManager: {
-        appendTo: "#nebo-layer",
-      },
-      traitManager: {
-        appendTo: "#nebo-trait",
-      },
-      selectorManager: {
-        appendTo: "#nebo-selector",
-      },
-      storageManager: {
-        type: "local",
-      },
-      dragMode: "absolute",
-      deviceManager: {
-        devices: [
-          {
-            name: "custom",
-            width: `420mm`,
-            height: `594mm`,
-          },
-        ],
-      },
-    });
+    return () => {
+      const editor = WebEditor({
+        container: "#nebo-editor",
+        blockManager: {
+          appendTo: "#nebo-block",
+        },
+        styleManager: {
+          appendTo: "#nebo-style",
+        },
+        layerManager: {
+          appendTo: "#nebo-layer",
+        },
+        traitManager: {
+          appendTo: "#nebo-trait",
+        },
+        selectorManager: {
+          appendTo: "#nebo-selector",
+        },
+        storageManager: {
+          type: "local",
+        },
+        dragMode: "absolute",
+        deviceManager: {
+          devices: [
+            {
+              name: "custom",
+              width: `420mm`,
+              height: `594mm`,
+            },
+          ],
+        },
+        height: "100%",
+      });
 
-    $(".panel__devices").html("");
-    $(".panel__basic-actions").html("");
-    $(".panel__editor").html("");
-    $("#nebo-block").html("");
-    $("#nebo-style").html("");
-    $("#nebo-layer").html("");
-    $("#nebo-trait").html("");
-    $("#nebo-selector").html("");
+      $(".panel__devices").html("");
+      $(".panel__basic-actions").html("");
+      $(".panel__editor").html("");
+      $("#nebo-block").html("");
+      $("#nebo-style").html("");
+      $("#nebo-layer").html("");
+      $("#nebo-trait").html("");
+      $("#nebo-selector").html("");
 
-    editor.onReady(() => {
-      editor.render();
-      ref.current = editor;
-    });
-    // };
+      editor.onReady(() => {
+        editor.render();
+        ref.current = editor;
+      });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    return () => {
+      handleChangeMode(designingMode);
+    };
+  }, [designingMode]);
+
+  const handleChangeMode = (_value: boolean) => {
+    ref.current?.onReady(() => {
+      if (!_value) {
+        ref.current?.runCommand("core:preview");
+        // ref.current?.runCommand("sw-visibility");
+      } else {
+        ref.current?.stopCommand("core:preview");
+        // ref.current?.stopCommand("sw-visibility");
+      }
+    });
+  };
 
   const btnGropus: ToolButtonProps[] = [
     {
@@ -162,74 +186,82 @@ export const WebBuilderContainer = () => {
   return (
     <div id="nebo-container">
       <Container fluid className="p-0 nebo-layout-container">
-        <Row className="border">
-          <div>Navbar</div>
-        </Row>
-        <div className="nebo-layout-row">
-          <div className="p-0 nebo-layout-col">
-            <Tabs
-              fill
-              defaultValue="block"
-              className="nebo-pn-left-container rounded-0"
-            >
-              <Tab eventKey="block" title="Thêm">
-                <div id="nebo-block"></div>
-              </Tab>
-              <Tab eventKey="style" title="Thuộc tính">
-                <div id="nebo-style"></div>
-              </Tab>
-            </Tabs>
-          </div>
-          <div className="p-0 border border-1 flex-fill">
-            <div id="nebo-options">
-              <ButtonToolbar className="justify-content-between py-1 px-2">
-                <ButtonGroup style={{ gap: "4px" }}>
-                  {btnGropus.map((item, index) => (
-                    <ToolButton key={index} {...item} />
-                  ))}
-                </ButtonGroup>
-                <Stack direction="horizontal" gap={4}>
-                  <ZoomButton
-                    getZoom={() => {
-                      return ref.current?.Canvas.getZoom() || 100;
-                    }}
-                    onZoom={function (value: number): void {
-                      ref.current?.runCommand("zoom", { value: value });
-                    }}
-                    onZoomIn={function (): void {
-                      ref.current?.runCommand("zoom-in");
-                    }}
-                    onZoomOut={function (): void {
-                      ref.current?.runCommand("zoom-out");
-                    }}
-                  />
-                  <ButtonGroup>
-                    <Button>
-                      <i className="fa fa-plus"></i>
-                    </Button>
-                    <Button>
-                      <i className="fa fa-plus"></i>
-                    </Button>
-                  </ButtonGroup>
-                </Stack>
-              </ButtonToolbar>
+        {/* <Row className="border">
+          <NavbarMenu isDesigning={designing} onChangeMode={handleChangeMode} />
+        </Row> */}
+        {designingMode ? (
+          <div className="nebo-layout-row">
+            <div className="p-0 nebo-layout-col">
+              <Tabs
+                fill
+                defaultValue="block"
+                className="nebo-pn-left-container rounded-0"
+              >
+                <Tab eventKey="block" title="Thêm">
+                  <div id="nebo-block"></div>
+                </Tab>
+                <Tab eventKey="style" title="Thuộc tính">
+                  <div id="nebo-style"></div>
+                </Tab>
+              </Tabs>
             </div>
+            <div className="p-0 border border-1 flex-fill">
+              <div id="nebo-options">
+                <ButtonToolbar className="justify-content-between py-1 px-2">
+                  <ButtonGroup style={{ gap: "4px" }}>
+                    {btnGropus.map((item, index) => (
+                      <ToolButton key={index} {...item} />
+                    ))}
+                  </ButtonGroup>
+                  <Stack direction="horizontal" gap={4}>
+                    <ZoomButton
+                      getZoom={() => {
+                        return ref.current?.Canvas.getZoom() || 100;
+                      }}
+                      onZoom={function (value: number): void {
+                        ref.current?.runCommand("zoom", { value: value });
+                      }}
+                      onZoomIn={function (): void {
+                        ref.current?.runCommand("zoom-in");
+                      }}
+                      onZoomOut={function (): void {
+                        ref.current?.runCommand("zoom-out");
+                      }}
+                    />
+                  </Stack>
+                </ButtonToolbar>
+              </div>
+              <div id="nebo-editor"></div>
+            </div>
+            <div className="p-0 nebo-layout-col">
+              <Tabs
+                fill
+                defaultValue="data"
+                className="nebo-pn-right-container"
+              >
+                <Tab eventKey="data" title="Dữ liệu">
+                  <div id="nebo-data"></div>
+                </Tab>
+                <Tab eventKey="layer" title="Cấu trúc">
+                  <div id="nebo-layer"></div>
+                </Tab>
+                <Tab eventKey="trait" title="Đặc điểm">
+                  <div id="nebo-trait"></div>
+                </Tab>
+              </Tabs>
+            </div>
+          </div>
+        ) : (
+          <>
             <div id="nebo-editor"></div>
-          </div>
-          <div className="p-0 nebo-layout-col">
-            <Tabs fill defaultValue="data" className="nebo-pn-right-container">
-              <Tab eventKey="data" title="Dữ liệu">
-                <div id="nebo-data"></div>
-              </Tab>
-              <Tab eventKey="layer" title="Cấu trúc">
-                <div id="nebo-layer"></div>
-              </Tab>
-              <Tab eventKey="trait" title="Đặc điểm">
-                <div id="nebo-trait"></div>
-              </Tab>
-            </Tabs>
-          </div>
-        </div>
+            <div id="nebo-options"></div>
+            <div id="nebo-block"></div>
+            <div id="nebo-style"></div>
+            <div id="nebo-data"></div>
+            <div id="nebo-layer"></div>
+            <div id="nebo-trait"></div>
+          </>
+        )}
       </Container>
       <div id="nebo-selector" className="d-none"></div>
     </div>
