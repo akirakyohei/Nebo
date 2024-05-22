@@ -1,5 +1,5 @@
 import "./style.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import blockBasicPlugin from "grapesjs-blocks-basic";
 // import blockFlexPlugin from "grapesjs-blocks-flexbox";
 // import typedPlugin from "grapesjs-typed";
@@ -16,6 +16,7 @@ import zoomPlugin from "./plugins/zoom";
 import draggableDocumentPlugin from "./plugins/draggable-document";
 import barcodePlugin from "./plugins/barcode/barcode";
 import $ from "jquery";
+import { EditorContext } from "./context/EditorContext";
 
 export const ckeConfig = {
   toolbar: [
@@ -87,6 +88,7 @@ interface Props {
 
 export const useEditor = ({ height, width }: Props) => {
   const [editors, setEditor] = useState<Editor | null>(null);
+  const context = useContext(EditorContext);
   useEffect(() => {
     return () => {
       var editor = grapesjs.init({
@@ -109,9 +111,7 @@ export const useEditor = ({ height, width }: Props) => {
         storageManager: {
           type: "local",
         },
-        dragMode: "absolute",
         fromElement: true,
-        showToolbar: false,
         deviceManager: {
           devices: [
             {
@@ -148,7 +148,7 @@ export const useEditor = ({ height, width }: Props) => {
           }),
           styleBgPlugin,
           borderPlugin,
-          rulersPlugin,
+          usePlugin(rulersPlugin, { rulerHeight: 20, dragMode: "absolute" }),
           usePlugin(iconPlugin, {
             block: {
               category: "Nội dung",
@@ -200,6 +200,7 @@ export const useEditor = ({ height, width }: Props) => {
         editor.render();
       });
       setEditor(editor);
+      context?.setEditor(editor);
     };
   }, []);
 

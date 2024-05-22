@@ -25,12 +25,12 @@ export const ZoomButton = ({
 }: Props) => {
   const [value, setValue] = useState(defaultValue);
   useEffect(() => {
-    // setInterval(() => {
-    //   const _value = getZoom?.() || defaultValue;
-    //   if (_value !== value) {
-    //     setValue(_value);
-    //   }
-    // }, 1000);
+    setInterval(() => {
+      const _value = getZoom?.() || defaultValue;
+      if (_value !== value) {
+        setValue(_value);
+      }
+    }, 1000);
   }, []);
   return (
     <InputGroup>
