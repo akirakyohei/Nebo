@@ -8,12 +8,15 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   optimizeDeps: {
     // optimize for monorepo linked package see: https://v3.vitejs.dev/config/dep-optimization-options.html#optimizedeps-include
-    include: ["@repo/web-builder"],
-    exclude: ["@mui/material/style"],
+    // include: [],
+    exclude: ["@mui/material/style", "@repo/web-builder"],
     esbuildOptions: {
       //ignore legalComments: This comment make CKEditor broken
       legalComments: "none",
     },
+  },
+  build: {
+    manifest: true,
   },
   resolve: {
     alias: {

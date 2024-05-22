@@ -89,7 +89,7 @@ const config = [
         jsnext: true,
         main: true,
         browser: true,
-        // preferBuiltins: false,
+        preferBuiltins: false,
       }),
       babel({
         targets: {

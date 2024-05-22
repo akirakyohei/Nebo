@@ -1,10 +1,10 @@
-import { WebBuilder } from "./components/WebBuilder.js";
+import { WebBuilder } from "./components/WebBuilder";
 import { toNumber } from "lodash-es";
-import { useGetTemplateQuery } from "../../data/template.api.js";
+import { useGetTemplateQuery } from "../../data/template.api";
 import { useParams } from "react-router-dom";
 // import { WebBuilderContainer } from "@repo/web-builder";
 import { WebBuilderContainer } from "../../../../../packages/web-builder/src/WebBuilderContainer";
-import { NavbarMenu } from "./components/navbar/NavbarMenu.js";
+import { NavbarMenu } from "./components/navbar/NavbarMenu";
 import { useState } from "react";
 import { Page } from "../../components/Page.js";
 import { Box, Grid } from "@mui/material";
@@ -31,20 +31,6 @@ export default function EditorManager() {
   };
   return (
     <>
-      {/* <WebBuilder
-        template={{
-          id: 0,
-          name: "",
-          width: 1000,
-          height: 1000,
-          data: [],
-          category_ids: [],
-          params: undefined,
-          size: 0,
-          created_on: "",
-          updated_on: "",
-        }}
-      /> */}
       {/* <App /> */}
       <Page fullHeight spacing={0}>
         <Grid
@@ -52,6 +38,7 @@ export default function EditorManager() {
           height={"100vh"}
           width={"100vw"}
           display={"flex"}
+          sx={{ flexFlow: "column" }}
           direction={"column"}
         >
           <Grid item width={"100%"}>
@@ -66,7 +53,22 @@ export default function EditorManager() {
             flexGrow={"1"}
             overflow={"hidden"}
             marginBottom={"auto"}
+            // height={"calc(100vh - 80px)"}
           >
+            {/* <WebBuilder
+              template={{
+                id: 0,
+                name: "",
+                width: 1000,
+                height: 1000,
+                data: [],
+                category_ids: [],
+                params: undefined,
+                size: 0,
+                created_on: "",
+                updated_on: "",
+              }}
+            /> */}
             <WebBuilderContainer designingMode={designing} />
           </Grid>
         </Grid>

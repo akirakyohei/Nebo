@@ -64,13 +64,24 @@
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
-  height: 10px;
+  height: 10p x;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 7px grey;
+  box-shadow: inset 0 0 7px rgb(218, 218, 218);
   border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(95, 94, 94);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #464242;
 }
 
 #nebo-container {
@@ -174,6 +185,7 @@
     .tab-content {
       flex: 1 auto;
       margin-bottom: auto;
+      height: 100%;
       .tab-pane {
         height: 100%;
       }
@@ -193,4 +205,8 @@
 }
 .nebo-layout-btn-color-secondary-disabled {
   color: var(--gis-disabled-color) !important;
+}
+
+.gjs-rte-toolbar {
+  min-width: 400px;
 }

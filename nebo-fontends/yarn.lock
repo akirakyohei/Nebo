@@ -3244,11 +3244,13 @@ __metadata:
     "@rollup/plugin-terser": "npm:^0.4.4"
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@types/bootstrap": "npm:^5"
+    "@types/ckeditor": "npm:^4"
     "@types/jest": "npm:^27.5.2"
     "@types/jquery": "npm:^3.5.30"
     "@types/node": "npm:^16.18.91"
     "@types/rollup-plugin-peer-deps-external": "npm:^2"
     bootstrap: "npm:^5.3.3"
+    ckeditor: "npm:^4.12.1"
     deepmerge: "npm:^4.3.1"
     grapesjs: "npm:^0.21.9"
     grapesjs-blocks-basic: "npm:^1.0.2"
@@ -3924,6 +3926,13 @@ __metadata:
   version: 4.20.7
   resolution: "@types/ckeditor4@npm:4.20.7"
   checksum: 10c0/2ae43c135ba09eba7a8948c696a662c427be0aa21184e04abc749b084bccf2fb1df25de1ac99c103aac2957e9f902ec7746a4501b05786d39aabe1e987f6e6ec
+  languageName: node
+  linkType: hard
+
+"@types/ckeditor@npm:^4":
+  version: 4.9.10
+  resolution: "@types/ckeditor@npm:4.9.10"
+  checksum: 10c0/1d28c8c6b31b61424cb31fa20ad81aa0a7c38fe0dc7f93214c2b02c80affd0e62d61aa654913824d82016317a8abcf3c37f07e8b1df1a49bdfb19e34ce10384b
   languageName: node
   linkType: hard
 
@@ -6039,6 +6048,13 @@ __metadata:
   version: 3.9.0
   resolution: "ci-info@npm:3.9.0"
   checksum: 10c0/6f0109e36e111684291d46123d491bc4e7b7a1934c3a20dea28cba89f1d4a03acd892f5f6a81ed3855c38647e285a150e3c9ba062e38943bef57fee6c1554c3a
+  languageName: node
+  linkType: hard
+
+"ckeditor@npm:^4.12.1":
+  version: 4.12.1
+  resolution: "ckeditor@npm:4.12.1"
+  checksum: 10c0/24e8cace8a01d4af592e20fa688b4b9df5b7840d6a8650f44a9dbc318b5aa2b494145465f13e3cc16d8b445f1b7a03a7b1b10a30ad158a1df84527d4ae88d3de
   languageName: node
   linkType: hard
 
