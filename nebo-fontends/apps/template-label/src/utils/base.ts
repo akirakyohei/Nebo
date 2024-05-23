@@ -19,3 +19,11 @@ export const parseJwt = (token: string) => {
     return null;
   }
 };
+
+export const split_unit = (v: string) => {
+  if (typeof v === "string" && v !== "") {
+    var split = v.match(/^([-.\d]+(?:\.\d+)?)(.*)$/);
+    if (split) return { value: split[1].trim(), unit: split[2].trim() };
+  }
+  return { value: v, unit: "" };
+};

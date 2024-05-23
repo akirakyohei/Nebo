@@ -1,28 +1,40 @@
-import { Divider } from "@mui/material";
-import { MetaFunction } from "@remix-run/node";
+import {
+  Box,
+  Divider,
+  Grid,
+  InputAdornment,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 
 import { useState } from "react";
 import { Page } from "../../components/Page";
-import { TabOption, Tabs } from "../dashboard/Tabs";
+import { TabOption, Tabs } from "../../components/Tabs";
 import { useBaseFilter } from "../../utils/useBaseFilterQuery";
 import { TemplateFilterRequestModel } from "./types";
 import { useGetTemplatesData } from "./hooks/useGetTemplatesData";
-
-const tabs: TabOption[] = [
-  { label: "Mẫu nebo", value: "default" },
-  { label: "Mẫu thương hiệu", value: "brand" },
-  { label: "Mẫu chia sẻ với bạn", value: "share" },
-  { label: "Mẫu cá nhân của bạn", value: "person" },
-];
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Mẫu template" },
-    { name: "description", content: "Danh sachs mẫu" },
-  ];
-};
+import {
+  ArrowDownward,
+  ArrowUpward,
+  ControlPointOutlined,
+  SearchOutlined,
+} from "@mui/icons-material";
+import { CategoryTemplateSelect } from "../workspaces/components/CategoryTemplateSelect";
+import { last } from "lodash-es";
+import { TemplateFilters } from "./components/template/TemplateFilters";
+import { useToggle } from "../../utils/useToggle";
+import { TemplateAddModal } from "./components/template/TemplateAddModal";
+import { TemplateTable } from "./components/template/TemplateTable";
 
 export default function TemplatePage() {
+  const {
+    value: isOpenCreateTemplate,
+    setTrue: openCreateTemplate,
+    setFalse: closeCreateTemplate,
+  } = useToggle(false);
+
   const {
     filter,
     isFilter,
@@ -37,20 +49,24 @@ export default function TemplatePage() {
     useGetTemplatesData({ ...filter });
 
   return (
-    <Page title="Mẫu" fullHeight>
-      <Tabs
-        value={filter.tab || "default"}
-        onChange={(_value) => {
-          onChangeSearchParamsAll(
-            {
-              tab: _value !== "default" ? (_value as any) : undefined,
-            },
-            true
-          );
-        }}
-        items={tabs}
+    <Page
+      title="Mẫu"
+      fullHeight
+      primaryAction={{
+        icon: <ControlPointOutlined />,
+        content: "Thêm mẫu mới",
+        onAction: openCreateTemplate,
+      }}
+    >
+      <TemplateFilters
+        filter={filter}
+        onChangeSearchParams={onChangeSearchParams}
+        onChangeSearchParamsAll={onChangeSearchParamsAll}
       />
-      <Divider />
+      <TemplateTable templates={templates.data} />
+      {isOpenCreateTemplate && (
+        <TemplateAddModal onClose={closeCreateTemplate} />
+      )}
     </Page>
   );
 }

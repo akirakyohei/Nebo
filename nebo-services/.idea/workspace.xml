@@ -6,18 +6,29 @@
   <component name="ChangeListManager">
     <list default="true" id="1e0902de-b410-43f8-98f4-be504536e81d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/.yarn/install-state.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/.yarn/install-state.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/AutocompleteSelect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/AutocompleteSelect.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/Modal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/constants.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/constants.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/data/category.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/data/category.api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/EditorManagePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/EditorManagePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/WebBuilder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/WebBuilder.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/CategoryTemplateSelect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/CategoryTemplateSelect.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/navbar/NavbarMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/workspaces/components/navbar/NavbarMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/category.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/category.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/mediafile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/mediafile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/template.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/template.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/GrapesjsEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/GrapesjsEditor.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/WebBuilderContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/WebBuilderContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/editor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/editor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/plugins/barcode/block.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/plugins/barcode/block.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/compoents/Toolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/compoents/Toolbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/context/EditorContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/context/EditorContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/useEditor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/useEditor.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/3/03e96db92903b2f928722ecad7e3495f416d56da" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/1/d11e0fb7ca5558e033f35dbb5e4eb1f25d62100b" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/3/03e96db92903b2f928722ecad7e3495f416d56da" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/d/1/d11e0fb7ca5558e033f35dbb5e4eb1f25d62100b" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -269,6 +280,8 @@
       <workItem from="1716195700000" duration="166000" />
       <workItem from="1716296508634" duration="567000" />
       <workItem from="1716344369349" duration="78000" />
+      <workItem from="1716352132161" duration="3271000" />
+      <workItem from="1716432271127" duration="1707000" />
     </task>
     <servers />
   </component>

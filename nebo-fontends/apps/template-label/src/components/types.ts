@@ -25,7 +25,7 @@ export type ComplexAction = Action &
   DisabledAction &
   ColorAction;
 
-export type Option<T> = {
+export type Option<T = number> = {
   value: T;
   label: string;
   disabled?: boolean;

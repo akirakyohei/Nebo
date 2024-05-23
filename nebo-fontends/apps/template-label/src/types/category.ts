@@ -1,4 +1,5 @@
 import React from "react";
+import { PageFilterRequest } from "./common";
 
 export type GroupCategory = {
   id: number;
@@ -22,4 +23,8 @@ export type CategoryByGroup = {
 
 export type CategoryByGroupFilterRequest = {
   owner?: boolean;
+};
+
+export type CategoryFilterRequest = PageFilterRequest & {
+  query?: string;
 };

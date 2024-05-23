@@ -6,5 +6,5 @@ export type TemplateFilterRequestModel = Omit<
   TemplateFilterRequest,
   "owner"
 > & {
-  tab?: "brand" | "shared" | "person";
+  tab?: "shared" | "person";
 };

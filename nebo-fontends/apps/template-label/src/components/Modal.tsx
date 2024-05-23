@@ -5,13 +5,13 @@ import {
   Typography,
 } from "@mui/material";
 import React, { CSSProperties } from "react";
-import { isElement } from "react-dom/test-utils";
 import { ComplexAction } from "./types";
 import { animated, useSpring } from "@react-spring/web";
 import { CloseOutlined } from "@mui/icons-material";
 import { filterNonNull } from "../utils/base";
 import { Button } from "./Button";
 import { ButtonGroup } from "./ButonGroup";
+import isElement from "lodash-es/isElement";
 
 interface FadeProps {
   children: React.ReactElement;
@@ -67,14 +67,14 @@ const style: CSSProperties = {
   borderRadius: 2,
 };
 
-interface Props
-  extends Pick<ModalTypeMap["props"], "open" | "onClose" | "sx" | "children"> {
+interface Props extends Pick<ModalTypeMap["props"], "open" | "onClose" | "sx"> {
   onBackdropClick?: () => void;
   size?: "xs" | "md" | "lg" | "xl";
   title?: string | React.ReactNode;
   primaryAction?: ComplexAction;
   secondaryActions?: ComplexAction[];
   hideClose?: boolean;
+  children: React.ReactNode | React.ReactNode[];
 }
 const ModalSection = ({
   flush,
@@ -158,7 +158,7 @@ export const Modal = ({
 
   const footerMarkup = filterNonNull<ComplexAction>([
     ...(secondaryActions?.map((item) => ({ ...item, outline: true })) || []),
-    primaryAction ? { ...primaryAction, color: "primary" } : null,
+    primaryAction ? { color: "primary", ...primaryAction } : null,
   ]).map((item, index) => <Button key={index} {...item} />);
   return (
     <ModalMUI open={open} onClose={props.onClose}>

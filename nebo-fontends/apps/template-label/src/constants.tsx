@@ -1,4 +1,6 @@
+import { Template } from "./types";
 import { GroupCategory } from "./types/category";
+import blankThumbImage from "src/assets/img/new-blank-template.png";
 import {
   AdjustOutlined,
   DateRangeOutlined,
@@ -55,3 +57,39 @@ export const GROUP_CATEGORIES: GroupCategory[] = [
     description: "",
   },
 ];
+
+export const defaultBlankTemplate: Template = {
+  name: "Mẫu mặc định",
+  category_ids: [],
+  paper_id: 1,
+  assets: [],
+  components: [],
+  css: "",
+  styles: "",
+  html: "",
+  is_active: true,
+  options: {
+    format: "A4 (210mm x 542mm)",
+    height: "542mm",
+    width: "210mm",
+    is_landscape: false,
+    margin: {
+      bottom: "0px",
+      left: "0px",
+      right: "0px",
+      top: "0px",
+    },
+  },
+  thumbnail: {
+    extension: "png",
+    name: "blank",
+    url: blankThumbImage,
+    updated_at: "",
+  },
+  size: 0,
+  created_on: "",
+  updated_on: "",
+  id: 0,
+  user_id: 0,
+  is_trashed: false,
+};

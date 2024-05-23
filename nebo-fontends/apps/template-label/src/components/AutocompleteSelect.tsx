@@ -8,7 +8,7 @@ import { Option } from "./types";
 import { isArray } from "lodash-es";
 import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
 import ListBox from "./ListBox";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 type Value = number | string;
 interface Props<T extends Value> {
@@ -20,9 +20,15 @@ interface Props<T extends Value> {
   label?: TextFieldProps["label"];
   variant?: TextFieldProps["variant"];
   placeholder?: TextFieldProps["placeholder"];
+  height?: CSSProperties["height"];
+  minWidth?: CSSProperties["minWidth"];
+  disableClearable?: boolean;
   willLoadMoreResults?: boolean;
   onLoadMore?: () => void;
   loading?: boolean;
+  error?: string;
+  query?: string;
+  onChangeQuery?: (value: string) => void;
 }
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
@@ -34,6 +40,12 @@ export function AutocompleteSelect<T extends Value>({
   values,
   options,
   onChange,
+  error,
+  loading,
+  minWidth,
+  height,
+  disableClearable,
+  onChangeQuery,
   ...props
 }: Props<T>) {
   const seletedOptions = options.filter((item) => values.includes(item.value));
@@ -44,7 +56,7 @@ export function AutocompleteSelect<T extends Value>({
     <ListBox
       ref={ref}
       total={props.willLoadMoreResults ? options.length + 1 : options.length}
-      loading={props.loading}
+      loading={loading}
       willLoadMoreResults={props.willLoadMoreResults}
       onLoadMore={props.onLoadMore}
       {..._props}
@@ -85,16 +97,22 @@ export function AutocompleteSelect<T extends Value>({
             )
           : undefined
       }
+      disableClearable={disableClearable}
       filterSelectedOptions
       renderInput={(params) => (
         <TextField
           {...params}
           {...props}
+          value={props.query}
+          error={!!error}
+          helperText={error ? error : undefined}
           label={props.label}
+          onChange={(e) => onChangeQuery?.(e.target.value)}
           InputLabelProps={{ sx: { top: "-6px" }, ...params.InputLabelProps }}
           InputProps={{
             sx: {
-              height: "41px",
+              height: height || "41px",
+              minWidth: minWidth,
               "> input": {
                 padding: "0 16px !important",
                 height: "100% !important",

@@ -63,9 +63,5 @@ Uservice/sso/src/main/java/com/nebo/sso/applications/services/RefreshTokenServic
 Sshared/web/src/main/java/com/nebo/web/applications/bind/UserIdArgumentResolver.java,a\7\a7d4320a6038d6715a9a1a648feb77ad6de33e0d
 á
 Wshared/security/src/main/java/com/nebo/applications/tokens/NeboAuthenticationToken.java,b\2\b2eada3b43725a6d95e131ef1ae1b2d1d551988a
-à
-Xshared/security/src/main/java/com/nebo/applications/filters/JwtAuthenticationFilter.java,d\1\d11e0fb7ca5558e033f35dbb5e4eb1f25d62100b
 Å
 Qservice/sso/src/main/java/com/nebo/sso/infrastructures/config/SecurityConfig.java,9\d\9d67a0b3b83e0b706a248113fb5417b9836277a9
-Ö
-Uservice/configserver/src/main/java/com/nebo/configserver/ConfigServerApplication.java,0\3\03e96db92903b2f928722ecad7e3495f416d56da

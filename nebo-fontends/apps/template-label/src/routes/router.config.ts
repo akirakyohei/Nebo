@@ -36,11 +36,7 @@ export const routes: CustomizeRouteObject[] = [
             index: true,
           },
           {
-            path: "projects",
-            Component: lazy(() => import("../features/documents/ProjectPage")),
-          },
-          {
-            path: "media_files",
+            path: "assets",
             Component: lazy(
               () => import("../features/documents/MediaFilePage")
             ),
@@ -48,6 +44,34 @@ export const routes: CustomizeRouteObject[] = [
           {
             path: "templates",
             Component: lazy(() => import("../features/documents/TemplatePage")),
+          },
+        ],
+      },
+      {
+        path: "analytics",
+        Component: lazy(() => import("../features/documents/DocumentLayout")),
+        children: [
+          {
+            path: "",
+            Component: lazy(() => import("../features/analytics/AnalyticPage")),
+          },
+        ],
+      },
+      {
+        path: "settings",
+        Component: lazy(() => import("../features/documents/DocumentLayout")),
+        children: [
+          {
+            path: "account",
+            Component: lazy(
+              () => import("../features/settings/AccountSettingPage")
+            ),
+          },
+          {
+            path: "integration",
+            Component: lazy(
+              () => import("../features/settings/IntegrationSettingPage")
+            ),
           },
         ],
       },

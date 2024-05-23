@@ -7,7 +7,21 @@ import { routes } from "./routes/router.config";
 
 function App() {
   const theme = createTheme({
+    typography: {
+      button: {
+        textTransform: "none",
+      },
+    },
     components: {
+      MuiButtonBase: {
+        styleOverrides: {
+          root: {
+            "& MuiButtonBase-root:focus": {
+              outline: "none",
+            },
+          },
+        },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {

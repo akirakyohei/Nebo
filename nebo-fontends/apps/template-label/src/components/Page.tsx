@@ -1,4 +1,15 @@
-import { Box, Paper, SxProps, Theme, Typography } from "@mui/material";
+import {
+  Box,
+  ButtonGroup,
+  Paper,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+} from "@mui/material";
+import { ComplexAction } from "./types";
+import { filterNonNull } from "../utils/base";
+import { Button } from "./Button";
 
 interface Props {
   title?: string;
@@ -7,6 +18,9 @@ interface Props {
   sx?: SxProps<Theme>;
   fluid?: boolean;
   spacing?: number;
+  contentSpacing?: number;
+  primaryAction?: ComplexAction;
+  secondaryActions?: ComplexAction[];
 }
 
 export const Page = ({
@@ -14,24 +28,42 @@ export const Page = ({
   children,
   fullHeight,
   spacing = 2,
+  contentSpacing = 2,
   sx,
+  primaryAction,
+  secondaryActions,
 }: Props) => {
+  const footerMarkup = filterNonNull<ComplexAction>([
+    ...(secondaryActions?.map((item) => ({ ...item, outline: true })) || []),
+    primaryAction ? { color: "primary", ...primaryAction } : null,
+  ]).map((item, index) => <Button key={index} {...item} />);
   return (
-    <Paper
-      sx={{
-        padding: spacing,
-        minHeight: fullHeight ? "100vh" : undefined,
-        ...sx,
-      }}
-    >
-      {title && (
-        <Box sx={{ marginLeft: 1 }}>
-          <Typography variant="h6" fontWeight={"500"}>
-            {title}
-          </Typography>
+    <Box sx={{ padding: spacing }}>
+      {(title || footerMarkup.length > 0) && (
+        <Box sx={{ marginLeft: 1, paddingBottom: 1 }}>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography variant="h6" fontWeight={"500"}>
+              {title}
+            </Typography>
+            <Box>
+              {footerMarkup ? <ButtonGroup>{footerMarkup}</ButtonGroup> : null}
+            </Box>
+          </Stack>
         </Box>
       )}
-      <Box>{children}</Box>
-    </Paper>
+      <Paper
+        sx={{
+          minHeight: fullHeight ? "100vh" : undefined,
+          padding: contentSpacing,
+          ...sx,
+        }}
+      >
+        <Box>{children}</Box>
+      </Paper>
+    </Box>
   );
 };

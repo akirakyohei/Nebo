@@ -6,7 +6,7 @@ export type PageFilterRequest = {
 export type Metadata = {
   page: number;
   limit: number;
-  total: number;
+  total_element: number;
 };
 
 export type ListResponse<T> = {

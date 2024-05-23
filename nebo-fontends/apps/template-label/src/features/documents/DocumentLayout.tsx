@@ -1,5 +1,7 @@
 import {
+  AnalyticsOutlined,
   FolderZipOutlined,
+  HomeOutlined,
   ImageOutlined,
   MenuOpenOutlined,
   MenuOutlined,
@@ -7,6 +9,7 @@ import {
   SearchOutlined,
   StoreOutlined,
   TaskAltOutlined,
+  Tune,
 } from "@mui/icons-material";
 import logoImage from "/src/assets/img/logo.png";
 import {
@@ -37,21 +40,36 @@ const navigateItems: NavigateSectionProp[] = [
   {
     items: [
       {
-        icon: <FolderZipOutlined />,
+        icon: <HomeOutlined />,
         label: "Trang chủ",
         url: "/documents",
       },
-      {
-        icon: <FolderZipOutlined />,
-        label: "Dự án",
-        url: "/documents/projects",
-      },
+      { icon: <TaskAltOutlined />, label: "Mẫu", url: "/documents/templates" },
       {
         icon: <ImageOutlined />,
         label: "Ảnh tải lên",
-        url: "/documents/images",
+        url: "/documents/assets",
       },
-      { icon: <TaskAltOutlined />, label: "Mẫu", url: "/documents/templates" },
+      {
+        icon: <AnalyticsOutlined />,
+        label: "Phân tích",
+        url: "/analytics",
+      },
+      {
+        icon: <Tune />,
+        label: "Cài đặt",
+        url: "/settings/account",
+        subNavigation: [
+          {
+            label: "Thông tin của tài khoản",
+            url: "/settings/account",
+          },
+          {
+            label: "Tích hợp",
+            url: "/settings/integration",
+          },
+        ],
+      },
     ],
   },
   {
@@ -77,7 +95,12 @@ const navigateItems: NavigateSectionProp[] = [
 ];
 
 export default function DocumentLayout() {
-  const { value: isOpenNavbar, toggle: toggleNavbar } = useToggle(false);
+  const {
+    value: isOpenNavbar,
+    toggle: toggleNavbar,
+    setTrue: openNavbar,
+    setFalse: closeNavbar,
+  } = useToggle(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -106,13 +129,17 @@ export default function DocumentLayout() {
       ?.label.toLocaleLowerCase() || "dự án";
   return (
     <Paper sx={{ width: "100vw", minHeight: "100vh", position: "relative" }}>
-      <AppBar position="sticky" color="inherit">
-        <Container maxWidth="xl">
-          <Toolbar
-            disableGutters
-            variant="dense"
-            sx={{ justifyContent: "space-between", gap: 2 }}
-          >
+      <AppBar position="sticky" color="inherit" sx={{ height: "64px" }}>
+        <Grid
+          container
+          width={"100%"}
+          className="border"
+          padding={1}
+          paddingLeft={2}
+          paddingRight={2}
+          justifyContent={"space-between"}
+        >
+          <Grid lg={5} md={4} item>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               {!isOpenNavbar ? (
                 <MenuOutlined
@@ -139,13 +166,24 @@ export default function DocumentLayout() {
                 sx={{ width: "60px", height: "60px" }}
               />
             </Box>
-
+          </Grid>
+          <Grid
+            md={4}
+            lg={2}
+            item
+            justifyContent={"center"}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
             <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-                justifyContent: "center",
-              }}
+            // sx={{
+            //   flexGrow: 1,
+            //   display: { xs: "none", md: "flex" },
+            //   justifyContent: "center",
+            // }}
             >
               <Box
                 sx={{
@@ -171,7 +209,16 @@ export default function DocumentLayout() {
                 />
               </Box>
             </Box>
+          </Grid>
 
+          <Grid
+            lg={5}
+            md={4}
+            item
+            display="flex"
+            justifyContent={"end"}
+            paddingRight={{ md: 3 }}
+          >
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -195,8 +242,8 @@ export default function DocumentLayout() {
                 onClose={handleCloseUserMenu}
               ></Menu>
             </Box>
-          </Toolbar>
-        </Container>
+          </Grid>
+        </Grid>
       </AppBar>
       <Container
         maxWidth={false}
@@ -210,7 +257,8 @@ export default function DocumentLayout() {
             <Box>
               <Navbar
                 open={isOpenNavbar}
-                onClose={toggleNavbar}
+                onOpen={openNavbar}
+                onClose={closeNavbar}
                 items={navigateItems}
               />
             </Box>

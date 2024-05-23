@@ -1,13 +1,13 @@
-import { WebBuilder } from "./components/WebBuilder";
 import { toNumber } from "lodash-es";
 import { useGetTemplateQuery } from "../../data/template.api";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 // import { WebBuilderContainer } from "@repo/web-builder";
 import { WebBuilderContainer } from "../../../../../packages/web-builder/src/WebBuilderContainer";
 import { NavbarMenu } from "./components/navbar/NavbarMenu";
 import { useState } from "react";
-import { Page } from "../../components/Page.js";
+import { Page } from "../../components/Page";
 import { Box, Grid } from "@mui/material";
+import { Template } from "../../types";
 
 export default function EditorManager() {
   const params = useParams();
@@ -20,19 +20,24 @@ export default function EditorManager() {
   const templateId = !isCreate ? id : copyId;
   const [designing, setDesigning] = useState(true);
 
-  // const {
-  //   data: template,
-  //   isLoading: isLoading,
-  //   isFetching: isFetching,
-  // } = useGetTemplateQuery(templateId, { skip: !templateId });
+  const {
+    data: template = { id: 3, name: "tes" } as Template,
+    isLoading: isLoading,
+    isFetching: isFetching,
+  } = useGetTemplateQuery(templateId, { skip: !templateId });
 
   const handleChangeMode = (_value: boolean) => {
     setDesigning(_value);
   };
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!template) return <Navigate to={"/"} />;
+
   return (
     <>
       {/* <App /> */}
-      <Page fullHeight spacing={0}>
+      <Page fullHeight spacing={0} contentSpacing={0}>
         <Grid
           container
           height={"100vh"}
@@ -43,6 +48,7 @@ export default function EditorManager() {
         >
           <Grid item width={"100%"}>
             <NavbarMenu
+              template={template}
               isDesigning={designing}
               onChangeMode={handleChangeMode}
             />
@@ -53,22 +59,7 @@ export default function EditorManager() {
             flexGrow={"1"}
             overflow={"hidden"}
             marginBottom={"auto"}
-            // height={"calc(100vh - 80px)"}
           >
-            {/* <WebBuilder
-              template={{
-                id: 0,
-                name: "",
-                width: 1000,
-                height: 1000,
-                data: [],
-                category_ids: [],
-                params: undefined,
-                size: 0,
-                created_on: "",
-                updated_on: "",
-              }}
-            /> */}
             <WebBuilderContainer designingMode={designing} />
           </Grid>
         </Grid>

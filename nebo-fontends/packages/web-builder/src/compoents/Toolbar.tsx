@@ -12,6 +12,7 @@ import {
 import { ZoomButton } from "./ZoomButton";
 import { EditorContext } from "../context/EditorContext";
 import zoom from "../plugins/zoom";
+import grapesjs from "grapesjs";
 export const Toolbar = () => {
   const [hasUndo, setHasUndo] = useState(false);
   const [hasRedo, setHasRedo] = useState(false);
@@ -23,12 +24,13 @@ export const Toolbar = () => {
   const [dragMode, setDragMode] = useState<"absolute" | "translate">(
     "absolute"
   );
-  const context = useContext(EditorContext);
+  const { editor } = useContext(EditorContext);
+
   useEffect(() => {
     setInterval(() => {
-      const _hasUndo = context?.editor?.UndoManager.hasUndo() || false;
+      const _hasUndo = editor?.UndoManager.hasUndo() || false;
       if (_hasUndo !== hasUndo) setHasUndo(_hasUndo);
-      const _hasRedo = context?.editor?.UndoManager.hasRedo() || false;
+      const _hasRedo = editor?.UndoManager.hasRedo() || false;
       if (_hasRedo !== hasRedo) setHasRedo(_hasRedo);
     }, 1000);
   }, []);
@@ -42,7 +44,7 @@ export const Toolbar = () => {
         : "nebo-layout-btn-color-secondary-disabled",
       disabled: !hasUndo,
       tooltip: "Hoàn tác",
-      onClick: () => context?.editor?.UndoManager.undo(),
+      onClick: () => editor?.UndoManager.undo(),
     },
     {
       id: "redo",
@@ -52,7 +54,7 @@ export const Toolbar = () => {
         : "nebo-layout-btn-color-secondary-disabled",
       disabled: !hasRedo,
       tooltip: "Tái thực hiện",
-      onClick: () => context?.editor?.UndoManager.undo(),
+      onClick: () => editor?.UndoManager.undo(),
     },
     {
       id: "view-components",
@@ -62,9 +64,9 @@ export const Toolbar = () => {
       tooltip: "Xem khối",
       onClick: () => {
         if (!isActiveOutline) {
-          context?.editor?.runCommand("core:component-outline");
+          editor?.runCommand("core:component-outline");
         } else {
-          context?.editor?.stopCommand("core:component-outline");
+          editor?.stopCommand("core:component-outline");
         }
         setIsActiveOutline(!isActiveOutline);
       },
@@ -96,9 +98,9 @@ export const Toolbar = () => {
       tooltip: "Thước",
       onClick: () => {
         if (!isActiveRuler) {
-          context?.editor?.runCommand("ruler-visibility");
+          editor?.runCommand("ruler-visibility");
         } else {
-          context?.editor?.stopCommand("ruler-visibility");
+          editor?.stopCommand("ruler-visibility");
         }
         setIsActiveRulers(!isActiveRuler);
       },
@@ -107,7 +109,10 @@ export const Toolbar = () => {
 
   const handleDragMode = (mode: "absolute" | "translate") => {
     setDragMode(mode);
-    context?.editor?.getModel().setDragMode(mode);
+    editor?.getModel().setDragMode(mode);
+    editor?.getModel().setStyle({ margin: "3rem" });
+    editor?.refresh();
+    // editor?.render();
   };
 
   return (
@@ -120,16 +125,16 @@ export const Toolbar = () => {
       <Stack direction="horizontal" gap={4}>
         <ZoomButton
           getZoom={() => {
-            return context?.editor?.Canvas.getZoom() || 100;
+            return editor?.Canvas.getZoom() || 100;
           }}
           onZoom={function (value: number): void {
-            context?.editor?.runCommand("set-zoom", { zoom: value });
+            editor?.runCommand("set-zoom", { zoom: value });
           }}
           onZoomIn={function (): void {
-            context?.editor?.runCommand("zoom-in");
+            editor?.runCommand("zoom-in");
           }}
           onZoomOut={function (): void {
-            context?.editor?.runCommand("zoom-out");
+            editor?.runCommand("zoom-out");
           }}
         />
         <OverlayTrigger
@@ -157,7 +162,7 @@ export const Toolbar = () => {
               >
                 Vị trí tuyệt đối
               </Dropdown.Item>
-              
+
               <Dropdown.Item
                 onClick={() => {
                   handleDragMode("translate");

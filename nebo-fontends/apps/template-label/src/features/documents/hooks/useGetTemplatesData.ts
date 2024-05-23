@@ -1,5 +1,6 @@
 import { useGetCategoryByGroupQuery } from "../../../data/category.api";
 import { useGetTemplatesQuery } from "../../../data/template.api";
+import { Template } from "../../../types";
 import { TemplateFilterRequestModel } from "../types";
 
 export const useGetTemplatesData = (filter: TemplateFilterRequestModel) => {
@@ -8,19 +9,22 @@ export const useGetTemplatesData = (filter: TemplateFilterRequestModel) => {
     isLoading: isLoadingCategoryByGroup,
     isFetching: isFetchingCategoryByGroup,
   } = useGetCategoryByGroupQuery(
-    { owner: filter?.tab === "brand" },
+    { owner: true },
     {
       skip: !["brand", "default"].includes((filter?.tab as any) || "default"),
     }
   );
 
   const {
-    data: templates = [],
+    data: templates = {
+      data: [] as Template[],
+      metadata: { total_element: 0, limit: filter.limit, page: 1 },
+    },
     isLoading: isLoadingTemplate,
     isFetching: isFetchingTemplate,
   } = useGetTemplatesQuery({
     ...filter,
-    owner: filter?.tab !== "brand",
+    owner: true,
   });
 
   const isLoading = isLoadingCategoryByGroup || isLoadingTemplate;
