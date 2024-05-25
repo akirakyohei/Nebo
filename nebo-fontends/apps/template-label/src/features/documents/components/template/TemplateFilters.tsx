@@ -11,6 +11,7 @@ import {
   Select,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { getCategory } from "../../utils/templates";
 import { TagFilterList, TagOption } from "../../../../components/TagFilterList";
@@ -104,7 +105,13 @@ export const TemplateFilters = ({
             items={tabs}
           />
         </Box>
-        <Box>
+        <Box
+          sx={(theme) => ({
+            [theme.breakpoints.down("md")]: {
+              display: "none",
+            },
+          })}
+        >
           <Stack direction={"row"} gap={3}>
             <Box
               sx={(theme) => ({

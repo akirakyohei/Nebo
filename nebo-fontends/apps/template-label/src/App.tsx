@@ -7,6 +7,11 @@ import { routes } from "./routes/router.config";
 
 function App() {
   const theme = createTheme({
+    palette: {
+      secondary: {
+        main: "#a8a8a8",
+      },
+    },
     typography: {
       button: {
         textTransform: "none",
@@ -27,6 +32,19 @@ function App() {
           body: {
             margin: "auto",
           },
+        },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: ({ theme }) =>
+            theme.unstable_sx({
+              "&:hover": {
+                outline: "none",
+              },
+              "&:focus": {
+                outline: "none",
+              },
+            }),
         },
       },
     },

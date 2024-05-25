@@ -1,4 +1,4 @@
-import { Template } from "./types";
+import { FileDataUpload, Template } from "./types";
 import { GroupCategory } from "./types/category";
 import blankThumbImage from "src/assets/img/new-blank-template.png";
 import {
@@ -87,9 +87,19 @@ export const defaultBlankTemplate: Template = {
     updated_at: "",
   },
   size: 0,
-  created_on: "",
-  updated_on: "",
+  created_on: "2024-05-24T17:18:41.959Z",
+  updated_on: "2024-05-24T17:18:41.959Z",
   id: 0,
   user_id: 0,
   is_trashed: false,
+};
+
+export const defaultFileUpload: FileDataUpload = {
+  id: 0,
+  file_name: "djksh djsknd dfjhsbknf fdjbn dsfjhbn fjdhbng fjnbg jfdng jgfnkbg",
+  key: blankThumbImage,
+  extension: "jepg",
+  size: 0,
+  created_at: "2024-05-24T17:18:41.959Z",
+  updated_at: "2024-05-24T17:18:41.959Z",
 };

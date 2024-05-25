@@ -19,15 +19,15 @@ export type AggregateReport = {
 export type ReportPaperType = {
   paper_type_id: number;
   name: string;
-  width: number;
-  height: number;
-  unit_of_width: string;
-  unit_of_height: string;
-  description: string;
+  width: number | null;
+  height: number | null;
+  unit_of_width: string | null;
+  unit_of_height: string | null;
+  description: string | null;
 };
 
 export type ReportTemplate = {
-  ltemplate_id: number;
+  template_id: number;
   name: string;
   created_on: string;
   updated_on: string;

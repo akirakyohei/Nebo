@@ -10,6 +10,8 @@ import {
 import { ComplexAction } from "./types";
 import { filterNonNull } from "../utils/base";
 import { Button } from "./Button";
+import { ReactNode } from "react";
+import { isElement } from "lodash-es";
 
 interface Props {
   title?: string;
@@ -19,7 +21,7 @@ interface Props {
   fluid?: boolean;
   spacing?: number;
   contentSpacing?: number;
-  primaryAction?: ComplexAction;
+  primaryAction?: ComplexAction | ReactNode;
   secondaryActions?: ComplexAction[];
 }
 
@@ -35,7 +37,9 @@ export const Page = ({
 }: Props) => {
   const footerMarkup = filterNonNull<ComplexAction>([
     ...(secondaryActions?.map((item) => ({ ...item, outline: true })) || []),
-    primaryAction ? { color: "primary", ...primaryAction } : null,
+    primaryAction && !isElement(primaryAction)
+      ? { color: "primary", ...(primaryAction as ComplexAction) }
+      : null,
   ]).map((item, index) => <Button key={index} {...item} />);
   return (
     <Box sx={{ padding: spacing }}>
@@ -51,6 +55,7 @@ export const Page = ({
             </Typography>
             <Box>
               {footerMarkup ? <ButtonGroup>{footerMarkup}</ButtonGroup> : null}
+              {isElement(primaryAction) ? (primaryAction as ReactNode) : null}
             </Box>
           </Stack>
         </Box>

@@ -128,7 +128,16 @@ export default function DocumentLayout() {
       .find((item) => isEnabledPath(item))
       ?.label.toLocaleLowerCase() || "dự án";
   return (
-    <Paper sx={{ width: "100vw", minHeight: "100vh", position: "relative" }}>
+    <Paper
+      sx={{
+        width: "100vw",
+        minHeight: "100vh",
+        position: "relative",
+        overflow: "auto",
+        display: "flex",
+        flexFlow: "column",
+      }}
+    >
       <AppBar position="sticky" color="inherit" sx={{ height: "64px" }}>
         <Grid
           container
@@ -249,10 +258,11 @@ export default function DocumentLayout() {
         maxWidth={false}
         sx={{
           padding: (theme) => theme.spacing(0, 0) + " !important",
-          position: "fixed",
+          flex: "1 1 auto",
+          display: "flex",
         }}
       >
-        <Grid display={"flex"} sx={{ minHeight: "calc(100vh - 60px)" }}>
+        <Grid display={"flex"} flex={"1"} minHeight={"100%"}>
           <Grid item>
             <Box>
               <Navbar
@@ -264,14 +274,19 @@ export default function DocumentLayout() {
             </Box>
           </Grid>
 
-          <Grid item flex="1">
+          <Grid item flex="1" position={"relative"}>
             <Box
               component={"div"}
               sx={{
-                width: "100%",
                 minHeight: "100%",
                 border: (theme) => `1px solid ${theme.palette.grey[300]}`,
                 background: (theme) => theme.palette.grey[100],
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                overflow: "auto",
               }}
             >
               <Outlet />

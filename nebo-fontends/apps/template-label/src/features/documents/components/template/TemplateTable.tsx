@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { CategoryByGroup, Template } from "../../../../types";
 import { FilterQueryResult } from "../../../../utils/useBaseFilterQuery";
 import { TemplateFilterRequestModel } from "../../types";
@@ -9,8 +9,8 @@ import { defaultBlankTemplate } from "../../../../constants";
 interface Props {
   mode?: "list" | "icons";
   templates: Template[];
-  filter: FilterQueryResult<TemplateFilterRequestModel>["filter"];
-  onChangeParams: FilterQueryResult<TemplateFilterRequestModel>["onChangeSearchParams"];
+  // filter: FilterQueryResult<TemplateFilterRequestModel>["filter"];
+  // onChangeParams: FilterQueryResult<TemplateFilterRequestModel>["onChangeSearchParams"];
 }
 
 const defaultTemplates = [
@@ -44,17 +44,28 @@ const defaultTemplates = [
 export const TemplateTable = ({ templates, mode = "icons" }: Props) => {
   if (mode === "icons") {
     return (
-      <Box>
-        <Masonry
-          columns={{ sx: 1, md: "3", lg: 4 }}
-          sx={{ minHeight: 829 }}
-          spacing={2}
-        >
-          {defaultTemplates.map((template, index) => (
-            <TemplateCard key={index} template={template} />
-          ))}
-        </Masonry>
-      </Box>
+      // <Box maxWidth={"100%"}>
+      <Grid
+        container
+        display={"grid"}
+        width={"100%"}
+        gridTemplateColumns={{
+          xs: "1fr",
+          sm: "1fr 1fr",
+          md: "1fr 1fr 1fr",
+          lg: "1fr 1fr 1fr 1fr 1fr",
+          xl: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        }}
+        justifyContent={"center"}
+        columnGap={3}
+        rowGap={3}
+        padding={3}
+      >
+        {defaultTemplates.map((template, index) => (
+          <TemplateCard key={index} template={template} />
+        ))}
+      </Grid>
+      // </Box>
     );
   }
 };

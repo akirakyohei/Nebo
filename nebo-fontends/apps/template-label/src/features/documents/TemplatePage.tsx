@@ -22,7 +22,6 @@ import {
   SearchOutlined,
 } from "@mui/icons-material";
 import { CategoryTemplateSelect } from "../workspaces/components/CategoryTemplateSelect";
-import { last } from "lodash-es";
 import { TemplateFilters } from "./components/template/TemplateFilters";
 import { useToggle } from "../../utils/useToggle";
 import { TemplateAddModal } from "./components/template/TemplateAddModal";

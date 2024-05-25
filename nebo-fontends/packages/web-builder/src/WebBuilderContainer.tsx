@@ -225,28 +225,10 @@ export const WebBuilderContainer = ({
   // const editor = useEditor({ width: "210mm", height: "594mm" });
   const [editorContext, setEditorContext] = useState<Editor | null>(null);
 
-  const setContext = useCallback(
-    (_editor: Editor) => {
-      // setEditorContext((prev) => {
-      //   if (prev !== null) return { ...prev, ..._editor } as Editor;
-      //   return _editor;
-      // });
-      setEditorContext(_editor);
-    },
-    [editorContext, setEditorContext]
-  );
-
-  const getContextValue = useCallback(
-    () => ({
-      editor: editorContext,
-    }),
-    [editorContext]
-  );
-
   useEffect(() => {
     if (!editorContext) {
       var editor = initGrapesjs({ width, height });
-      setContext(editor);
+      setEditorContext(editor);
     }
   }, [width, height, editorContext]);
 
@@ -262,11 +244,11 @@ export const WebBuilderContainer = ({
         editorContext.destroy();
       }
     };
-  }, [editorContext]);
+  }, []);
 
   return (
     <div id="nebo-container">
-      <EditorContext.Provider value={getContextValue()}>
+      <EditorContext.Provider value={{ editor: editorContext }}>
         <Container fluid className="p-0 nebo-layout-container">
           {designingMode ? (
             <div className="nebo-layout-row">

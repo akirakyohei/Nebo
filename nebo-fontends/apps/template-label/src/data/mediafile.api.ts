@@ -1,4 +1,4 @@
-import { FileDataUpload, FileDataUploadRequest } from "app/types";
+import { FileDataUpload, FileDataUploadRequest } from "src/types";
 import { storefontApi, transformAxiosErrorResponse } from "./api";
 
 const mediafileApi = storefontApi.injectEndpoints({

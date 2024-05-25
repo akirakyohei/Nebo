@@ -9,9 +9,9 @@ import {
   TopUsedTemplate,
   UsedPaperTypes,
   UsedTemplates,
-} from "app/types";
+} from "../types";
 import { storefontApi, transformAxiosErrorResponse } from "./api";
-import { toQueryString } from "app/utils/url";
+import { toQueryString } from "../utils/url";
 
 const reportApi = storefontApi.injectEndpoints({
   endpoints: (builder) => ({
