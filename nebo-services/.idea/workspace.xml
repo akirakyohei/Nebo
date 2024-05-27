@@ -8,18 +8,15 @@
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/.yarn/install-state.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/.yarn/install-state.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/constants.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/constants.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/components/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/data/mediafile.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/data/mediafile.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/DocumentLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/DocumentLayout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/MediaFilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/MediaFilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/TemplatePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/TemplatePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/media_file/MediaFileCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/media_file/MediaFileCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateFilters.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateMasonrySelect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/documents/components/template/TemplateMasonrySelect.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/settings/AccountSettingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/features/settings/AccountSettingPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/mediafile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/apps/template-label/src/types/mediafile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/WebBuilderContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/packages/web-builder/src/WebBuilderContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../nebo-fontends/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../nebo-fontends/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,6 +64,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -78,29 +78,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelOrder2&quot;: &quot;2&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth2&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/do_an/Nebo/nebo-services/service/mediafile/src/main/java/com/nebo/mediafile/insfrastructures/config&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;25698c1eb2b827751998dec5eda198b7&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -182,6 +164,8 @@
       </method>
     </configuration>
     <configuration name="SsoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="nebo-services.service.sso.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.nebo.sso.SsoApplication" />
       <additionalParameters>
         <param>
           <option name="enabled" value="true" />
@@ -218,8 +202,6 @@
           <option name="value" value="86400000" />
         </param>
       </additionalParameters>
-      <module name="nebo-services.service.sso.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.nebo.sso.SsoApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -273,6 +255,7 @@
       <workItem from="1716352132161" duration="3271000" />
       <workItem from="1716432271127" duration="1707000" />
       <workItem from="1716602474978" duration="676000" />
+      <workItem from="1716692360345" duration="170000" />
     </task>
     <servers />
   </component>

@@ -56,7 +56,6 @@ const TemplateItemCard = ({
       sx={{
         maxWidth: 300,
         borderRadius: 2,
-        "> button": { outline: "none !important" },
         background: isActive ? "#3A96F2" : undefined,
         color: isActive ? "#ffffff" : undefined,
         "&:hover": { background: "#3A96F2CC", color: "#ffffff" },

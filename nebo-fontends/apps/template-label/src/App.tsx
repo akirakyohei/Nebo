@@ -18,33 +18,11 @@ function App() {
       },
     },
     components: {
-      MuiButtonBase: {
-        styleOverrides: {
-          root: {
-            "& MuiButtonBase-root:focus": {
-              outline: "none",
-            },
-          },
-        },
-      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {
             margin: "auto",
           },
-        },
-      },
-      MuiIconButton: {
-        styleOverrides: {
-          root: ({ theme }) =>
-            theme.unstable_sx({
-              "&:hover": {
-                outline: "none",
-              },
-              "&:focus": {
-                outline: "none",
-              },
-            }),
         },
       },
     },

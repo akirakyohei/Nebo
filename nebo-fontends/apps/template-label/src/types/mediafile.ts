@@ -11,7 +11,7 @@ export type FileDataUpload = {
 export type FileDataUploadRequest = {
   name: string;
   content_type: string;
-  data: Buffer;
+  data: ArrayBuffer;
 };
 
 export type FileDataUploadResponse = {

@@ -200,9 +200,6 @@ const NavigationItem = ({
                       e.preventDefault();
                       toggle();
                     }}
-                    sx={{
-                      outline: "none !important",
-                    }}
                   >
                     {isOpenSubNavigate ? (
                       <KeyboardArrowUp />
