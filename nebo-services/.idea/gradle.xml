@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/grpc" />
             <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib/feign-client" />
             <option value="$PROJECT_DIR$/lib/fiegn-client" />
             <option value="$PROJECT_DIR$/service" />
             <option value="$PROJECT_DIR$/service/configserver" />

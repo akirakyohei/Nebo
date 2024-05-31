@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-08T00:30:57+0700",
+    date = "2024-05-28T22:48:02+0700",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.6.jar, environment: Java 17.0.6 (Oracle Corporation)"
 )
 @Component
@@ -22,7 +22,7 @@ public class FactSessionMapperImpl implements FactSessionMapper {
 
         FactSession factSession = new FactSession();
 
-        factSession.setCreatedOn( session.getCreatedOn() );
+        factSession.setCreatedAt( session.getCreatedAt() );
 
         return factSession;
     }
@@ -38,7 +38,7 @@ public class FactSessionMapperImpl implements FactSessionMapper {
         historySessionResponse.setId( session.getId() );
         historySessionResponse.setIpAddress( session.getIpAddress() );
         historySessionResponse.setUserAgent( session.getUserAgent() );
-        historySessionResponse.setCreatedOn( session.getCreatedOn() );
+        historySessionResponse.setCreatedAt( session.getCreatedAt() );
 
         return historySessionResponse;
     }

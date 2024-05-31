@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-08T00:30:58+0700",
+    date = "2024-05-28T22:48:02+0700",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.6.jar, environment: Java 17.0.6 (Oracle Corporation)"
 )
 @Component
@@ -21,8 +21,8 @@ public class DimTemplateMapperImpl implements DimTemplateMapper {
         }
 
         dimTemplate.setName( template.getName() );
-        dimTemplate.setCreatedOn( template.getCreatedOn() );
-        dimTemplate.setUpdatedOn( template.getUpdatedOn() );
+        dimTemplate.setCreatedAt( template.getCreatedAt() );
+        dimTemplate.setUpdatedAt( template.getUpdatedAt() );
     }
 
     @Override
@@ -35,8 +35,8 @@ public class DimTemplateMapperImpl implements DimTemplateMapper {
 
         templateResponse.setTemplateId( template.getTemplateId() );
         templateResponse.setName( template.getName() );
-        templateResponse.setCreatedOn( template.getCreatedOn() );
-        templateResponse.setUpdatedOn( template.getUpdatedOn() );
+        templateResponse.setCreatedAt( template.getCreatedAt() );
+        templateResponse.setUpdatedAt( template.getUpdatedAt() );
 
         return templateResponse;
     }

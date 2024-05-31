@@ -42,10 +42,11 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
       const res = updateTemplate({
         id: template.id,
         request: {
-          is_active: template.is_active,
+          active: !template.active,
         },
       });
       showToast("Lưu mẫu thành công");
+      closeActive();
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
@@ -141,8 +142,8 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
             variant="outlined"
             startIcon={
               <Switch
-                checked={!template.is_active}
-                value={template.is_active}
+                checked={!template.active}
+                value={template.active}
                 disabled
                 readOnly
                 onChange={() => {}}
@@ -163,7 +164,7 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
         <Modal
           open
           onClose={closeActive}
-          title={template?.is_active ? "Loại trừ mẫu" : "Kích hoạt mẫu"}
+          title={template?.active ? "Loại trừ mẫu" : "Kích hoạt mẫu"}
           primaryAction={{
             content: "Tiếp tục",
             loading: isLoadingUpdateTemplate,
@@ -179,7 +180,7 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
         >
           <Modal.Section>
             <Typography>
-              {template?.is_active
+              {template?.active
                 ? "Thao tác này loại trừ mẫu, không thể chỉnh sửa"
                 : "Thao tác này sẽ kích hoạt mẫu, có thể chỉnh sửa"}
             </Typography>

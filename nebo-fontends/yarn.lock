@@ -1999,6 +1999,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@grapesjs/react@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@grapesjs/react@npm:1.0.0"
+  checksum: 10c0/c792823a05a342a2407e3a4d8af4aadedcf18db3180d665b85aa1650864812c116780fcb1008dc8c060272ceac1b8ecaf776da5eb17ed29dfa95e9172e1a85cd
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -2843,6 +2850,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@repo/web-builder@workspace:packages/web-builder"
   dependencies:
+    "@grapesjs/react": "npm:^1.0.0"
     "@open-wc/building-rollup": "npm:^3.0.2"
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"

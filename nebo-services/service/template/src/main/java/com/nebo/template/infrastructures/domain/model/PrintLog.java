@@ -23,5 +23,5 @@ public class PrintLog {
     private long paperTypeId;
 
     @CreationTimestamp
-    private Instant createdOn;
+    private Instant createdAt;
 }

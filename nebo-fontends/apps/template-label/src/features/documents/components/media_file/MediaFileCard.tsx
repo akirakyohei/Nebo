@@ -5,34 +5,17 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
-  CardHeader,
   CardMedia,
   Divider,
-  Grid,
   IconButton,
-  Popover,
   Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
-
-import { FileDataUpload, Template } from "../../../../types";
-import {
-  ContentCopyOutlined,
-  DeleteOutlineOutlined,
-  FormatItalicOutlined,
-  InfoOutlined,
-  ModeEditOutlineOutlined,
-  MoreVert,
-  Share,
-  ToggleOffOutlined,
-  ToggleOnOutlined,
-  Visibility,
-} from "@mui/icons-material";
+import blankThumbImage from "src/assets/img/new-blank-template.png";
+import { FileDataUpload } from "../../../../types";
+import { DeleteOutlineOutlined, InfoOutlined } from "@mui/icons-material";
 import { useToggle } from "../../../../utils/useToggle";
-import React from "react";
-import { ComplexAction } from "../../../../components/types";
-import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import { useNavigate } from "react-router";
 import { MediaFileDetailModal } from "./MediaFileDetailModal";
 
@@ -48,12 +31,6 @@ export const MediaFileCard = ({ asset }: Props) => {
     setFalse: closeDetail,
   } = useToggle(false);
 
-  const {
-    value: isOpenDelete,
-    setTrue: openDelete,
-    setFalse: closeDelete,
-  } = useToggle(false);
-
   return (
     <Card
       sx={(theme) => ({
@@ -65,7 +42,10 @@ export const MediaFileCard = ({ asset }: Props) => {
         <CardMedia
           component="img"
           height="194"
-          image={asset.key}
+          src={`/api/files/data/${asset.key}`}
+          onError={(event) => {
+            event.currentTarget.src = blankThumbImage;
+          }}
           alt={asset.file_name}
         />
         <CardContent>
@@ -94,12 +74,7 @@ export const MediaFileCard = ({ asset }: Props) => {
         </Stack>
       </CardActions>
       {isOpenDetail && (
-        <MediaFileDetailModal
-          open
-          asset={asset}
-          onClose={closeDetail}
-          onDelete={openDelete}
-        />
+        <MediaFileDetailModal open asset={asset} onClose={closeDetail} />
       )}
     </Card>
   );

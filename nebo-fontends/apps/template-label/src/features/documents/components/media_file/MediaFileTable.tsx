@@ -1,48 +1,18 @@
 import { Box, Grid } from "@mui/material";
-import { CategoryByGroup, FileDataUpload, Template } from "../../../../types";
-import { FilterQueryResult } from "../../../../utils/useBaseFilterQuery";
-import { TemplateFilterRequestModel } from "../../types";
-import { Masonry } from "@mui/lab";
-import { defaultBlankTemplate, defaultFileUpload } from "../../../../constants";
+import {
+  CategoryByGroup,
+  FileDataUpload,
+  ListResponse,
+  Template,
+} from "../../../../types";
 import { MediaFileCard } from "./MediaFileCard";
 
 interface Props {
   mode?: "list" | "icons";
-  assets: FileDataUpload[];
+  assets: ListResponse<FileDataUpload>;
   // filter: FilterQueryResult<TemplateFilterRequestModel>["filter"];
   // onChangeParams: FilterQueryResult<TemplateFilterRequestModel>["onChangeSearchParams"];
 }
-
-const defaultTemplates = [
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-  defaultFileUpload,
-];
 export const MediaFileTable = ({ assets, mode = "icons" }: Props) => {
   if (mode === "icons") {
     return (
@@ -63,8 +33,8 @@ export const MediaFileTable = ({ assets, mode = "icons" }: Props) => {
         rowGap={3}
         padding={3}
       >
-        {defaultTemplates.map((template, index) => (
-          <MediaFileCard key={index} asset={template} />
+        {assets.data.map((file, index) => (
+          <MediaFileCard key={index} asset={file} />
         ))}
       </Grid>
       // </Box>

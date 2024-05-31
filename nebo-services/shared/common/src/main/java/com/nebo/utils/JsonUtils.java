@@ -15,7 +15,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
-class JsonUtils {
+public class JsonUtils {
     public static final ObjectMapper OBJECT_MAPPER = createObjectMapper();
 
     public static ObjectMapper createObjectMapper() {

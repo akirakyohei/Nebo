@@ -20,13 +20,13 @@ export const PaperTypeSelect = ({ label, value, onChange, error }: Props) => {
     value: item.id,
     label: `${item.name}`,
   }));
-
   return (
     <AutocompleteSelect
       values={[value]}
       label={label}
       options={options}
       loading={isFetchingCategories}
+      disableClearable
       onChange={(_values) => {
         onChange(paperTypes.find((a) => a.id === _values[0]));
       }}

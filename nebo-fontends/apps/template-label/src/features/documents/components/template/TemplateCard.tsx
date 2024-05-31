@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 
 import { Template } from "../../../../types";
-import { red } from "@mui/material/colors";
+import blankThumbImage from "src/assets/img/new-blank-template.png";
 import {
   ContentCopyOutlined,
   DeleteOutlineOutlined,
@@ -53,12 +53,12 @@ export const TemplateCard = ({ template }: Props) => {
       content: "Sửa tên",
     },
     {
-      icon: template.is_active ? (
+      icon: template.active ? (
         <ToggleOffOutlined fontSize="small" />
       ) : (
         <ToggleOnOutlined fontSize="small" />
       ),
-      content: template.is_active ? "Vô hiệu hóa" : "Kích hoạt",
+      content: template.active ? "Vô hiệu hóa" : "Kích hoạt",
     },
     {
       icon: <ContentCopyOutlined fontSize="small" />,
@@ -135,8 +135,12 @@ export const TemplateCard = ({ template }: Props) => {
         <CardMedia
           component="img"
           height="194"
-          image={template.thumbnail.url}
-          alt={template.thumbnail.name}
+          image={
+            template?.thumbnail?.url
+              ? `/api/files/data/${template?.thumbnail?.url}`
+              : blankThumbImage
+          }
+          alt={template?.thumbnail?.name}
         />
         <CardContent>
           <Typography variant="body1" color="text.secondary">

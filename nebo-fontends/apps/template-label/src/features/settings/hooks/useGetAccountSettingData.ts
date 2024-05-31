@@ -19,7 +19,9 @@ export const useGetAccountSettingData = (): Data => {
   } = useGetCurrentUserQuery();
 
   const {
-    data: historySessions,
+    data: historySessions = {
+      data: [{ ip_address: "127.0.0.1", user_agent: "" }],
+    } as ListResponse<HistorySession>,
     isLoading: isLoadingHistorySession,
     isFetching: isFetchingHistorySession,
   } = useGetHistorySessionQuery({ limit: 5 });

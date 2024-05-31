@@ -1,3 +1,5 @@
+import { PageFilterRequest } from "./common";
+
 export type FileDataUpload = {
   id: number;
   file_name: string;
@@ -11,7 +13,7 @@ export type FileDataUpload = {
 export type FileDataUploadRequest = {
   name: string;
   content_type: string;
-  data: ArrayBuffer;
+  data: string;
 };
 
 export type FileDataUploadResponse = {
@@ -19,4 +21,8 @@ export type FileDataUploadResponse = {
   extension: string;
   url: string;
   updated_at: string;
+};
+
+export type FileDataFilterRequest = PageFilterRequest & {
+  query?: string;
 };

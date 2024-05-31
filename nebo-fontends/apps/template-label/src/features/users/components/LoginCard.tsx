@@ -49,13 +49,13 @@ export const LoginCard = () => {
       }).unwrap();
       showToast("Đăng nhập tài khoản thành công");
       storefontApi.util.invalidateTags(["credentials"]);
-      navigate("/workspace");
+      navigate("/documents");
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
         if (/Authenticated/.test(error)) {
           showToast("Đăng nhập tài khoản thành công trước đó");
-          navigate("/workspace");
+          navigate("/documents");
           return;
         }
 
@@ -103,7 +103,7 @@ export const LoginCard = () => {
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field: { ref, ...otherProps } }) => {
                 const error = control._formState.errors[otherProps.name]
-                  ?.message as any;
+                  ?.message ;
                 return (
                   <TextField
                     label="Email hoặc số điện thoại"
@@ -144,7 +144,7 @@ export const LoginCard = () => {
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field: { ref, ...otherProps } }) => {
                 const error = control._formState.errors[otherProps.name]
-                  ?.message as any;
+                  ?.message ;
                 return (
                   <PasswordField
                     label="Mật khẩu"

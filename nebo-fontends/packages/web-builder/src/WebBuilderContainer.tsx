@@ -36,6 +36,7 @@ import zoomPlugin from "./plugins/zoom";
 import draggableDocumentPlugin from "./plugins/draggable-document";
 import barcodePlugin from "./plugins/barcode/barcode";
 import { EditorContext } from "./context/EditorContext";
+import { Template } from "./types/template";
 
 export const ckeConfig = {
   toolbar: [
@@ -100,13 +101,21 @@ export const ckeConfig = {
   ],
 };
 
+export type Data = {
+  assets: string[];
+  components: any;
+  css?: string;
+  styles: any;
+  html: string;
+};
+
 interface Props {
   designingMode?: boolean;
-  width?: string;
-  height?: string;
+  template: Template;
+  onUpdate?: (id: number, _value: Data) => void;
 }
 
-const initGrapesjs = ({ width, height }: Props) => {
+const initGrapesjs = ({ template, onUpdate }: Props) => {
   const editor: Editor = grapesjs.init({
     container: "#nebo-editor",
     blockManager: {
@@ -125,19 +134,29 @@ const initGrapesjs = ({ width, height }: Props) => {
       appendTo: "#nebo-selector",
     },
     storageManager: {
-      type: "local",
+      type: "remote-local",
+      autosave: true,
+      autoload: true,
+      stepsBeforeSave: 1,
+      options: {
+        local: {
+          key: `nebo-project-${template.id}`,
+        },
+        remote: {},
+      },
     },
     fromElement: true,
     deviceManager: {
       devices: [
         {
           name: "custom",
-          width: width || "100vw",
-          height: height || "900vh",
+          width: template.options.width || "100vw",
+          height: template.options.height || "90vh",
         },
       ],
     },
-    height: "100%",
+    assetManager: {},
+    protectedCss: `body { margin: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};}`,
     pageManager: {},
     showDevices: false,
     panels: {
@@ -186,14 +205,46 @@ const initGrapesjs = ({ width, height }: Props) => {
     ],
   });
 
-  $(".panel__devices").html("");
-  $(".panel__basic-actions").html("");
-  $(".panel__editor").html("");
-  $("#nebo-block").html("");
-  $("#nebo-style").html("");
-  $("#nebo-layer").html("");
-  $("#nebo-trait").html("");
-  $("#nebo-selector").html("");
+  // $(".panel__devices").html("");
+  // $(".panel__basic-actions").html("");
+  // $(".panel__editor").html("");
+  // $("#nebo-block").html("");
+  // $("#nebo-style").html("");
+  // $("#nebo-layer").html("");
+  // $("#nebo-trait").html("");
+  // $("#nebo-selector").html("");
+
+  //css
+  const { Css } = editor;
+
+  Css.setRule("body", {
+    margin: `${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left}`,
+  });
+
+  //add remote-local storage
+  const { Storage } = editor;
+
+  Storage.add("remote-local", {
+    async store(data, options) {
+      const page = editor.Pages.getMain();
+      const component = page.getMainComponent();
+      try {
+        await onUpdate?.(template.id, {
+          assets: data.assets,
+          components: editor.getComponents(),
+          html: editor.getHtml({ component }),
+          css: editor.getCss({ component }),
+          styles: editor.getStyle(),
+        });
+      } catch (e) {
+        const localStorage = Storage.get("local");
+        await localStorage?.store(data, Storage.getStorageOptions("local"));
+      }
+    },
+    async load(options) {
+      return template;
+    },
+  });
 
   // Add gradient picker as a single input
   editor.StyleManager.addProperty("decorations", {
@@ -211,26 +262,29 @@ const initGrapesjs = ({ width, height }: Props) => {
   });
   editor.on("run:preview", () => editor.stopCommand("ruler-visibility"));
 
-  editor.onReady(() => {
-    editor.render();
-  });
+  // editor.onReady(() => {
+  //   editor.render();
+  // });
   return editor;
 };
 
 export const WebBuilderContainer = ({
   designingMode = true,
-  width = "210mm",
-  height = "594mm",
+  template,
+  onUpdate,
 }: Props) => {
   // const editor = useEditor({ width: "210mm", height: "594mm" });
   const [editorContext, setEditorContext] = useState<Editor | null>(null);
 
   useEffect(() => {
     if (!editorContext) {
-      var editor = initGrapesjs({ width, height });
+      var editor = initGrapesjs({
+        template: template,
+        onUpdate: onUpdate,
+      });
       setEditorContext(editor);
     }
-  }, [width, height, editorContext]);
+  }, [template, editorContext]);
 
   useEffect(() => {
     return () => {
@@ -250,59 +304,45 @@ export const WebBuilderContainer = ({
     <div id="nebo-container">
       <EditorContext.Provider value={{ editor: editorContext }}>
         <Container fluid className="p-0 nebo-layout-container">
-          {designingMode ? (
-            <div className="nebo-layout-row">
-              <div className="p-0 nebo-layout-col">
-                <Tabs
-                  fill
-                  defaultValue="block"
-                  className="nebo-pn-left-container rounded-0"
-                >
-                  <Tab eventKey="block" title="Thêm">
-                    <div id="nebo-block"></div>
-                  </Tab>
-                  <Tab eventKey="style" title="Thuộc tính">
-                    <div id="nebo-style"></div>
-                  </Tab>
-                </Tabs>
-              </div>
-              <div className="p-0 border border-1 flex-fill">
-                <div id="nebo-options">
-                  <Toolbar />
-                </div>
-                <div id="nebo-editor">
-                  <GrapesjsEditor />
-                </div>
-              </div>
-              <div className="p-0 nebo-layout-col">
-                <Tabs
-                  fill
-                  defaultValue="data"
-                  className="nebo-pn-right-container"
-                >
-                  <Tab eventKey="data" title="Dữ liệu">
-                    <div id="nebo-data"></div>
-                  </Tab>
-                  <Tab eventKey="layer" title="Cấu trúc">
-                    <div id="nebo-layer"></div>
-                  </Tab>
-                  <Tab eventKey="trait" title="Đặc điểm">
-                    <div id="nebo-trait"></div>
-                  </Tab>
-                </Tabs>
-              </div>
+          <div className="nebo-layout-row">
+            <div className="p-0 nebo-layout-col">
+              <Tabs
+                fill
+                defaultValue="block"
+                className="nebo-pn-left-container rounded-0"
+              >
+                <Tab eventKey="block" title="Thêm">
+                  <div id="nebo-block"></div>
+                </Tab>
+                <Tab eventKey="style" title="Thuộc tính">
+                  <div id="nebo-style"></div>
+                </Tab>
+              </Tabs>
             </div>
-          ) : (
-            <>
+            <div className="p-0 border border-1 flex-fill">
+              <div id="nebo-options">
+                {editorContext !== null && <Toolbar editor={editorContext} />}
+              </div>
               <div id="nebo-editor"></div>
-              <div id="nebo-options"></div>
-              <div id="nebo-block"></div>
-              <div id="nebo-style"></div>
-              <div id="nebo-data"></div>
-              <div id="nebo-layer"></div>
-              <div id="nebo-trait"></div>
-            </>
-          )}
+            </div>
+            <div className="p-0 nebo-layout-col">
+              <Tabs
+                fill
+                defaultValue="data"
+                className="nebo-pn-right-container"
+              >
+                <Tab eventKey="data" title="Dữ liệu">
+                  <div id="nebo-data"></div>
+                </Tab>
+                <Tab eventKey="layer" title="Cấu trúc">
+                  <div id="nebo-layer"></div>
+                </Tab>
+                <Tab eventKey="trait" title="Đặc điểm">
+                  <div id="nebo-trait"></div>
+                </Tab>
+              </Tabs>
+            </div>
+          </div>
         </Container>
 
         <div id="nebo-selector" className="d-none"></div>

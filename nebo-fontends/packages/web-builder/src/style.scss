@@ -163,9 +163,11 @@
       background-color: #f2f4fb !important;
     }
     .gjs-cv-canvas {
-      width: 100%;
+      min-width: 100%;
+      width: inherit;
       top: 0;
-      height: 100%;
+      height: inherit;
+      min-height: 100%;
     }
     .gjs-pn-panels {
       display: none;

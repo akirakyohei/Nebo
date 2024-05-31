@@ -31,4 +31,6 @@ public class UserCreateRequest {
     @PhoneNumber
     private String phoneNumber;
 
+    private ImageRequest avatar;
+
 }

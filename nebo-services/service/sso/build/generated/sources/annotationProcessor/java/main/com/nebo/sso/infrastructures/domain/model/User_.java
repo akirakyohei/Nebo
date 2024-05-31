@@ -19,19 +19,14 @@ public abstract class User_ {
 	public static volatile SingularAttribute<User, String> lastName;
 	
 	/**
-	 * @see com.nebo.sso.infrastructures.domain.model.User#updatedOn
-	 **/
-	public static volatile SingularAttribute<User, Instant> updatedOn;
-	
-	/**
-	 * @see com.nebo.sso.infrastructures.domain.model.User#createdOn
-	 **/
-	public static volatile SingularAttribute<User, Instant> createdOn;
-	
-	/**
 	 * @see com.nebo.sso.infrastructures.domain.model.User#firstName
 	 **/
 	public static volatile SingularAttribute<User, String> firstName;
+	
+	/**
+	 * @see com.nebo.sso.infrastructures.domain.model.User#createdAt
+	 **/
+	public static volatile SingularAttribute<User, Instant> createdAt;
 	
 	/**
 	 * @see com.nebo.sso.infrastructures.domain.model.User#password
@@ -42,6 +37,11 @@ public abstract class User_ {
 	 * @see com.nebo.sso.infrastructures.domain.model.User#phoneNumber
 	 **/
 	public static volatile SingularAttribute<User, String> phoneNumber;
+	
+	/**
+	 * @see com.nebo.sso.infrastructures.domain.model.User#avatarId
+	 **/
+	public static volatile SingularAttribute<User, Long> avatarId;
 	
 	/**
 	 * @see com.nebo.sso.infrastructures.domain.model.User#provider
@@ -77,19 +77,25 @@ public abstract class User_ {
 	 * @see com.nebo.sso.infrastructures.domain.model.User#status
 	 **/
 	public static volatile SingularAttribute<User, Boolean> status;
+	
+	/**
+	 * @see com.nebo.sso.infrastructures.domain.model.User#updatedAt
+	 **/
+	public static volatile SingularAttribute<User, Instant> updatedAt;
 
 	public static final String LAST_NAME = "lastName";
-	public static final String UPDATED_ON = "updatedOn";
-	public static final String CREATED_ON = "createdOn";
 	public static final String FIRST_NAME = "firstName";
+	public static final String CREATED_AT = "createdAt";
 	public static final String PASSWORD = "password";
 	public static final String PHONE_NUMBER = "phoneNumber";
+	public static final String AVATAR_ID = "avatarId";
 	public static final String PROVIDER = "provider";
 	public static final String PERMISSIONS = "permissions";
 	public static final String PROVIDER_ID = "providerId";
 	public static final String ID = "id";
 	public static final String EMAIL = "email";
 	public static final String STATUS = "status";
+	public static final String UPDATED_AT = "updatedAt";
 
 }
 

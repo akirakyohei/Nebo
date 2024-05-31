@@ -12,6 +12,11 @@ public abstract class FactSession_ {
 
 	
 	/**
+	 * @see com.nebo.reports.insfrastructures.domain.model.FactSession#createdAt
+	 **/
+	public static volatile SingularAttribute<FactSession, Instant> createdAt;
+	
+	/**
 	 * @see com.nebo.reports.insfrastructures.domain.model.FactSession#ipAddress
 	 **/
 	public static volatile SingularAttribute<FactSession, String> ipAddress;
@@ -32,19 +37,14 @@ public abstract class FactSession_ {
 	public static volatile EntityType<FactSession> class_;
 	
 	/**
-	 * @see com.nebo.reports.insfrastructures.domain.model.FactSession#createdOn
-	 **/
-	public static volatile SingularAttribute<FactSession, Instant> createdOn;
-	
-	/**
 	 * @see com.nebo.reports.insfrastructures.domain.model.FactSession#userKey
 	 **/
 	public static volatile SingularAttribute<FactSession, Long> userKey;
 
+	public static final String CREATED_AT = "createdAt";
 	public static final String IP_ADDRESS = "ipAddress";
 	public static final String USER_AGENT = "userAgent";
 	public static final String ID = "id";
-	public static final String CREATED_ON = "createdOn";
 	public static final String USER_KEY = "userKey";
 
 }

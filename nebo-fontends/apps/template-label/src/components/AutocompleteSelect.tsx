@@ -8,12 +8,13 @@ import { Option } from "./types";
 import { isArray } from "lodash-es";
 import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
 import ListBox from "./ListBox";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useMemo } from "react";
 
 type Value = number | string;
 interface Props<T extends Value> {
   id?: string;
-  values: T[];
+  value?: T;
+  values?: T[];
   options: Option<T>[];
   onChange: (_values: T[]) => void;
   multiple?: boolean;
@@ -37,6 +38,7 @@ const checkedIcon = <CheckBox fontSize="small" />;
 export function AutocompleteSelect<T extends Value>({
   id,
   multiple,
+  value,
   values,
   options,
   onChange,
@@ -48,7 +50,14 @@ export function AutocompleteSelect<T extends Value>({
   onChangeQuery,
   ...props
 }: Props<T>) {
-  const seletedOptions = options.filter((item) => values.includes(item.value));
+  const seletedOptions: Option<T>[] = useMemo(
+    () =>
+      options.filter(
+        (item) => values?.includes(item.value) || value === item.value
+      ),
+    [options]
+  );
+
   const ListBoxComponent = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLElement>
@@ -68,60 +77,125 @@ export function AutocompleteSelect<T extends Value>({
   ));
   ListBoxComponent.displayName = "ListBoxComponent";
 
-  return (
-    <Autocomplete
-      id={id}
-      value={seletedOptions.length > 0 ? seletedOptions : undefined}
-      multiple={multiple}
-      options={options}
-      getOptionKey={(option) => option.value}
-      getOptionLabel={(option) => option.label}
-      getOptionDisabled={(option) => option.disabled || false}
-      // ListboxComponent={ListBoxComponent}
-      onChange={(_event, _value) => {
-        onChange(isArray(_value) ? _value.map((item) => item.value) : []);
-      }}
-      limitTags={4}
-      renderOption={
+  if (multiple) {
+    return (
+      <Autocomplete
+        id={id}
         multiple
-          ? (props, option, { selected }) => (
-              <li {...props}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.label}
-              </li>
-            )
-          : undefined
-      }
-      disableClearable={disableClearable}
-      filterSelectedOptions
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          {...props}
-          value={props.query}
-          error={!!error}
-          helperText={error ? error : undefined}
-          label={props.label}
-          onChange={(e) => onChangeQuery?.(e.target.value)}
-          InputLabelProps={{ sx: { top: "-6px" }, ...params.InputLabelProps }}
-          InputProps={{
-            sx: {
-              height: height || "41px",
-              minWidth: minWidth,
-              "> input": {
-                padding: "0 16px !important",
-                height: "100% !important",
+        autoSelect
+        value={seletedOptions.length > 0 ? seletedOptions : []}
+        options={options}
+        itemType=""
+        isOptionEqualToValue={(option, value) => {
+          return option.value === value.value;
+        }}
+        getOptionKey={(option) => option.value}
+        getOptionLabel={(option) => option.label}
+        getOptionDisabled={(option) => option.disabled || false}
+        // ListboxComponent={ListBoxComponent}
+        onChange={(_event, _value) => {
+          onChange(isArray(_value) ? _value.map((item) => item.value) : []);
+        }}
+        limitTags={4}
+        renderOption={
+          multiple
+            ? (props, option, { selected }) => (
+                <li key={option.value} {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.label}
+                </li>
+              )
+            : (props, option, { selected }) => (
+                <li key={option.value} {...props}>
+                  {option.label}
+                </li>
+              )
+        }
+        disableClearable={disableClearable}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            {...props}
+            value={props.query}
+            error={!!error}
+            helperText={error ? error : undefined}
+            label={props.label}
+            onChange={(e) => onChangeQuery?.(e.target.value)}
+            InputLabelProps={{ sx: { top: "-6px" }, ...params.InputLabelProps }}
+            InputProps={{
+              sx: {
+                height: height || "41px",
+                minWidth: minWidth,
+                "> input": {
+                  padding: "0 16px !important",
+                  height: "100% !important",
+                },
               },
-            },
-            ...params.InputProps,
-          }}
-        />
-      )}
-    />
-  );
+              ...params.InputProps,
+            }}
+          />
+        )}
+      />
+    );
+  } else {
+    return (
+      <Autocomplete
+        id={id}
+        multiple={false}
+        autoSelect
+        value={seletedOptions.length > 0 ? seletedOptions[0] : null}
+        options={options}
+        getOptionKey={(option) => option.value}
+        getOptionLabel={(option) => option.label}
+        getOptionDisabled={(option) => option.disabled || false}
+        // ListboxComponent={ListBoxComponent}
+        onChange={(_event, _value) => {
+          onChange(
+            isArray(_value)
+              ? _value.map((item) => item.value)
+              : _value
+                ? [_value?.value]
+                : []
+          );
+        }}
+        limitTags={4}
+        renderOption={(props, option, { selected }) => (
+          <li key={option.value} {...props}>
+            {option.label}
+          </li>
+        )}
+        disableClearable={disableClearable}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            {...props}
+            value={props.query}
+            error={!!error}
+            helperText={error ? error : undefined}
+            label={props.label}
+            onChange={(e) => onChangeQuery?.(e.target.value)}
+            InputLabelProps={{ sx: { top: "-6px" }, ...params.InputLabelProps }}
+            InputProps={{
+              sx: {
+                height: height || "41px",
+                minWidth: minWidth,
+                "> input": {
+                  padding: "0 16px !important",
+                  height: "100% !important",
+                },
+              },
+              ...params.InputProps,
+            }}
+          />
+        )}
+      />
+    );
+  }
 }

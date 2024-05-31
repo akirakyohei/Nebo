@@ -5,17 +5,46 @@ import {
   CategoryByGroup,
   CategoryByGroupFilterRequest,
   CategoryFilterRequest,
+  CategoryRequest,
 } from "../types";
 import { toQueryString } from "../utils/url";
 
 const categoryApi = storefontApi.injectEndpoints({
   endpoints: (builder) => ({
+    createCategory: builder.mutation<Category, CategoryRequest>({
+      query: (q) => {
+        return {
+          url: `/api/categories`,
+          method: "POST",
+          body: { category: q },
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      transformResponse: (response: { category: Category }) =>
+        response.category,
+      invalidatesTags: (result, _error) => (result ? ["category"] : []),
+    }),
+    updateCategory: builder.mutation<
+      Category,
+      { id: number; request: CategoryRequest }
+    >({
+      query: (q) => {
+        return {
+          url: `/api/categories/${q.id}`,
+          method: "PUT",
+          body: { category: q.request },
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      transformResponse: (response: { category: Category }) =>
+        response.category,
+      invalidatesTags: (result, _error) => (result ? ["category"] : []),
+    }),
     getCategoryByGroup: builder.query<
       CategoryByGroup[],
       CategoryByGroupFilterRequest
     >({
-      query: (q) =>
-        `/api/categories/by_groups${!q.owner ? "/default" : undefined}`,
+      query: (q) => `/api/categories/by_groups${!q.owner ? "/default" : ""}`,
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: { category_by_groups: CategoryByGroup[] }) =>
         res.category_by_groups,
@@ -24,7 +53,7 @@ const categoryApi = storefontApi.injectEndpoints({
       ListResponse<Category>,
       CategoryFilterRequest
     >({
-      query: (q) => `/admin/products/search_vendors.json${toQueryString(q)}`,
+      query: (q) => `/api/categories${toQueryString(q)}`,
       serializeQueryArgs: ({ queryArgs }) => {
         const { page, ...rest } = queryArgs;
         return rest;
@@ -45,8 +74,23 @@ const categoryApi = storefontApi.injectEndpoints({
       transformResponse: (response: { categories: ListResponse<Category> }) =>
         response.categories,
     }),
+    deleteCategory: builder.mutation<void, number>({
+      query: (q) => {
+        return {
+          url: `/api/categories/${q}`,
+          method: "DELETE",
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      invalidatesTags: (_result, _error) => (!_error ? ["category"] : []),
+    }),
   }),
 });
 
-export const { useGetCategoryByGroupQuery, useGetCategoriesWithInfiniteQuery } =
-  categoryApi;
+export const {
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetCategoryByGroupQuery,
+  useGetCategoriesWithInfiniteQuery,
+} = categoryApi;

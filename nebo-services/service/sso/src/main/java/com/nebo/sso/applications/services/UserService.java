@@ -1,18 +1,25 @@
 package com.nebo.sso.applications.services;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.nebo.lib.feignclient.client.B;
+import com.nebo.lib.feignclient.client.NeboFeignClient;
+import com.nebo.lib.feignclient.client.model.FileDataUploadRequest;
 import com.nebo.sso.applications.model.*;
 import com.nebo.sso.infrastructures.domain.model.User;
 import com.nebo.sso.infrastructures.domain.model.User_;
 import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
 import com.nebo.sso.infrastructures.domain.specifiation.UserSpecification;
+import com.nebo.utils.IOUtils;
+import com.nebo.utils.MediaUtils;
 import com.nebo.web.applications.exception.AuthenticationException;
 import com.nebo.web.applications.exception.ConstraintViolationException;
 import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
 import com.nebo.web.applications.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 public class UserService {
+
+    private final NeboFeignClient neboFeignClient;
 
     private final AuthenticateProvider authenticateProvider;
 
@@ -35,27 +44,99 @@ public class UserService {
         var user = userMapper.toUser(request);
         user.setProvider(User.AuthProvider.local);
         userRepository.save(user);
-        return userMapper.fromDomainToResponse(user);
+        if (request.getAvatar() != null) {
+            try {
+                var res = neboFeignClient.uploadFile(FileDataUploadRequest.builder()
+                        .file(FileDataUploadRequest.FileDataUpload.builder()
+                                .contentType(request.getAvatar().getContentType())
+                                .key(MediaUtils.buildMediaKey(user.getId(), "avatar." + IOUtils.getExtension(request.getAvatar().getContentType()), "avatar"))
+                                .name("avatar." + IOUtils.getExtension(request.getAvatar().getContentType()))
+                                .data(request.getAvatar().getData())
+                                .build())
+                        .build(), B.widthUserId(user.getId())).getFile();
+                user.setAvatarId(res.getId());
+                user = userRepository.save(user);
+            } catch (Exception ex) {
+            }
+        }
+        return getUser(user.getId());
+    }
+
+    @Transactional
+    public UserResponse update(long userId, UserUpdateRequest request) throws ConstraintViolationException {
+        var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        var needConfirmPassword = false;
+        if (request.getFirstName() != null) {
+            user.setFirstName(request.getFirstName().get());
+        }
+        if (request.getLastName() != null) {
+            user.setLastName(request.getLastName().get());
+        }
+        if (request.getEmail() != null && StringUtils.equals(request.getEmail().get(), user.getEmail())) {
+            if (request.getEmail().get() != null) {
+                var existUser = userRepository.findFirstByEmail(request.getEmail().get()).orElse(null);
+                if (existUser != null)
+                    throw new ConstraintViolationException("email", "Email already used");
+            }
+            user.setEmail(request.getEmail().get());
+            needConfirmPassword = true;
+        }
+
+        if (request.getPhoneNumber() != null && StringUtils.equals(request.getPhoneNumber().get(), user.getPhoneNumber())) {
+            if (request.getPhoneNumber().get() != null) {
+                var existUser = userRepository.findFirstByPhoneNumber(request.getPhoneNumber().get()).orElse(null);
+                if (existUser != null)
+                    throw new ConstraintViolationException("phone_number", "Phone number already used");
+            }
+            user.setPhoneNumber(request.getPhoneNumber().get());
+            needConfirmPassword = true;
+        }
+        if (needConfirmPassword) {
+            if (request.getConfirmPassword() == null || !passwordEncoder.matches(request.getConfirmPassword(), user.getPassword()))
+                throw new AccessDeniedException("access denied");
+        }
+        if (user.getEmail() == null && user.getPhoneNumber() == null)
+            throw new ConstraintViolationException("credential", "require email or phone number not null");
+
+        if (request.getAvatar() != null) {
+            try {
+                if (user.getAvatarId() == null) {
+                    neboFeignClient.deleteFileMetadata(user.getAvatarId(), B.widthUserId(userId));
+                }
+                var res = neboFeignClient.uploadFile(FileDataUploadRequest.builder()
+                        .file(FileDataUploadRequest.FileDataUpload.builder()
+                                .contentType(request.getAvatar().getContentType())
+                                .key(MediaUtils.buildMediaKey(user.getId(), "avatar." + IOUtils.getExtension(request.getAvatar().getContentType()), "avatar"))
+                                .name("avatar." + IOUtils.getExtension(request.getAvatar().getContentType()))
+                                .data(request.getAvatar().getData())
+                                .build())
+                        .build(), B.widthUserId(user.getId())).getFile();
+                user.setAvatarId(res.getId());
+
+            } catch (Exception ex) {
+            }
+        }
+        userRepository.save(user);
+        return getUser(userId);
     }
 
     public UserResponse getUser(long userId) {
         var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
-        return userMapper.fromDomainToResponse(user);
+        var res = userMapper.fromDomainToResponse(user);
+        if (user.getAvatarId() != null) {
+            var image = neboFeignClient.getFileMetadata(user.getAvatarId(), B.widthUserId(userId)).getFile();
+            res.setAvatarUrl(image.getKey());
+        }
+        return res;
     }
 
-    public UsersResponse getUsers(UserFilterRequest request) {
-        var spec = UserSpecification.toFilter(request);
-        var pageable = request.toPageable(Sort.by(Sort.Order.desc(User_.CREATED_ON)));
-        var page = userRepository.findAll(spec, pageable);
-        return UsersResponse.build(page.map(userMapper::fromDomainToResponse));
-    }
 
     @Transactional
     public UserResponse changeStatus(long userId, boolean status) {
         var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         user.setStatus(status);
         user = userRepository.save(user);
-        return userMapper.fromDomainToResponse(user);
+        return getUser(userId);
     }
 
     @Transactional
@@ -68,10 +149,10 @@ public class UserService {
     }
 
 
-    public JwtResponse authenticate(Long userId,UserLoginRequest request, String ipAddress, String userAgent) throws AuthenticationException, ConstraintViolationException {
+    public JwtResponse authenticate(Long userId, UserLoginRequest request, String ipAddress, String userAgent) throws AuthenticationException, ConstraintViolationException {
         var user = validateLoginRequest(request);
-        if(userId==user.getId())
-            throw  new ConstraintViolationException("authenticated","Authenticated");
+        if (userId == user.getId())
+            throw new ConstraintViolationException("authenticated", "Authenticated");
         return authenticateProvider.generateJwtToken(user, ipAddress, userAgent);
     }
 

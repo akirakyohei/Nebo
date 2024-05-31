@@ -18,7 +18,7 @@ export const useGetTemplatesData = (filter: TemplateFilterRequestModel) => {
   const {
     data: templates = {
       data: [] as Template[],
-      metadata: { total_element: 0, limit: filter.limit, page: 1 },
+      metadata: { total_element: 0, limit: filter.limit || 20, page: 1 },
     },
     isLoading: isLoadingTemplate,
     isFetching: isFetchingTemplate,

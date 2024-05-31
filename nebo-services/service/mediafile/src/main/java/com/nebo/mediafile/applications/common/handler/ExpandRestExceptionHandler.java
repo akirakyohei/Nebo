@@ -19,7 +19,7 @@ public class ExpandRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FileNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Error handleFileNotFoundException(NotFoundException exception) {
+    public Error handleFileNotFoundException(FileNotFoundException exception) {
         return Error.builder()
                 .error(Map.of(Error.NOT_FOUND, StringUtils.defaultIfBlank(exception.getMessage(), "Not found")))
                 .build();

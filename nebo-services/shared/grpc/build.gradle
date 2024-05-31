@@ -3,13 +3,13 @@ plugins {
 }
 
 dependencies {
-    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
-    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    api "io.grpc:grpc-protobuf:${grpcVersion}"
+    api "io.grpc:grpc-stub:${grpcVersion}"
     compileOnly 'jakarta.annotation:jakarta.annotation-api:3.0.0'
     implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
-    implementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
-    implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+    api 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
+    api "com.google.protobuf:protobuf-java-util:${protobufVersion}"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'

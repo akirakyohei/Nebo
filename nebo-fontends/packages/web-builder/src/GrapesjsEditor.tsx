@@ -22,10 +22,11 @@ import { EditorContext } from "./context/EditorContext";
 
 interface Props {
   designingMode?: boolean;
+  editor: Editor;
 }
 
-export const GrapesjsEditor = ({ designingMode = true }: Props) => {
-  const { editor } = useContext(EditorContext);
+export const GrapesjsEditor = ({ designingMode = true, editor }: Props) => {
+  // const { editor } = useContext(EditorContext);
 
   // useEffect(() => {
   //   if (editor !== null) context?.setEditor(editor);

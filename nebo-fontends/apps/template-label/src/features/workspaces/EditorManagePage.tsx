@@ -1,19 +1,28 @@
 import { toNumber } from "lodash-es";
-import { useGetTemplateQuery } from "../../data/template.api";
+import {
+  useGetTemplateQuery,
+  useUpdateTemplateMutation,
+} from "../../data/template.api";
 import { Navigate, useParams } from "react-router-dom";
 // import { WebBuilderContainer } from "@repo/web-builder";
-import { WebBuilderContainer } from "../../../../../packages/web-builder/src/WebBuilderContainer";
+import {
+  Data,
+  WebBuilderContainer,
+} from "../../../../../packages/web-builder/src/WebBuilderContainer";
 import { NavbarMenu } from "./components/navbar/NavbarMenu";
 import { useState } from "react";
 import { Page } from "../../components/Page";
 import { Box, Grid } from "@mui/material";
 import { Template } from "../../types";
+import { useToast } from "../../components/notification/useToast";
+import { isClientError } from "../../utils/client";
 
-export default function EditorManager() {
+export default function EditorManagePage() {
+  const { show: showToast } = useToast();
   const params = useParams();
   const idStr = params["id"];
   const id = toNumber(idStr);
-  const isCreate = !!id;
+  const isCreate = !id;
   const urlSearchParams = new URLSearchParams();
   const copyIdStr = urlSearchParams.get("copy_id");
   const copyId = toNumber(copyIdStr);
@@ -21,23 +30,50 @@ export default function EditorManager() {
   const [designing, setDesigning] = useState(true);
 
   const {
-    data: template = { id: 3, name: "tes" } as Template,
+    data: template,
     isLoading: isLoading,
     isFetching: isFetching,
   } = useGetTemplateQuery(templateId, { skip: !templateId });
+
+  const [updateTemplate] = useUpdateTemplateMutation();
+
+  const handleUpdateTemplate = (id: number, _value: Data) => {
+    try {
+      const res = updateTemplate({
+        id: id,
+        request: {
+          ..._value,
+        },
+      });
+    } catch (ex) {
+      if (isClientError(ex)) {
+        let error = ex.data.message;
+        if (/Authenticated/.test(error)) {
+          showToast("Lưu mẫu thất bại thành công trước đó");
+          return;
+        }
+
+        if (/Email or password incorrect/.test(error))
+          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
+        if (/Phone number or password incorrect/.test(error))
+          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
+        showToast(error, { variant: "error" });
+      }
+    }
+  };
 
   const handleChangeMode = (_value: boolean) => {
     setDesigning(_value);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !template) return <div>Loading...</div>;
 
-  if (!template) return <Navigate to={"/"} />;
+  // if (!template) return <Navigate to={"/"} />;
 
   return (
     <>
       {/* <App /> */}
-      <Page fullHeight spacing={0} contentSpacing={0}>
+      <Page fullHeight fluid spacing={0} contentSpacing={0}>
         <Grid
           container
           height={"100vh"}
@@ -60,10 +96,18 @@ export default function EditorManager() {
             overflow={"hidden"}
             marginBottom={"auto"}
           >
-            <WebBuilderContainer designingMode={designing} />
+            <WebBuilderContainer
+              designingMode={designing}
+              template={template}
+              onUpdate={handleUpdateTemplate}
+            />
           </Grid>
         </Grid>
       </Page>
     </>
   );
 }
+
+// export default function EditorManagePage() {
+//   return <div>fkjdnf</div>;
+// }

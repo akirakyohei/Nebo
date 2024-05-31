@@ -58,7 +58,7 @@ public class ETLReportServiceImpl implements ETLReportService {
             dimTemplateRepository.save(dimTemplate);
         }
         if (DebeziumOperation.c.equals(op)) {
-            var dimDate = getDimDateTime(template.getCreatedOn());
+            var dimDate = getDimDateTime(template.getCreatedAt());
             Assert.notNull(dimDate, "dim date not null");
             var factUsedPaperType = getFactUsedPaperType(dimDate.getDateKey(), dimUser.getUserKey(), dimPaperType.getPaperTypeKey());
             Assert.notNull(factUsedPaperType, "fact used paper type not null");
@@ -86,7 +86,7 @@ public class ETLReportServiceImpl implements ETLReportService {
     public void loadUsedTemplate(PrintLog printLog) {
         var dimTemplate = getDimTemplate(printLog.getTemplateId());
         var dimUser = getDimUser(printLog.getUserId());
-        var dimDate = getDimDateTime(printLog.getCreatedOn());
+        var dimDate = getDimDateTime(printLog.getCreatedAt());
         Assert.notNull(dimDate, "dim date not null");
         Assert.notNull(dimUser, "dim user not null");
         Assert.notNull(dimTemplate, "dim template not null");

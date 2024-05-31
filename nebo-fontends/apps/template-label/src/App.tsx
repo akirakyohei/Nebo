@@ -4,6 +4,7 @@ import { NotificationProvider } from "./components/notification/NotificationCont
 import { store } from "./store/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { routes } from "./routes/router.config";
+import { transformRouter } from "./routes/transformRouter";
 
 function App() {
   const theme = createTheme({
@@ -33,7 +34,9 @@ function App() {
       <CssBaseline />
       <StoreProvider store={store}>
         <NotificationProvider>
-          <RouterProvider router={createBrowserRouter(routes)} />
+          <RouterProvider
+            router={createBrowserRouter(transformRouter(routes))}
+          />
         </NotificationProvider>
       </StoreProvider>
     </ThemeProvider>

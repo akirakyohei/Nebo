@@ -6,3 +6,17 @@ export type HistorySessionModel = HistorySession & {
   device: IDevice;
   os: IOS;
 };
+
+export type UpdateUserRequestModel = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  confirm_password: string;
+};
+
+export type ChangePasswordRequestModel = {
+  old_password: string;
+  new_password: string;
+  confirm_new_password: string;
+};

@@ -8,12 +8,17 @@ export type GroupCategory = {
   description: string;
 };
 
+export type CategoryRequest = {
+  name: string;
+  group_id: number;
+};
+
 export type Category = {
   id: number;
   name: string;
   group_id: number;
-  created_on: string;
-  updated_on: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type CategoryByGroup = {

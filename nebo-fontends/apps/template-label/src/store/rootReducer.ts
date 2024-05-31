@@ -10,7 +10,7 @@ const initialWorkspace: Workspace = {
     last_name: "",
     email: "",
     phone_number: "",
-    image_url: "",
+    avatar_url: "",
     permissions: [],
     provider: "local",
     provider_id: "",

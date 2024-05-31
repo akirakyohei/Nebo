@@ -1,6 +1,6 @@
-import { IconButton, InputAdornment, TextFieldProps } from "@mui/material";
+import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { TextField } from "./TextField";
+import { TextField, TextFieldProps } from "./TextField";
 import { useToggle } from "../utils/useToggle";
 
 export const PasswordField = ({ ...props }: TextFieldProps) => {

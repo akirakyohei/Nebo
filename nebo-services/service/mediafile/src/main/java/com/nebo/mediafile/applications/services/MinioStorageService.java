@@ -1,22 +1,27 @@
 package com.nebo.mediafile.applications.services;
 
+import com.google.common.io.ByteStreams;
 import com.nebo.mediafile.applications.common.exception.FileNotFoundException;
 import com.nebo.mediafile.applications.event.FileSaveFailedEvent;
 import com.nebo.mediafile.applications.model.FileModel;
-import com.nebo.mediafile.insfrastructures.config.MinioConfigurerProperties;
+import com.nebo.mediafile.infrastructures.config.MinioConfigurerProperties;
 import io.minio.*;
 import io.minio.errors.*;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -41,7 +46,9 @@ public class MinioStorageService implements FileStorageService {
                         .build());
                 log.info("Bucket with name: {} was created.", bucketName);
             }
-        } catch (ServerException | IOException | NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException | XmlParserException | ErrorResponseException | InternalException | InsufficientDataException e) {
+        } catch (ServerException | IOException | NoSuchAlgorithmException | InvalidKeyException |
+                 InvalidResponseException | XmlParserException | ErrorResponseException | InternalException |
+                 InsufficientDataException e) {
             log.info("Failed when create bucket.");
             throw new RuntimeException(e);
         }
@@ -70,11 +77,18 @@ public class MinioStorageService implements FileStorageService {
     }
 
     @Override
-    public Pair<InputStream, String> getFileByName(String key) {
+    public void getFileByName(String key, HttpServletResponse response) {
+        var paths = StringUtils.split(key, "/");
+        var defaultName = paths[paths.length - 1];
         try (var result = minioClient.getObject(GetObjectArgs.builder()
                 .bucket(minioConfigurerProperties.getBucket()).object(key).build())) {
             var name = result.headers().get("name");
-            return Pair.of(result, name);
+            String encodedOriginalName = URLEncoder.encode(StringUtils.defaultIfBlank(name, defaultName), String.valueOf(StandardCharsets.UTF_8));
+            response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedOriginalName);
+            response.setCharacterEncoding("UTF-8");
+            ByteStreams.copy(result, response.getOutputStream());
+            response.flushBuffer();
+           result.close();
         } catch (Exception e) {
             throw new FileNotFoundException("File not found in storage.");
         }

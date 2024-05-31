@@ -34,8 +34,8 @@ export default function AnalyticPage() {
         template: {
           template_id: 1,
           name: "Trống",
-          created_on: "",
-          updated_on: "",
+          created_at: "",
+          updated_at: "",
         },
       },
     ],

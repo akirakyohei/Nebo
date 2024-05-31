@@ -7,8 +7,9 @@ import { isClientError } from "../../../../utils/client";
 import { useCallback } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { styled } from "@mui/material/styles";
-import { Box, Stack, Typography } from "@mui/material";
-
+import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Close, FileUploadOutlined } from "@mui/icons-material";
+import { Buffer } from "buffer";
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -32,7 +33,9 @@ export const MediaFileUploadModal = ({ open, onClose }: Props) => {
     if (!data.file) return;
     try {
       const res = uploadFile({
-        ...data.file,
+        name: data.file.name,
+        content_type: data.file.content_type,
+        data: data.file.data,
       });
       showToast("Tạo mẫu thành công");
     } catch (ex) {
@@ -73,10 +76,11 @@ export const MediaFileUploadModal = ({ open, onClose }: Props) => {
         setValue("file", {
           name: file.name,
           content_type: file.type,
+
           data:
             typeof reader.result !== "string"
-              ? reader.result
-              : new TextEncoder().encode(reader.result),
+              ? Buffer.from(reader.result).toString("base64")
+              : reader.result,
         });
       };
       reader.readAsArrayBuffer(file);
@@ -84,56 +88,103 @@ export const MediaFileUploadModal = ({ open, onClose }: Props) => {
     []
   );
 
-  const {
-    acceptedFiles,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-    getRootProps,
-    getInputProps,
-  } = useDropzone({
-    accept: { "image/jpeg": [], "image/png": [], "image/jpg": [] },
-    maxFiles: 1,
-    maxSize: 3145728,
-    onDrop,
-  });
+  const { isFocused, isDragAccept, isDragReject, getRootProps, getInputProps } =
+    useDropzone({
+      accept: { "image/jpeg": [], "image/png": [], "image/jpg": [] },
+      maxFiles: 1,
+      maxSize: 3145728,
+      onDrop,
+      disabled: !!watch("file"),
+    });
 
   const fileMarkup = watch("file") ? (
-    <Box sx={(theme) => ({ border: "1px solid #acabbb", padding: 1 })}>
+    <Box
+      sx={(theme) => ({
+        border: "1px solid #BDBDBD",
+        borderRadius: "5px",
+        padding: 1,
+      })}
+    >
       <Stack direction="row" gap={1} alignItems={"center"}>
         <Box
           component={"img"}
           height={"40px"}
           width={"40px"}
           boxShadow={(theme) => theme.shadows[3]}
-          src={URL.createObjectURL(new Blob([watch("file.data")]))}
+          src={URL.createObjectURL(
+            new Blob([Buffer.from(watch("file.data"), "base64")])
+          )}
         ></Box>
         <Box flex="1">
-          <Typography>{watch("file.name")}</Typography>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            gap={1}
+          >
+            <Typography sx={{ wordBreak: "break-word" }}>
+              {watch("file.name")}
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setValue("file", undefined);
+              }}
+            >
+              <Close />
+            </IconButton>
+          </Stack>
         </Box>
       </Stack>
     </Box>
   ) : null;
 
   return (
-    <Modal open={open} onClose={onClose} title="Tải ảnh lên">
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Tải ảnh lên"
+      primaryAction={{
+        content: "Tải lên",
+        loading: isSubmitting,
+        onAction: submit,
+      }}
+      secondaryActions={[
+        {
+          content: "Hủy",
+          disabled: isSubmitting,
+          onAction: onClose,
+        },
+      ]}
+    >
       <Modal.Section>
-        <Container {...getRootProps({ isFocused, isDragAccept, isDragReject })}>
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-          </div>
+        <Stack gap={2}>
+          <Container
+            {...getRootProps({ isFocused, isDragAccept, isDragReject })}
+            disabled={!!watch("file")}
+          >
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+            </div>
 
-          <Box width={"100%"}>
-            <p>Dropzone without keyboard events</p>
-            <em>(SPACE/ENTER and focus events are disabled)</em>
-            <ul>{fileMarkup}</ul>
-          </Box>
-        </Container>
+            <Box width={"100%"}>
+              <Stack justifyContent={"center"} alignItems={"center"}>
+                <FileUploadOutlined />
+                <Typography variant="subtitle2">
+                  {isSubmitting
+                    ? "Đang tải ảnh lên..."
+                    : "Kéo thả ảnh vào đây hoặc nhấn vào để chọn ảnh"}
+                </Typography>
+              </Stack>
+            </Box>
+          </Container>
+          {fileMarkup}
+        </Stack>
       </Modal.Section>
     </Modal>
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getColor = (props: any) => {
   if (props.isDragAccept) {
     return "#00e676";
@@ -141,13 +192,18 @@ const getColor = (props: any) => {
   if (props.isDragReject) {
     return "#ff1744";
   }
-  if (props.isFocused) {
-    return "#2196f3";
+  if (props.disabled) {
+    return "#eeeeee";
   }
-  return "#eeeeee";
+  return "#2196f3";
 };
 
-const Container = styled("div")({
+const Container = styled("div")<{
+  isDragAccept?: boolean;
+  isDragReject?: boolean;
+  isFocused?: boolean;
+  disabled?: boolean;
+}>((p) => ({
   flex: "1",
   display: "flex",
   flexDirection: "column",
@@ -155,10 +211,10 @@ const Container = styled("div")({
   padding: "20px",
   borderWidth: "2px",
   borderRadius: "2px",
-  borderColor: `${(p: any) => getColor(p)}`,
+  borderColor: `${getColor(p)}`,
   borderStyle: "dashed",
   backgroundColor: "#fafafa",
-  color: "#bdbdbd",
+  color: `${p.disabled ? "#bdbdbd" : p.theme.palette.primary.light}`,
   outline: "none",
   transition: "border 0.24s ease-in-out",
-});
+}));

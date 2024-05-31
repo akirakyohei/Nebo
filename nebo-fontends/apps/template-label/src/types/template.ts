@@ -12,7 +12,7 @@ export type TemplateOptions = {
   format: string;
   height: string;
   width: string;
-  is_landscape: boolean;
+  landscape: boolean;
   margin: MarginOption;
 };
 
@@ -21,7 +21,7 @@ export type Template = {
   user_id: number;
   name: string;
   category_ids: number[];
-  paper_id: number;
+  paper_type_id: number;
   assets: string[];
   components: any;
   css: string;
@@ -29,13 +29,13 @@ export type Template = {
   field_schema?: object;
   html: string;
   testData?: { [key: string]: string };
-  is_active: boolean;
-  is_trashed: boolean;
+  active: boolean;
+  trashed: boolean;
   options: TemplateOptions;
   thumbnail: FileDataUploadResponse;
   size: number;
-  created_on: string;
-  updated_on: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type TemplateResponse = {
@@ -46,7 +46,7 @@ export type TemplateFilterRequest = PageFilterRequest & {
   category_ids?: number[];
   type?: string;
   owner?: boolean;
-  is_active?: string;
+  active?: string;
   sort_direction?: string;
   sort_by?: string;
 };
@@ -54,19 +54,16 @@ export type TemplateFilterRequest = PageFilterRequest & {
 export type TemplateRequest = {
   name: string;
   category_ids: number[];
-  paper_id: number;
+  paper_type_id: number;
   assets: string[];
   components: any;
   css: string;
   styles: any;
   field_schema?: object;
   html: string;
-  testData?: { [key: string]: string };
-  is_active: boolean;
-  is_trashed: boolean;
+  test_data?: { [key: string]: string };
+  active: boolean;
+  trashed: boolean;
   options: TemplateOptions;
   thumbnail: FileDataUploadResponse;
-  size: number;
-  created_on: string;
-  updated_on: string;
 };

@@ -4,6 +4,7 @@ package com.nebo.persistences;
 import jakarta.persistence.AttributeConverter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,8 +18,10 @@ public class ListIntegerConverter implements AttributeConverter<List<Integer>, S
 
     @Override
     public List<Integer> convertToEntityAttribute(String dbData) {
-        return Arrays.stream(StringUtils.split(dbData, ","))
+        if (dbData == null)
+            return null;
+        return new ArrayList<Integer>(Arrays.stream(StringUtils.split(dbData, ","))
                 .mapToInt(Integer::parseInt)
-                .boxed().toList();
+                .boxed().toList());
     }
 }

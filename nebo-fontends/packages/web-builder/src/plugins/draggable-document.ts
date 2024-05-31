@@ -11,17 +11,20 @@ export default (editor: Editor, opts: {}) => {
         ? document.querySelector<HTMLElement>(editor.config.container || "gjs")
         : editor.config.container;
     if (editorEl) {
-      const framePage = editorEl.querySelector<HTMLIFrameElement>(".gjs-frame");
       if (true) {
-        editor.Canvas.getFrameEl().draggable = true;
-        editor.Canvas.getDocument().addEventListener(
-          "mousedown",
-          function (e) {
-            console.log("mouse down");
-            isDown = true;
-          },
-          true
-        );
+        editor.on("canvas:frame:load:body", () => {
+          editor.Canvas.getDocument()
+            .querySelector("body")
+            ?.addEventListener(
+              "mousedown",
+              function (e) {
+                console.log("mouse down");
+                isDown = true;
+              },
+              true
+            );
+        });
+
         document.addEventListener(
           "mouseup",
           function () {
@@ -31,7 +34,6 @@ export default (editor: Editor, opts: {}) => {
         );
         document.addEventListener("mousemove", function (event) {
           if (isDown && event.ctrlKey) {
-            // event.preventDefault();
             var deltaX = event.movementX;
             var deltaY = event.movementY;
             var rect = editor.Canvas.getCoords();

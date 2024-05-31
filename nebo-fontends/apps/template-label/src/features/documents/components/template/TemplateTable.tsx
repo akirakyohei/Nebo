@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material";
-import { CategoryByGroup, Template } from "../../../../types";
+import { CategoryByGroup, ListResponse, Template } from "../../../../types";
 import { FilterQueryResult } from "../../../../utils/useBaseFilterQuery";
 import { TemplateFilterRequestModel } from "../../types";
 import { Masonry } from "@mui/lab";
@@ -8,39 +8,11 @@ import { defaultBlankTemplate } from "../../../../constants";
 
 interface Props {
   mode?: "list" | "icons";
-  templates: Template[];
+  templates: ListResponse<Template>;
   // filter: FilterQueryResult<TemplateFilterRequestModel>["filter"];
   // onChangeParams: FilterQueryResult<TemplateFilterRequestModel>["onChangeSearchParams"];
 }
 
-const defaultTemplates = [
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-  defaultBlankTemplate,
-];
 export const TemplateTable = ({ templates, mode = "icons" }: Props) => {
   if (mode === "icons") {
     return (
@@ -61,7 +33,7 @@ export const TemplateTable = ({ templates, mode = "icons" }: Props) => {
         rowGap={3}
         padding={3}
       >
-        {defaultTemplates.map((template, index) => (
+        {templates.data.map((template, index) => (
           <TemplateCard key={index} template={template} />
         ))}
       </Grid>

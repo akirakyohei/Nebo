@@ -34,6 +34,7 @@ export const Page = ({
   sx,
   primaryAction,
   secondaryActions,
+  fluid = false,
 }: Props) => {
   const footerMarkup = filterNonNull<ComplexAction>([
     ...(secondaryActions?.map((item) => ({ ...item, outline: true })) || []),
@@ -42,33 +43,44 @@ export const Page = ({
       : null,
   ]).map((item, index) => <Button key={index} {...item} />);
   return (
-    <Box sx={{ padding: spacing }}>
-      {(title || footerMarkup.length > 0) && (
-        <Box sx={{ marginLeft: 1, paddingBottom: 1 }}>
-          <Stack
-            direction={"row"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Typography variant="h6" fontWeight={"500"}>
-              {title}
-            </Typography>
-            <Box>
-              {footerMarkup ? <ButtonGroup>{footerMarkup}</ButtonGroup> : null}
-              {isElement(primaryAction) ? (primaryAction as ReactNode) : null}
-            </Box>
-          </Stack>
-        </Box>
-      )}
-      <Paper
-        sx={{
-          minHeight: fullHeight ? "100vh" : undefined,
-          padding: contentSpacing,
-          ...sx,
-        }}
+    <Box sx={{ padding: spacing }} display={"flex"} justifyContent={"center"}>
+      <Box
+        flex={1}
+        maxWidth={
+          !fluid
+            ? { xs: "600px", sm: "960px", md: "1280px", lg: "1024px" }
+            : undefined
+        }
       >
-        <Box>{children}</Box>
-      </Paper>
+        {(title || footerMarkup.length > 0) && (
+          <Box sx={{ marginLeft: 1, paddingBottom: 1 }}>
+            <Stack
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+            >
+              <Typography variant="h6" fontWeight={"500"}>
+                {title}
+              </Typography>
+              <Box>
+                {footerMarkup ? (
+                  <ButtonGroup>{footerMarkup}</ButtonGroup>
+                ) : null}
+                {isElement(primaryAction) ? (primaryAction as ReactNode) : null}
+              </Box>
+            </Stack>
+          </Box>
+        )}
+        <Paper
+          sx={{
+            minHeight: fullHeight ? "100vh" : undefined,
+            padding: contentSpacing,
+            ...sx,
+          }}
+        >
+          <Box>{children}</Box>
+        </Paper>
+      </Box>
     </Box>
   );
 };

@@ -20,6 +20,6 @@ public class DimTemplate {
     private String name;
     private long userKey;
     private int paperTypeKey;
-    private Instant createdOn;
-    private Instant updatedOn;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

@@ -7,7 +7,7 @@ interface Props {
   onChange: (_value?: string) => void;
 }
 
-const unitPaperTypes = ["px", "mm", "cm"];
+const unitPaperTypes = ["px", "mm", "cm", "in"];
 
 export const PaperTypeUnitSelect = ({ value, onChange }: Props) => {
   const options: Option<string>[] = unitPaperTypes.map((item) => ({

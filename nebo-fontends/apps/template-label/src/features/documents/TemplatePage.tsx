@@ -39,7 +39,6 @@ export default function TemplatePage() {
     isFilter,
     onChangeSearchParams,
     onChangeSearchParamsAll,
-    onRemoveSearchParams,
   } = useBaseFilter<TemplateFilterRequestModel>({
     keyIsListFilter: ["category_ids"],
   });
@@ -51,6 +50,7 @@ export default function TemplatePage() {
     <Page
       title="Mẫu"
       fullHeight
+      fluid
       primaryAction={{
         icon: <ControlPointOutlined />,
         content: "Thêm mẫu mới",
@@ -62,7 +62,7 @@ export default function TemplatePage() {
         onChangeSearchParams={onChangeSearchParams}
         onChangeSearchParamsAll={onChangeSearchParamsAll}
       />
-      <TemplateTable templates={templates.data} />
+      <TemplateTable templates={templates} />
       {isOpenCreateTemplate && (
         <TemplateAddModal onClose={closeCreateTemplate} />
       )}

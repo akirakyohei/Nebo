@@ -10,6 +10,6 @@ import java.time.Instant;
 public class TemplateResponse {
     private long templateId;
     private String name;
-    private Instant createdOn;
-    private Instant updatedOn;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

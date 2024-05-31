@@ -2,7 +2,6 @@ package com.nebo.sso.infrastructures.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nebo.sso.infrastructures.domain.converter.ListStringConverter;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
@@ -56,11 +54,13 @@ public class User implements Serializable {
 
     private String providerId;
 
+    private Long avatarId;
+
     @CreationTimestamp
-    private Instant createdOn;
+    private Instant createdAt;
 
     @UpdateTimestamp
-    private Instant updatedOn;
+    private Instant updatedAt;
 
     public enum AuthProvider {
         local,

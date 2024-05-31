@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/templates")
@@ -22,12 +24,12 @@ public class TemplateController {
     private final TemplateService templateService;
 
     @PostMapping
-    public TemplateResponse createTemplate(@UserId long userId, @RequestBody @Valid TemplateCreateRequest request) throws ConstraintViolationException {
+    public TemplateResponse createTemplate(@UserId long userId, @RequestBody @Valid TemplateCreateRequest request) throws ConstraintViolationException, IOException {
         return templateService.createTemplate(userId, request);
     }
 
     @PutMapping("/{id}")
-    public TemplateResponse updateTemplate(@UserId long userId, @PathVariable("id") int templateId, @RequestBody @Valid TemplateUpdateRequest request) throws ConstraintViolationException {
+    public TemplateResponse updateTemplate(@UserId long userId, @PathVariable("id") int templateId, @RequestBody @Valid TemplateUpdateRequest request) throws ConstraintViolationException, IOException {
         return templateService.updateTemplate(userId, templateId, request);
     }
 

@@ -1,7 +1,6 @@
 package com.nebo.sso.infrastructures.domain.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +35,7 @@ public class Session {
     private Instant expiredDate;
 
     @CreationTimestamp
-    private Instant createdOn;
+    private Instant createdAt;
 
     public Session(User user, String refreshToken,String token, String ipAddress, String userAgent, Instant expiredDate) {
         this.user = user;

@@ -1,6 +1,6 @@
 package com.nebo.sso.applications.services;
 
-import com.nebo.applications.config.NeboJwtConfigureProperties;
+import com.nebo.shared.security.config.NeboJwtConfigureProperties;
 import com.nebo.sso.infrastructures.domain.model.Session;
 import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

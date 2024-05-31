@@ -1,4 +1,4 @@
-import { Navigate, RouteObject } from "react-router";
+import { Navigate, Outlet, RouteObject } from "react-router";
 import { CustomizeRouteObject } from "./types";
 import { store } from "../store/store";
 import { Component, ReactNode, Suspense } from "react";
@@ -42,6 +42,7 @@ const renderComponent = (route: CustomizeRouteObject, state: RootState) => {
       element = <PComponent />;
     }
   }
+  if (element === null || element === undefined) element = <Outlet />;
 
   if (route.fallback !== undefined && route.fallback) {
     return <Suspense fallback={route.fallback}>{element}</Suspense>;

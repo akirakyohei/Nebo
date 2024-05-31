@@ -16,6 +16,7 @@ const templateApi = storefontApi.injectEndpoints({
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: { templates: ListResponse<Template> }) =>
         res.templates,
+      providesTags: (result, _error) => (result ? ["template"] : []),
     }),
     getTemplatesWithInfinite: builder.query<
       ListResponse<Template>,
@@ -42,11 +43,13 @@ const templateApi = storefontApi.injectEndpoints({
       },
       transformResponse: (response: { templates: ListResponse<Template> }) =>
         response.templates,
+      providesTags: (result, _error) => (result ? ["template"] : []),
     }),
     getTemplate: builder.query<Template, number>({
       query: (q) => `/api/templates/${q}`,
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: TemplateResponse) => res.template,
+      providesTags: (result, _error) => (result ? ["template"] : []),
     }),
     createTemplate: builder.mutation<Template, Partial<TemplateRequest>>({
       query: (q) => {
@@ -58,6 +61,7 @@ const templateApi = storefontApi.injectEndpoints({
       },
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: TemplateResponse) => res.template,
+      invalidatesTags: (result, _error) => (result ? ["template"] : []),
     }),
     updateTemplate: builder.mutation<
       Template,
@@ -72,6 +76,7 @@ const templateApi = storefontApi.injectEndpoints({
       },
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: TemplateResponse) => res.template,
+      invalidatesTags: (result, _error) => (result ? ["template"] : []),
     }),
     deleteTemplate: builder.mutation<void, number>({
       query: (q) => {
@@ -81,6 +86,7 @@ const templateApi = storefontApi.injectEndpoints({
         };
       },
       transformErrorResponse: transformAxiosErrorResponse,
+      invalidatesTags: (result, _error) => (result ? ["template"] : []),
     }),
   }),
 });

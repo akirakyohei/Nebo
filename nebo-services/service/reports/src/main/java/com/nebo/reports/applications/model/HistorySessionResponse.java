@@ -9,5 +9,5 @@ public class HistorySessionResponse {
     private long id;
     private String ipAddress;
     private String userAgent;
-    private Instant createdOn;
+    private Instant createdAt;
 }

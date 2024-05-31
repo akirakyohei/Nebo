@@ -1,26 +1,19 @@
 package com.nebo.sso.applications.services;
 
-import com.nebo.applications.config.NeboJwtConfigureProperties;
+import com.nebo.shared.security.config.NeboJwtConfigureProperties;
 import com.nebo.sso.applications.model.JwtResponse;
-import com.nebo.sso.applications.model.UserCredentialResponse;
 import com.nebo.sso.applications.model.UserDetailsImpl;
-import com.nebo.sso.applications.model.UserResponse;
 
 import com.nebo.sso.infrastructures.domain.model.User;
-import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecureDigestAlgorithm;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
 

@@ -193,14 +193,7 @@ const NavigationItem = ({
                   {item.label}
                 </Typography>
                 {hasSubNavigate && (
-                  <IconButton
-                    size="small"
-                    disableTouchRipple
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggle();
-                    }}
-                  >
+                  <IconButton size="small" disableTouchRipple>
                     {isOpenSubNavigate ? (
                       <KeyboardArrowUp />
                     ) : (
@@ -221,9 +214,10 @@ const NavigationItem = ({
         >
           <div>
             {item.subNavigation
-              ? item.subNavigation.map((sub) => {
+              ? item.subNavigation.map((sub, index) => {
                   return (
                     <Link
+                      key={index}
                       href={sub.url}
                       sx={{
                         textDecoration: "none",

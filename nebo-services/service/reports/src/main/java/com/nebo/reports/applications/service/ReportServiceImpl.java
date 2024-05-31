@@ -47,8 +47,8 @@ public class ReportServiceImpl implements ReportService {
     public HistorySessionsResponse getHistorySession(long userId, HistorySessionFilterRequest request) {
         var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
         var spec = FactSessionSpecification.toFilter(dimUser.getUserKey(), request);
-        var page = factSessionRepository.findAll(spec, request.toPageable(Sort.by(Sort.Direction.DESC, FactSession_.CREATED_ON)));
-        return HistorySessionsResponse.build(page.map(factSessionMapper::fromDomainToResponse));
+        var page = factSessionRepository.findAll(spec, request.toPageable(Sort.by(Sort.Direction.DESC, FactSession_.CREATED_AT)));
+        return new HistorySessionsResponse(page.map(factSessionMapper::fromDomainToResponse));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ReportServiceImpl implements ReportService {
         var templateKeys = !CollectionUtils.isEmpty(templateIds) ? dimTemplateRepository.findAllByUserKeyAndTemplateIdIn(dimUser.getUserKey(), templateIds).stream().map(DimTemplate::getTemplateKey).toList() : null;
         var page = factUsedTemplateRepository.getUsedTemplates(dimUser.getUserKey(), templateKeys, timeRequest, pagingFilterRequest);
         var aggregate = factUsedTemplateRepository.aggregateUsedTemplates(dimUser.getUserKey(), templateKeys, timeRequest);
-        return ((UsedTemplatesResponse) UsedTemplatesResponse.build(page.map(factUsedTemplateMapper::fromDtoToResponse))).aggregates(aggregate);
+        return (new UsedTemplatesResponse(page.map(factUsedTemplateMapper::fromDtoToResponse))).aggregates(aggregate);
     }
 
     @Override
@@ -118,6 +118,6 @@ public class ReportServiceImpl implements ReportService {
                 .stream().map(DimPaperType::getPaperTypeKey).toList() : null;
         var page = factUsedPaperTypeRepository.getUsedPaperTypes(dimUser.getUserKey(), paperTypeKeys, timeRequest, pagingFilterRequest);
         var aggregate = factUsedPaperTypeRepository.aggregateUsedPaperTypes(dimUser.getUserKey(), paperTypeKeys, timeRequest);
-        return ((UsedPaperTypesResponse) UsedPaperTypesResponse.build(page.map(factUsedPaperTypeMapper::fromDtoToResponse))).aggregates(aggregate);
+        return (new UsedPaperTypesResponse(page.map(factUsedPaperTypeMapper::fromDtoToResponse))).aggregates(aggregate);
     }
 }

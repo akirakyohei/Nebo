@@ -1,8 +1,6 @@
 package com.nebo.reports.applications.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,9 +32,9 @@ public class User {
 
     private String providerId;
 
-    private Instant createdOn;
+    private Instant createdAt;
 
-    private Instant updatedOn;
+    private Instant updatedAt;
 
     public enum AuthProvider {
         local,

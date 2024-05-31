@@ -12,8 +12,11 @@ import {
 import { ZoomButton } from "./ZoomButton";
 import { EditorContext } from "../context/EditorContext";
 import zoom from "../plugins/zoom";
-import grapesjs from "grapesjs";
-export const Toolbar = () => {
+import grapesjs, { Editor } from "grapesjs";
+interface Props {
+  editor: Editor;
+}
+export const Toolbar = ({ editor }: Props) => {
   const [hasUndo, setHasUndo] = useState(false);
   const [hasRedo, setHasRedo] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(
@@ -24,7 +27,7 @@ export const Toolbar = () => {
   const [dragMode, setDragMode] = useState<"absolute" | "translate">(
     "absolute"
   );
-  const { editor } = useContext(EditorContext);
+  // const { editor } = useContext(EditorContext);
 
   useEffect(() => {
     setInterval(() => {

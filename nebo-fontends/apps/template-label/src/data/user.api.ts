@@ -1,4 +1,10 @@
-import { UserCreateRequest, UserLoginRequest, UserToken } from "../types";
+import {
+  User,
+  UserCreateRequest,
+  UserLoginRequest,
+  UserToken,
+  UserUpdateRequest,
+} from "../types";
 import { storefontApi, transformAxiosErrorResponse } from "./api";
 
 export const userApi = storefontApi.injectEndpoints({
@@ -48,6 +54,17 @@ export const userApi = storefontApi.injectEndpoints({
       },
       transformErrorResponse: transformAxiosErrorResponse,
     }),
+    updateAccount: builder.mutation<User, UserUpdateRequest>({
+      query: (q) => {
+        return {
+          url: `/api/users/current_user`,
+          method: "POST",
+          body: { user: q },
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      transformResponse: (response: { user: User }) => response.user,
+    }),
   }),
 });
 
@@ -56,4 +73,5 @@ export const {
   useSignupMutation,
   useRefreshTokenQuery,
   useLogoutMutation,
+  useUpdateAccountMutation,
 } = userApi;

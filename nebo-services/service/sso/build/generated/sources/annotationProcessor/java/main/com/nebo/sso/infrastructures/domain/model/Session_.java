@@ -12,6 +12,11 @@ public abstract class Session_ {
 
 	
 	/**
+	 * @see com.nebo.sso.infrastructures.domain.model.Session#createdAt
+	 **/
+	public static volatile SingularAttribute<Session, Instant> createdAt;
+	
+	/**
 	 * @see com.nebo.sso.infrastructures.domain.model.Session#expiredDate
 	 **/
 	public static volatile SingularAttribute<Session, Instant> expiredDate;
@@ -42,11 +47,6 @@ public abstract class Session_ {
 	public static volatile SingularAttribute<Session, User> user;
 	
 	/**
-	 * @see com.nebo.sso.infrastructures.domain.model.Session#createdOn
-	 **/
-	public static volatile SingularAttribute<Session, Instant> createdOn;
-	
-	/**
 	 * @see com.nebo.sso.infrastructures.domain.model.Session#refreshToken
 	 **/
 	public static volatile SingularAttribute<Session, String> refreshToken;
@@ -56,12 +56,12 @@ public abstract class Session_ {
 	 **/
 	public static volatile SingularAttribute<Session, String> token;
 
+	public static final String CREATED_AT = "createdAt";
 	public static final String EXPIRED_DATE = "expiredDate";
 	public static final String IP_ADDRESS = "ipAddress";
 	public static final String USER_AGENT = "userAgent";
 	public static final String ID = "id";
 	public static final String USER = "user";
-	public static final String CREATED_ON = "createdOn";
 	public static final String REFRESH_TOKEN = "refreshToken";
 	public static final String TOKEN = "token";
 

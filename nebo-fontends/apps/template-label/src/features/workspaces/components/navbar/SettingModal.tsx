@@ -34,7 +34,7 @@ interface Props {
 type InputModel = {
   name: string;
   category_ids: number[];
-  paper_id: number;
+  paper_type_id: number;
   options: TemplateOptions;
 };
 export const SettingModal = ({ open, onClose, template }: Props) => {
@@ -54,7 +54,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
       () => ({
         name: template.name,
         category_ids: template.category_ids,
-        paper_id: template.paper_id,
+        paper_type_id: template.paper_type_id,
         options: template.options,
       }),
       [template]
@@ -68,6 +68,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
         request: {
           category_ids: data.category_ids,
           name: data.name,
+          paper_type_id: data.paper_type_id,
+          options: data.options,
         },
       });
       showToast("Lưu mẫu thành công");
@@ -155,8 +157,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                       }}
                       // eslint-disable-next-line @typescript-eslint/no-unused-vars
                       render={({ field: { ref, ...otherProps } }) => {
-                        const error = control._formState.errors[otherProps.name]
-                          ?.message as any;
+                        const error =
+                          control._formState.errors[otherProps.name]?.message;
                         return (
                           <Box>
                             <TextField
@@ -183,8 +185,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                       name="category_ids"
                       // eslint-disable-next-line @typescript-eslint/no-unused-vars
                       render={({ field: { ref, ...otherProps } }) => {
-                        const error = control._formState.errors[otherProps.name]
-                          ?.message as any;
+                        const error =
+                          control._formState.errors[otherProps.name]?.message;
                         return (
                           <CategoryTemplateSelect
                             values={otherProps.value}
@@ -269,10 +271,17 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                   <Grid item>
                     <Controller
                       control={control}
-                      name="options.is_landscape"
+                      name="options.landscape"
                       // eslint-disable-next-line @typescript-eslint/no-unused-vars
                       render={({ field: { ref, ...otherProps } }) => {
-                        return <Switch {...otherProps} />;
+                        return (
+                          <Switch
+                            checked={otherProps.value}
+                            onChange={(_value) => {
+                              otherProps.onChange(_value.target.checked);
+                            }}
+                          />
+                        );
                       }}
                     />
                   </Grid>
@@ -282,11 +291,11 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                   <Grid item>
                     <Controller
                       control={control}
-                      name="paper_id"
+                      name="paper_type_id"
                       // eslint-disable-next-line @typescript-eslint/no-unused-vars
                       render={({ field: { ref, ...otherProps } }) => {
-                        const error = control._formState.errors[otherProps.name]
-                          ?.message as any;
+                        const error =
+                          control._formState.errors[otherProps.name]?.message;
                         return (
                           <Box>
                             <PaperTypeSelect
@@ -301,7 +310,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                     );
                                     setValue(
                                       "options.width",
-                                      `${_value.width}${_value.unit_of_with}`
+                                      `${_value.width}${_value.unit_of_width}`
                                     );
                                   }
                                 }
@@ -313,7 +322,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                       }}
                     />
                   </Grid>
-                  {watch("paper_id") !== 0 && (
+                  {watch("paper_type_id") === 0 && (
                     <>
                       <Grid item>
                         <Typography>Chiều rộng</Typography>
@@ -336,7 +345,9 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                     fullWidth
                                     value={value}
                                     onChange={(_value) => {
-                                      otherProps.onChange(`${_value}${unit}`);
+                                      const num =
+                                        Number(_value.target.value) || 0;
+                                      otherProps.onChange(`${num}${unit}`);
                                     }}
                                     sx={{
                                       borderTopRightRadius: "0",
@@ -376,7 +387,9 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                     fullWidth
                                     value={value}
                                     onChange={(_value) => {
-                                      otherProps.onChange(`${_value}${unit}`);
+                                      const num =
+                                        Number(_value.target.value) || 0;
+                                      otherProps.onChange(`${num}${unit}`);
                                     }}
                                     sx={{
                                       borderTopRightRadius: "0",
@@ -435,7 +448,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                 fullWidth
                                 value={value}
                                 onChange={(_value) => {
-                                  otherProps.onChange(`${_value}${unit}`);
+                                  const num = Number(_value.target.value) || 0;
+                                  otherProps.onChange(`${num}${unit}`);
                                 }}
                                 sx={{
                                   borderTopRightRadius: "0",
@@ -473,7 +487,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                 fullWidth
                                 value={value}
                                 onChange={(_value) => {
-                                  otherProps.onChange(`${_value}${unit}`);
+                                  const num = Number(_value.target.value) || 0;
+                                  otherProps.onChange(`${num}${unit}`);
                                 }}
                                 sx={{
                                   borderTopRightRadius: "0",
@@ -511,7 +526,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                 fullWidth
                                 value={value}
                                 onChange={(_value) => {
-                                  otherProps.onChange(`${_value}${unit}`);
+                                  const num = Number(_value.target.value) || 0;
+                                  otherProps.onChange(`${num}${unit}`);
                                 }}
                                 sx={{
                                   borderTopRightRadius: "0",
@@ -549,7 +565,8 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                                 fullWidth
                                 value={value}
                                 onChange={(_value) => {
-                                  otherProps.onChange(`${_value}${unit}`);
+                                  const num = Number(_value.target.value) || 0;
+                                  otherProps.onChange(`${num}${unit}`);
                                 }}
                                 InputProps={{
                                   sx: {
@@ -576,36 +593,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
           </Grid>
         </Stack>
       </Modal.Section>
-
       {isOpenConfirmClear && (
-        <Modal
-          open
-          onClose={toggleConfirmClear}
-          title="Làm rỗng mẫu"
-          primaryAction={{
-            content: "Lưu",
-            loading: isSubmitting,
-            onAction: submit,
-            color: "error",
-          }}
-          secondaryActions={[
-            {
-              content: "Hủy",
-              disabled: isSubmitting,
-              onAction: onClose,
-              color: "error",
-            },
-          ]}
-        >
-          <Modal.Section>
-            <Typography>
-              Thao tác này sẽ xóa tất cả các phần tử có trong mẫu
-            </Typography>
-          </Modal.Section>
-        </Modal>
-      )}
-
-        {isOpenConfirmClear && (
         <Modal
           open
           onClose={toggleConfirmClear}

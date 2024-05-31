@@ -24,14 +24,36 @@ import {
   useGetAccountSettingData,
 } from "./hooks/useGetAccountSettingData";
 import { stringAvatar } from "../../utils/stringAvatar";
+import { useToggle } from "../../utils/useToggle";
+import { UpdateAvatarModal } from "./components/account/UpdateAvatarModal";
+import { UpdateAccountModal } from "./components/account/UpdateAccountModal";
+import { ChangePasswordModal } from "./components/account/ChangePasswordModal";
 
-export default function IntegrationSettingPage() {
+export default function AccountSettingPage() {
+  const {
+    value: isOpenUpdateAvatar,
+    setTrue: openUpdateAvatar,
+    setFalse: closeUpdateAvatar,
+  } = useToggle(false);
+
+  const {
+    value: isOpenUpdateAccountModal,
+    setTrue: openUpdateAccountModal,
+    setFalse: closeUpdateAccountModal,
+  } = useToggle(true);
+
+  const {
+    value: isOpenChangePasswordModal,
+    setTrue: openChangePasswordModal,
+    setFalse: closeChangePasswordModal,
+  } = useToggle(false);
+
   const {
     currentUser = {
       first_name: "dsk",
       last_name: "dsj",
       id: 0,
-      image_url: "",
+      avatar_url: "",
       email: "",
       phone_number: "",
       permissions: [],
@@ -52,17 +74,19 @@ export default function IntegrationSettingPage() {
         {
           icon: <Edit />,
           content: "Sửa",
+          onAction: openUpdateAccountModal,
         },
         {
           icon: <PublishedWithChanges />,
           content: "Đổi mật khẩu",
+          onAction: openChangePasswordModal,
         },
       ]}
     >
       <Stack gap={3}>
         <Stack>
           <Box>
-            <Typography>Thông tin tài khoản</Typography>
+            <Typography variant="h6">Thông tin tài khoản</Typography>
           </Box>
           <Box flex={1}>
             <Grid display={"grid"} gridTemplateColumns={"30% auto"}>
@@ -82,7 +106,7 @@ export default function IntegrationSettingPage() {
                   }}
                 >
                   <Avatar
-                    src={currentUser.image_url}
+                    src={currentUser.avatar_url}
                     {...stringAvatar(
                       currentUser.first_name,
                       currentUser.last_name,
@@ -106,6 +130,7 @@ export default function IntegrationSettingPage() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
+                    onClick={openUpdateAvatar}
                   >
                     <Typography>Sửa</Typography>
                   </Box>
@@ -113,19 +138,19 @@ export default function IntegrationSettingPage() {
               </Box>
               <Table>
                 <TableBody>
-                  <TableRow>
+                  <TableRow sx={{ background: "#fafafb" }}>
                     <TableCell>Họ</TableCell>
                     <TableCell>{currentUser.last_name}</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow sx={{ background: "#fafafb" }}>
                     <TableCell>Tên</TableCell>
                     <TableCell>{currentUser.first_name}</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow sx={{ background: "#fafafb" }}>
                     <TableCell>Email</TableCell>
                     <TableCell>{currentUser.email}</TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow sx={{ background: "#fafafb" }}>
                     <TableCell>Số điện thoại</TableCell>
                     <TableCell>{currentUser.phone_number}</TableCell>
                   </TableRow>
@@ -138,12 +163,12 @@ export default function IntegrationSettingPage() {
         {historySessions?.data && historySessions?.data?.length > 0 ? (
           <Stack>
             <Box>
-              <Typography>Lịch sử đăng nhập</Typography>
+              <Typography variant="h6">Lịch sử đăng nhập</Typography>
             </Box>
             <Box flex={1}>
               <Table>
                 <TableHead>
-                  <TableRow>
+                  <TableRow sx={{ background: "#fafafb" }}>
                     <TableCell>Ip</TableCell>
                     <TableCell>Thiết bị</TableCell>
                     <TableCell>Hệ điều hành</TableCell>
@@ -151,8 +176,8 @@ export default function IntegrationSettingPage() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {historySessions.data.map((session) => (
-                    <TableRow>
+                  {historySessions.data.map((session, index) => (
+                    <TableRow key={index} sx={{ background: "#fafafb" }}>
                       <TableCell>{session.ip_address}</TableCell>
                       <TableCell>{session.device.model}</TableCell>
                       <TableCell>{session.os.name}</TableCell>
@@ -164,6 +189,27 @@ export default function IntegrationSettingPage() {
             </Box>
           </Stack>
         ) : null}
+        {isOpenUpdateAvatar && (
+          <UpdateAvatarModal
+            open
+            onClose={closeUpdateAvatar}
+            user={currentUser}
+          />
+        )}
+        {isOpenUpdateAccountModal && (
+          <UpdateAccountModal
+            open
+            onClose={closeUpdateAccountModal}
+            user={currentUser}
+          />
+        )}
+        {isOpenChangePasswordModal && (
+          <ChangePasswordModal
+            open
+            onClose={closeChangePasswordModal}
+            user={currentUser}
+          />
+        )}
       </Stack>
     </Page>
   );

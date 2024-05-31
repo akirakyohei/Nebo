@@ -46,6 +46,37 @@ public final class AuthenticationServiceGrpc {
     return getIsBlackListTokenMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.nebo.grpc.lib.AppClientAuthenticationRequest,
+      com.nebo.grpc.lib.AppClientAuthenticationResponse> getAuthenticateAppClientMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "authenticateAppClient",
+      requestType = com.nebo.grpc.lib.AppClientAuthenticationRequest.class,
+      responseType = com.nebo.grpc.lib.AppClientAuthenticationResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.nebo.grpc.lib.AppClientAuthenticationRequest,
+      com.nebo.grpc.lib.AppClientAuthenticationResponse> getAuthenticateAppClientMethod() {
+    io.grpc.MethodDescriptor<com.nebo.grpc.lib.AppClientAuthenticationRequest, com.nebo.grpc.lib.AppClientAuthenticationResponse> getAuthenticateAppClientMethod;
+    if ((getAuthenticateAppClientMethod = AuthenticationServiceGrpc.getAuthenticateAppClientMethod) == null) {
+      synchronized (AuthenticationServiceGrpc.class) {
+        if ((getAuthenticateAppClientMethod = AuthenticationServiceGrpc.getAuthenticateAppClientMethod) == null) {
+          AuthenticationServiceGrpc.getAuthenticateAppClientMethod = getAuthenticateAppClientMethod =
+              io.grpc.MethodDescriptor.<com.nebo.grpc.lib.AppClientAuthenticationRequest, com.nebo.grpc.lib.AppClientAuthenticationResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "authenticateAppClient"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.nebo.grpc.lib.AppClientAuthenticationRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.nebo.grpc.lib.AppClientAuthenticationResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new AuthenticationServiceMethodDescriptorSupplier("authenticateAppClient"))
+              .build();
+        }
+      }
+    }
+    return getAuthenticateAppClientMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -100,6 +131,13 @@ public final class AuthenticationServiceGrpc {
         io.grpc.stub.StreamObserver<com.nebo.grpc.lib.BlackListResultResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getIsBlackListTokenMethod(), responseObserver);
     }
+
+    /**
+     */
+    default void authenticateAppClient(com.nebo.grpc.lib.AppClientAuthenticationRequest request,
+        io.grpc.stub.StreamObserver<com.nebo.grpc.lib.AppClientAuthenticationResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAuthenticateAppClientMethod(), responseObserver);
+    }
   }
 
   /**
@@ -136,6 +174,14 @@ public final class AuthenticationServiceGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getIsBlackListTokenMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void authenticateAppClient(com.nebo.grpc.lib.AppClientAuthenticationRequest request,
+        io.grpc.stub.StreamObserver<com.nebo.grpc.lib.AppClientAuthenticationResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getAuthenticateAppClientMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -159,6 +205,13 @@ public final class AuthenticationServiceGrpc {
     public com.nebo.grpc.lib.BlackListResultResponse isBlackListToken(com.nebo.grpc.lib.AuthenticationRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getIsBlackListTokenMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.nebo.grpc.lib.AppClientAuthenticationResponse authenticateAppClient(com.nebo.grpc.lib.AppClientAuthenticationRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getAuthenticateAppClientMethod(), getCallOptions(), request);
     }
   }
 
@@ -185,9 +238,18 @@ public final class AuthenticationServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getIsBlackListTokenMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.nebo.grpc.lib.AppClientAuthenticationResponse> authenticateAppClient(
+        com.nebo.grpc.lib.AppClientAuthenticationRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getAuthenticateAppClientMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_IS_BLACK_LIST_TOKEN = 0;
+  private static final int METHODID_AUTHENTICATE_APP_CLIENT = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -209,6 +271,10 @@ public final class AuthenticationServiceGrpc {
         case METHODID_IS_BLACK_LIST_TOKEN:
           serviceImpl.isBlackListToken((com.nebo.grpc.lib.AuthenticationRequest) request,
               (io.grpc.stub.StreamObserver<com.nebo.grpc.lib.BlackListResultResponse>) responseObserver);
+          break;
+        case METHODID_AUTHENTICATE_APP_CLIENT:
+          serviceImpl.authenticateAppClient((com.nebo.grpc.lib.AppClientAuthenticationRequest) request,
+              (io.grpc.stub.StreamObserver<com.nebo.grpc.lib.AppClientAuthenticationResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -235,6 +301,13 @@ public final class AuthenticationServiceGrpc {
               com.nebo.grpc.lib.AuthenticationRequest,
               com.nebo.grpc.lib.BlackListResultResponse>(
                 service, METHODID_IS_BLACK_LIST_TOKEN)))
+        .addMethod(
+          getAuthenticateAppClientMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.nebo.grpc.lib.AppClientAuthenticationRequest,
+              com.nebo.grpc.lib.AppClientAuthenticationResponse>(
+                service, METHODID_AUTHENTICATE_APP_CLIENT)))
         .build();
   }
 
@@ -284,6 +357,7 @@ public final class AuthenticationServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new AuthenticationServiceFileDescriptorSupplier())
               .addMethod(getIsBlackListTokenMethod())
+              .addMethod(getAuthenticateAppClientMethod())
               .build();
         }
       }

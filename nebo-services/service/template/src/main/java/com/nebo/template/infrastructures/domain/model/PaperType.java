@@ -13,9 +13,9 @@ public class PaperType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private long width;
+    private Long width;
     private String unitOfWidth;
-    private long height;
+    private Long height;
     private String unitOfHeight;
     private String description;
 }

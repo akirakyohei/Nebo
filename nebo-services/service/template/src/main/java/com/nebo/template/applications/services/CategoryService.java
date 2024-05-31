@@ -70,10 +70,10 @@ public class CategoryService {
     }
 
     public CategoriesResponse getCategories(long userId, CategoryFilterRequest request) {
-        var pageable = request.toPageable(Sort.by(Sort.Direction.DESC, Category_.CREATED_ON));
+        var pageable = request.toPageable(Sort.by(Sort.Direction.DESC, Category_.CREATED_AT));
         var spec = CategorySpecification.toFilter(userId, request);
         var page = categoryRepository.findAll(spec, pageable);
-        return CategoriesResponse.build(page.map(categoryMapper::fromDomainToResponse));
+        return new CategoriesResponse(page.map(categoryMapper::fromDomainToResponse));
     }
 
     public CategoriesResponse getDefaultCategories(CategoryFilterRequest request) {

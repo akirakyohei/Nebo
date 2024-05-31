@@ -13,5 +13,5 @@ public class Session {
     private String refreshToken;
     private String token;
     private Instant expiredDate;
-    private Instant createdOn;
+    private Instant createdAt;
 }

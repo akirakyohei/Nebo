@@ -61,18 +61,18 @@ export const GROUP_CATEGORIES: GroupCategory[] = [
 export const defaultBlankTemplate: Template = {
   name: "Mẫu mặc định",
   category_ids: [],
-  paper_id: 1,
+  paper_type_id: 2,
   assets: [],
   components: [],
   css: "",
   styles: "",
   html: "",
-  is_active: true,
+  active: true,
   options: {
-    format: "A4 (210mm x 542mm)",
-    height: "542mm",
+    format: "A4 (210mm x 297mm)",
+    height: "297mm",
     width: "210mm",
-    is_landscape: false,
+    landscape: false,
     margin: {
       bottom: "0px",
       left: "0px",
@@ -87,11 +87,11 @@ export const defaultBlankTemplate: Template = {
     updated_at: "",
   },
   size: 0,
-  created_on: "2024-05-24T17:18:41.959Z",
-  updated_on: "2024-05-24T17:18:41.959Z",
+  created_at: "2024-05-24T17:18:41.959Z",
+  updated_at: "2024-05-24T17:18:41.959Z",
   id: 0,
   user_id: 0,
-  is_trashed: false,
+  trashed: false,
 };
 
 export const defaultFileUpload: FileDataUpload = {

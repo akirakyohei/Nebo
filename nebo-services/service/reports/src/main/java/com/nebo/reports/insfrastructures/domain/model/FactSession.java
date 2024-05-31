@@ -16,5 +16,5 @@ public class FactSession {
     private long userKey;
     private String ipAddress;
     private String userAgent;
-    private Instant createdOn;
+    private Instant createdAt;
 }

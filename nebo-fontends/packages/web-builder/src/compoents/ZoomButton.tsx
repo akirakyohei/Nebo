@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const ZoomButton = ({
-  defaultValue = 100,
+  defaultValue = 0,
   getZoom,
   onZoom,
   onZoomIn,
@@ -27,6 +27,7 @@ export const ZoomButton = ({
   useEffect(() => {
     setInterval(() => {
       const _value = getZoom?.() || defaultValue;
+      debugger;
       if (_value !== value) {
         setValue(_value);
       }
@@ -54,8 +55,11 @@ export const ZoomButton = ({
           <Form.Control
             value={value}
             onChange={(_value) => {
-              const _num = Number(_value.target.value);
-              if (!isNaN(_num) && _num >= 1 && _num <= 300) onZoom(_num);
+              const _num = Number(_value.target.value) || 0;
+              if (!isNaN(_num) && _num >= 0 && _num <= 300) setValue(_num);
+            }}
+            onBlur={() => {
+              onZoom(value > 1 ? value : 100);
             }}
             style={{ width: "5rem" }}
           ></Form.Control>

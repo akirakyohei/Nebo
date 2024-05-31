@@ -1,11 +1,7 @@
 package com.nebo.reports.applications.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -20,5 +16,5 @@ public class PrintLog {
 
     private long paperTypeId;
 
-    private Instant createdOn;
+    private Instant createdAt;
 }

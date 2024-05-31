@@ -1,3 +1,5 @@
+import { FileDataUploadRequest } from "./mediafile";
+
 export type UserCredentials = {
   id: number;
   first_name: string;
@@ -12,6 +14,16 @@ export type UserCreateRequest = {
   email?: string;
   password: string;
   phone_number?: string;
+};
+
+export type UserUpdateRequest = {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  password?: string;
+  phone_number?: string;
+  avatar?: FileDataUploadRequest;
+  confirm_password?: string;
 };
 
 export type UserLoginRequest = {
@@ -33,7 +45,7 @@ export type User = {
   id: number;
   first_name: string;
   last_name: string;
-  image_url: string;
+  avatar_url: string;
   email: string;
   phone_number: string;
   permissions: string[];

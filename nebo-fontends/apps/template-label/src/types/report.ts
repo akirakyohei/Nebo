@@ -5,7 +5,7 @@ export type HistorySession = {
   id: number;
   ip_address: string;
   user_agent: string;
-  created_on: string;
+  created_at: string;
 };
 
 export type HistorySessionFilterRequest = PageFilterRequest & {};
@@ -29,8 +29,8 @@ export type ReportPaperType = {
 export type ReportTemplate = {
   template_id: number;
   name: string;
-  created_on: string;
-  updated_on: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type TopUsedPaperType = {

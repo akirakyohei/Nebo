@@ -32,7 +32,7 @@ import java.util.Map;
 @Configuration
 @ComponentScan({"com.nebo"})
 @EntityScan(basePackages = "com.nebo")
-@EnableJpaRepositories(basePackages = "com.nebo")
+//@EnableJpaRepositories(basePackages = "com.nebo")
 public class DatasourceAutoConfiguration {
 
     @Bean("main")

@@ -203,15 +203,15 @@ export const TemplateFilters = ({
             >
               <Select
                 value={
-                  filter.is_active !== undefined
-                    ? filter.is_active === "true"
+                  filter.active !== undefined
+                    ? filter.active === "true"
                       ? "active"
                       : "inactive"
                     : "all"
                 }
                 onChange={(_value) => {
                   onChangeSearchParams(
-                    "is_active",
+                    "active",
                     _value.target.value === "all"
                       ? undefined
                       : _value.target.value === "active"

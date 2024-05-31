@@ -57,7 +57,7 @@ export const SignupCard = () => {
         password: data.password,
       }).unwrap();
       showToast("Tạo tài khoản thành công");
-      navigate("/workspace");
+      navigate("/documents");
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
@@ -123,7 +123,7 @@ export const SignupCard = () => {
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     render={({ field: { ref, ...otherProps } }) => {
                       const error = control._formState.errors[otherProps.name]
-                        ?.message as any;
+                        ?.message ;
                       return (
                         <TextField
                           label="Họ"
@@ -154,7 +154,7 @@ export const SignupCard = () => {
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     render={({ field: { ref, ...otherProps } }) => {
                       const error = control._formState.errors[otherProps.name]
-                        ?.message as any;
+                        ?.message ;
                       return (
                         <TextField
                           label="Tên"
@@ -205,7 +205,7 @@ export const SignupCard = () => {
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: { ref, ...otherProps } }) => {
                     const error = control._formState.errors[otherProps.name]
-                      ?.message as any;
+                      ?.message ;
                     return (
                       <TextField
                         label="Email hoặc số điện thoại"
@@ -260,7 +260,7 @@ export const SignupCard = () => {
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: { ref, ...otherProps } }) => {
                     const error = control._formState.errors[otherProps.name]
-                      ?.message as any;
+                      ?.message ;
                     return (
                       <PasswordField
                         label="Mật khẩu"

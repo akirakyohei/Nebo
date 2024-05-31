@@ -20,6 +20,6 @@ public class Category {
     private long userId;
     private int groupId;
     private String name;
-    private Instant createdOn;
-    private Instant updatedOn;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

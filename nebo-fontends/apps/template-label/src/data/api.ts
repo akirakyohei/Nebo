@@ -95,7 +95,7 @@ export function transformAxiosErrorResponse({
 export const storefontApi = createApi({
   reducerPath: "storefontApi",
   baseQuery: axiosBaseQuery(),
-  tagTypes: ["credentials"],
+  tagTypes: ["credentials", "template","media_file","category","api_key"],
   endpoints: (builder) => ({
     getCurrentUser: builder.query<User, void>({
       query: () => {

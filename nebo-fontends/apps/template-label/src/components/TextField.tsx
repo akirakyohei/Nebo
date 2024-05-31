@@ -1,8 +1,12 @@
-import { TextFieldProps, TextField as TextFieldMUI } from "@mui/material";
+import {
+  TextFieldProps as MITextFieldProps,
+  TextField as TextFieldMUI,
+} from "@mui/material";
 
-export const TextField = ({
-  ...props
-}: TextFieldProps & { error?: string }) => {
+export type TextFieldProps = Omit<MITextFieldProps, "error"> & {
+  error?: string;
+};
+export const TextField = ({ ...props }: TextFieldProps) => {
   return (
     <TextFieldMUI
       {...props}

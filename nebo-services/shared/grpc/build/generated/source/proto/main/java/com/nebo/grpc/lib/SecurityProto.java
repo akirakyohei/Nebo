@@ -25,6 +25,16 @@ public final class SecurityProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_nebo_grpc_security_BlackListResultResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_nebo_grpc_security_AppClientAuthenticationRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_nebo_grpc_security_AppClientAuthenticationRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_nebo_grpc_security_AppClientAuthenticationResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_nebo_grpc_security_AppClientAuthenticationResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -37,12 +47,19 @@ public final class SecurityProto {
       "\n\016security.proto\022\026com.nebo.grpc.security" +
       "\"7\n\025AuthenticationRequest\022\r\n\005token\030\001 \001(\t" +
       "\022\017\n\007user_id\030\002 \001(\003\"(\n\027BlackListResultResp" +
-      "onse\022\r\n\005block\030\001 \001(\0102\215\001\n\025AuthenticationSe" +
-      "rvice\022t\n\020isBlackListToken\022-.com.nebo.grp" +
-      "c.security.AuthenticationRequest\032/.com.n" +
-      "ebo.grpc.security.BlackListResultRespons" +
-      "e\"\000B$\n\021com.nebo.grpc.libB\rSecurityProtoP" +
-      "\001b\006proto3"
+      "onse\022\r\n\005block\030\001 \001(\010\"1\n\036AppClientAuthenti" +
+      "cationRequest\022\017\n\007api_key\030\001 \001(\t\"r\n\037AppCli" +
+      "entAuthenticationResponse\022\n\n\002id\030\001 \001(\003\022\017\n" +
+      "\007user_id\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\024\n\014access_t" +
+      "oken\030\004 \001(\t\022\016\n\006scopes\030\005 \003(\t2\232\002\n\025Authentic" +
+      "ationService\022t\n\020isBlackListToken\022-.com.n" +
+      "ebo.grpc.security.AuthenticationRequest\032" +
+      "/.com.nebo.grpc.security.BlackListResult" +
+      "Response\"\000\022\212\001\n\025authenticateAppClient\0226.c" +
+      "om.nebo.grpc.security.AppClientAuthentic" +
+      "ationRequest\0327.com.nebo.grpc.security.Ap" +
+      "pClientAuthenticationResponse\"\000B$\n\021com.n" +
+      "ebo.grpc.libB\rSecurityProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -60,6 +77,18 @@ public final class SecurityProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_nebo_grpc_security_BlackListResultResponse_descriptor,
         new java.lang.String[] { "Block", });
+    internal_static_com_nebo_grpc_security_AppClientAuthenticationRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_nebo_grpc_security_AppClientAuthenticationRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_nebo_grpc_security_AppClientAuthenticationRequest_descriptor,
+        new java.lang.String[] { "ApiKey", });
+    internal_static_com_nebo_grpc_security_AppClientAuthenticationResponse_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_nebo_grpc_security_AppClientAuthenticationResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_nebo_grpc_security_AppClientAuthenticationResponse_descriptor,
+        new java.lang.String[] { "Id", "UserId", "Name", "AccessToken", "Scopes", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

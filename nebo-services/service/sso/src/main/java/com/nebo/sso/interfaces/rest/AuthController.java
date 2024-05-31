@@ -1,6 +1,6 @@
 package com.nebo.sso.interfaces.rest;
 
-import com.nebo.applications.config.NeboJwtConfigureProperties;
+import com.nebo.shared.security.config.NeboJwtConfigureProperties;
 import com.nebo.sso.applications.model.JwtResponse;
 import com.nebo.sso.applications.model.UserCreateRequest;
 import com.nebo.sso.applications.model.UserLoginRequest;
@@ -16,8 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.util.IOTools;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
