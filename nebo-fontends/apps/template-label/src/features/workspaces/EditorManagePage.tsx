@@ -30,7 +30,14 @@ export default function EditorManagePage() {
   const [designing, setDesigning] = useState(true);
 
   const {
-    data: template,
+    data: template = {
+      options: {
+        width: "210mm",
+        height: "297mm",
+        margin: { top: "0px", bottom: "0px", left: "0px", right: "0px" },
+        landscape: false,
+      },
+    },
     isLoading: isLoading,
     isFetching: isFetching,
   } = useGetTemplateQuery(templateId, { skip: !templateId });
@@ -66,7 +73,7 @@ export default function EditorManagePage() {
     setDesigning(_value);
   };
 
-  if (isLoading || !template) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   // if (!template) return <Navigate to={"/"} />;
 

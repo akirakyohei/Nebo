@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Button,
   ButtonGroup,
@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 
 interface Props {
-  defaultValue?: number;
+  value?: number;
   getZoom?: () => number;
   onZoom: (value: number) => void;
   onZoomIn: () => void;
@@ -17,22 +17,30 @@ interface Props {
 }
 
 export const ZoomButton = ({
-  defaultValue = 0,
+  value: valueData = 0,
   getZoom,
   onZoom,
   onZoomIn,
   onZoomOut,
 }: Props) => {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(valueData);
+  const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    setInterval(() => {
-      const _value = getZoom?.() || defaultValue;
-      debugger;
-      if (_value !== value) {
-        setValue(_value);
-      }
-    }, 1000);
-  }, []);
+    if (valueData !== value) {
+      setValue(valueData);
+    }
+  }, [valueData]);
+  // useEffect(() => {
+  //   const refreshZoom = setInterval(() => {
+  //     const _value = getZoom?.() || defaultValue;
+  //     if (_value !== value && ref.current?.id !== document.activeElement?.id) {
+  //       setValue(_value);
+  //     }
+  //   }, 1000);
+  //   return () => {
+  //     clearInterval(refreshZoom);
+  //   };
+  // }, []);
   return (
     <InputGroup>
       <OverlayTrigger
@@ -53,6 +61,8 @@ export const ZoomButton = ({
       >
         <>
           <Form.Control
+            id="dlksdksdlkmsd"
+            ref={ref}
             value={value}
             onChange={(_value) => {
               const _num = Number(_value.target.value) || 0;

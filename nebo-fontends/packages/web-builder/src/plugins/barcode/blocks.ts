@@ -4,13 +4,9 @@ import { BarcodeBlockOptions, BarcodePluginOptions } from "./types";
 
 export const barcodeBlock: BarcodeBlockOptions = {
   label: "Barcode",
-  media: `<svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <g>
-      <path fill="none" d="M0 0h24v24H0z"/>
-      <path d="M2 4h2v16H2V4zm4 0h1v16H6V4zm2 0h2v16H8V4zm3 0h2v16h-2V4zm3 0h2v16h-2V4zm3 0h1v16h-1V4zm2 0h3v16h-3V4z"/>
-  </g>
-</svg>
-`,
+  media: `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6h2v12H2zm3 0h1v12H5zm2 0h3v12H7zm4 0h1v12h-1zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/></svg>
+  `,
   category: "Content",
   active: true,
   select: true,
@@ -20,9 +16,9 @@ export const barcodeBlock: BarcodeBlockOptions = {
 };
 
 export default (editor: Editor, options: BarcodePluginOptions) => {
-  const bm = editor.BlockManager;
+  const {BlockManager} = editor;
   const { blocks = [], blockBarcode = {} } = options;
   if (!blocks || !Array.isArray(blocks)) return;
   if (blocks.includes(cmpId))
-    bm.add(cmpId, { ...barcodeBlock, ...blockBarcode });
+    BlockManager.add(cmpId, { ...barcodeBlock, ...blockBarcode });
 };

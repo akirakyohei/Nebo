@@ -1,9 +1,16 @@
-import { ComponentDefinition, Editor } from "grapesjs";
+import {
+  ComponentDefinition,
+  Editor,
+  TraitOption,
+  TraitProperties,
+} from "grapesjs";
 import { BarcodePluginOptions } from "./types";
 import { cmpId } from "./constants";
+import Barcode from "jsbarcode";
+import { transform } from "typescript";
 
 export default (editor: Editor, opts: BarcodePluginOptions) => {
-  const domc = editor.DomComponents;
+  const { DomComponents } = editor;
   const { keys } = Object;
 
   const formats = [
@@ -33,16 +40,6 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
       default: "1234567",
     },
     {
-      id: "EAN5",
-      name: "EAN5",
-      default: "12345",
-    },
-    {
-      id: "EAN2",
-      name: "EAN2",
-      default: "12",
-    },
-    {
       id: "ITF14",
       name: "ITF14",
       default: "1234567890124",
@@ -61,6 +58,25 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
       id: "codabar",
       name: "codabar",
       default: "123456789012",
+    },
+  ];
+
+  const rotation: { id: string; name: string }[] = [
+    {
+      id: "N",
+      name: "0deg",
+    },
+    {
+      id: "R",
+      name: "90deg",
+    },
+    {
+      id: "B",
+      name: "180deg",
+    },
+    {
+      id: "L",
+      name: "270deg",
     },
   ];
   const barcodeProps: ComponentDefinition = {
@@ -95,36 +111,19 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
         name: "bottom",
       },
     ],
-    rotation: [
-      {
-        id: "N",
-        name: "0deg",
-      },
-      {
-        id: "R",
-        name: "90deg",
-      },
-      {
-        id: "B",
-        name: "180deg",
-      },
-      {
-        id: "L",
-        name: "270deg",
-      },
-    ],
+    rotation: rotation,
     displayValue: true,
   };
 
   const getTraitType = (value: any) => {
     if (typeof value == "number") return "number";
     if (typeof value == "boolean") return "checkbox";
-    if (typeof value == "object") return "info-select";
+    if (typeof value == "object") return "select";
     if (value.startsWith("#")) return "color";
     return "text";
   };
 
-  const traits = keys(barcodeProps).map((name) => {
+  const traits: Partial<TraitProperties>[] = keys(barcodeProps).map((name) => {
     const title = name === "format" ? { info: opts.formatInfo } : {};
     const label =
       name === "width"
@@ -145,9 +144,9 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
                       ? { label: "Display Value" }
                       : {};
     return {
-      changeProp: 1,
+      changeProp: true,
       type: getTraitType(barcodeProps[name]),
-      options: barcodeProps[name],
+      options: barcodeProps[name] as TraitOption[],
       min: 0,
       placeholder: "placeholder",
       name,
@@ -161,14 +160,15 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
   barcodeProps.textPosition = "bottom";
   barcodeProps.rotation = "N";
 
-  domc.addType(cmpId, {
+  DomComponents.addType(cmpId, {
     extend: "image",
     model: {
       defaults: opts?.props({
         ...barcodeProps,
         barcodesrc: opts.script,
         droppable: false,
-        // traits,
+        traits: traits,
+        stylable: ["transform"],
         ...opts.component,
       }),
 
@@ -202,6 +202,8 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
         });
         this.set({
           src: `${opts.api}?code=${this.get("code")}&${params.toString()}`,
+          style: `transform: rotate(${rotation.find((a: { id: string; name: string }) => a.id === this.get("rotation"))?.name});`,
+          styles: `.gjs-transform-rotate{transform: rotate(${rotation.find((a: { id: string; name: string }) => a.id === this.get("rotation"))?.name});}`,
         });
       },
 
@@ -260,6 +262,3 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
     },
   });
 };
-function Barcode(canvas: HTMLCanvasElement, arg1: any, arg2: { format: any }) {
-  throw new Error("Function not implemented.");
-}

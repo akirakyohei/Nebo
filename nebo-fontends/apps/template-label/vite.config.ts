@@ -19,6 +19,7 @@ export default defineConfig({
     manifest: true,
   },
   resolve: {
+    mainFields: [],
     alias: {
       src: path.resolve(__dirname, "./src"),
     },

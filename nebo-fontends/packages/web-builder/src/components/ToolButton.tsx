@@ -1,13 +1,16 @@
+import { useEditor } from "@grapesjs/react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { cx } from "./common";
 
 export type ToolButtonProps = {
   id: string;
   className?: string;
-  disabled?: boolean;
+  disabled?: () => boolean;
   tooltip?: string;
   onClick?: () => void;
   content: React.ReactNode;
-  active?: boolean;
+  options?: any;
+  active?: () => boolean;
 };
 
 export const ToolButton = ({
@@ -18,16 +21,25 @@ export const ToolButton = ({
   onClick,
   content,
   active,
-  ...props
+  options,
 }: ToolButtonProps) => {
+  const editor = useEditor();
+  const { Commands } = editor;
   const markup = (
     <span className="d-inline-block">
       <Button
         variant="link"
-        className={`${className || ""} ${active && "bg-primary-subtle"}`}
-        disabled={disabled}
-        onClick={onClick}
-        active={active}
+        className={cx(
+          !disabled?.()
+            ? "nebo-layout-btn-color-secondary"
+            : "nebo-layout-btn-color-secondary-disabled",
+          active?.() ? "bg-primary-subtle" : ""
+        )}
+        disabled={disabled?.()}
+        onClick={() => {
+          Commands.isActive(id) ? Commands.stop(id) : Commands.run(id, options);
+        }}
+        active={active?.()}
       >
         {content}
       </Button>

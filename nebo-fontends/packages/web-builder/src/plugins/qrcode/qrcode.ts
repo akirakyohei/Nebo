@@ -1,21 +1,21 @@
 import loadComponents from "./components";
 import loadBlocks from "./blocks";
 import { Editor } from "grapesjs";
-import { BarcodeBlockOptions, BarcodePluginOptions } from "./types";
+import { QrcodeBlockOptions, QrcodePluginOptions } from "./types";
 import defaultOptions from "./constants";
 
 export default (
   editor: Editor,
   opts: Partial<
-    Omit<BarcodePluginOptions, "blockBarcode"> & {
-      blockBarcode?: Partial<BarcodeBlockOptions>;
+    Omit<QrcodePluginOptions, "blockQrcode"> & {
+      blockQrcode?: Partial<QrcodeBlockOptions>;
     }
   >
 ) => {
-  const options: BarcodePluginOptions = {
+  const options: QrcodePluginOptions = {
     ...defaultOptions,
     ...opts,
-    blockBarcode: { ...defaultOptions.blockBarcode, ...opts.blockBarcode },
+    blockQrcode: { ...defaultOptions.blockQrcode, ...opts.blockQrcode },
   };
 
   // Add components

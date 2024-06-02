@@ -13,109 +13,76 @@ import { ZoomButton } from "./ZoomButton";
 import { EditorContext } from "../context/EditorContext";
 import zoom from "../plugins/zoom";
 import grapesjs, { Editor } from "grapesjs";
-interface Props {
-  editor: Editor;
-}
-export const Toolbar = ({ editor }: Props) => {
-  const [hasUndo, setHasUndo] = useState(false);
-  const [hasRedo, setHasRedo] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(
-    !!document.fullscreenElement
-  );
-  const [isActiveRuler, setIsActiveRulers] = useState(false);
-  const [isActiveOutline, setIsActiveOutline] = useState(false);
+import { useEditor } from "@grapesjs/react";
+
+export const Toolbar = () => {
+  const editor = useEditor();
+  const { UndoManager, Commands, Canvas } = editor;
+  const [, setUpdateCounter] = useState(0);
   const [dragMode, setDragMode] = useState<"absolute" | "translate">(
-    "absolute"
+    editor.config.dragMode || "translate"
   );
-  // const { editor } = useContext(EditorContext);
-
-  useEffect(() => {
-    setInterval(() => {
-      const _hasUndo = editor?.UndoManager.hasUndo() || false;
-      if (_hasUndo !== hasUndo) setHasUndo(_hasUndo);
-      const _hasRedo = editor?.UndoManager.hasRedo() || false;
-      if (_hasRedo !== hasRedo) setHasRedo(_hasRedo);
-    }, 1000);
-  }, []);
-
+  const [zoomValue, setZoomValue] = useState(editor.Canvas.getZoom());
   const btnGropus: ToolButtonProps[] = [
     {
-      id: "undo",
+      id: "core:undo",
       content: <i className="fa fa-undo"></i>,
-      className: hasUndo
-        ? "nebo-layout-btn-color-secondary"
-        : "nebo-layout-btn-color-secondary-disabled",
-      disabled: !hasUndo,
+      disabled: () => !UndoManager.hasUndo(),
       tooltip: "Hoàn tác",
-      onClick: () => editor?.UndoManager.undo(),
     },
     {
-      id: "redo",
+      id: "core:redo",
       content: <i className="fa fa-repeat"></i>,
-      className: hasRedo
-        ? "nebo-layout-btn-color-secondary"
-        : "nebo-layout-btn-color-secondary-disabled",
-      disabled: !hasRedo,
+      disabled: () => !UndoManager.hasRedo(),
       tooltip: "Tái thực hiện",
-      onClick: () => editor?.UndoManager.undo(),
     },
     {
-      id: "view-components",
-      active: isActiveOutline,
+      id: "core:component-outline",
+      active: () => Commands.isActive("core:component-outline"),
       content: <i className="fa fa-square-o"></i>,
-      className: "nebo-layout-btn-color-secondary",
       tooltip: "Xem khối",
-      onClick: () => {
-        if (!isActiveOutline) {
-          editor?.runCommand("core:component-outline");
-        } else {
-          editor?.stopCommand("core:component-outline");
-        }
-        setIsActiveOutline(!isActiveOutline);
-      },
     },
     {
-      id: "fullscreen",
-      active: isFullScreen,
+      id: "core:fullscreen",
+      active: () => Commands.isActive("core:fullscreen"),
       content: <i className="fa fa-arrows-alt"></i>,
-      className: "nebo-layout-btn-color-secondary",
       tooltip: "Toàn màn hình",
-      onClick: () => {
-        const containerDiv = document.getElementById("nebo-container");
-        if (containerDiv) {
-          if (!document.fullscreenElement) {
-            containerDiv.requestFullscreen();
-            setIsFullScreen(true);
-          } else {
-            document.exitFullscreen();
-            setIsFullScreen(false);
-          }
-        }
-      },
+      options: { target: "#root" },
     },
     {
-      id: "ruler",
-      active: isActiveRuler,
+      id: "ruler-visibility",
+      active: () => Commands.isActive("ruler-visibility"),
       content: <i className="fa fa-minus-square-o" aria-hidden="true"></i>,
-      className: "nebo-layout-btn-color-secondary",
       tooltip: "Thước",
-      onClick: () => {
-        if (!isActiveRuler) {
-          editor?.runCommand("ruler-visibility");
-        } else {
-          editor?.stopCommand("ruler-visibility");
-        }
-        setIsActiveRulers(!isActiveRuler);
-      },
     },
   ];
+
+  useEffect(() => {
+    const cmdEvent = "run stop";
+    const updateEvent = "update";
+    const updateCounter = () => setUpdateCounter((value) => value + 1);
+    const onCommand = (id: string) => {
+      btnGropus.find((btn) => btn.id === id) && updateCounter();
+    };
+    editor.on(cmdEvent, onCommand);
+    editor.on(updateEvent, updateCounter);
+
+    const hanldeZoom = () => {
+      setZoomValue(editor.Canvas.getZoom());
+    };
+    editor.on("canvas:zoom", hanldeZoom);
+
+    return () => {
+      editor.off(cmdEvent, onCommand);
+      editor.off(updateEvent, updateCounter);
+      editor.off("canvas:zoom", hanldeZoom);
+    };
+  }, []);
 
   const handleDragMode = (mode: "absolute" | "translate") => {
     setDragMode(mode);
     editor?.getModel().setDragMode(mode);
-    editor?.getModel().setStyle({ margin: "3rem" });
     editor?.refresh();
-    // editor?.render();
   };
 
   return (
@@ -127,9 +94,7 @@ export const Toolbar = ({ editor }: Props) => {
       </ButtonGroup>
       <Stack direction="horizontal" gap={4}>
         <ZoomButton
-          getZoom={() => {
-            return editor?.Canvas.getZoom() || 100;
-          }}
+          value={zoomValue}
           onZoom={function (value: number): void {
             editor?.runCommand("set-zoom", { zoom: value });
           }}

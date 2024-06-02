@@ -7,6 +7,7 @@ import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import sass from "rollup-plugin-sass";
+import json from "@rollup/plugin-json";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
@@ -107,6 +108,7 @@ const config = [
       }),
       peerDepsExternal(),
       sass(),
+      json(),
       // postcss({
       //   extensions: [".css"],
       //   extract: path.resolve("dist/style.css"),
