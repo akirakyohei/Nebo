@@ -10,6 +10,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 @RequiredArgsConstructor
 public class TemplateStorageConsumer {
@@ -20,8 +22,8 @@ public class TemplateStorageConsumer {
             topics = "#{'${spring.kafka.topic.template-raw-log}'.split(',')}",
             concurrency = "5"
     )
-    public void process(ConsumerRecord<String, String> record) {
-        var templateKafka = KafkaConnectUtils.<Template>marshallRaw(record.value());
+    public void process(ConsumerRecord<String, String> record) throws IOException {
+        var templateKafka = KafkaConnectUtils.marshallRaw(record.value(), Template.class);
         var delta = 0L;
         var userId = 0L;
         if (DebeziumOperation.c.equals(templateKafka.getOp())) {

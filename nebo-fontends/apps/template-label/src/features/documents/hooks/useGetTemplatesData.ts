@@ -1,20 +1,8 @@
-import { useGetCategoryByGroupQuery } from "../../../data/category.api";
 import { useGetTemplatesQuery } from "../../../data/template.api";
 import { Template } from "../../../types";
 import { TemplateFilterRequestModel } from "../types";
 
 export const useGetTemplatesData = (filter: TemplateFilterRequestModel) => {
-  const {
-    data: categoryByGroups = [],
-    isLoading: isLoadingCategoryByGroup,
-    isFetching: isFetchingCategoryByGroup,
-  } = useGetCategoryByGroupQuery(
-    { owner: true },
-    {
-      skip: !["brand", "default"].includes((filter?.tab as any) || "default"),
-    }
-  );
-
   const {
     data: templates = {
       data: [] as Template[],
@@ -24,13 +12,14 @@ export const useGetTemplatesData = (filter: TemplateFilterRequestModel) => {
     isFetching: isFetchingTemplate,
   } = useGetTemplatesQuery({
     ...filter,
+    limit: filter.limit || 20,
     owner: true,
+    shared: filter.tab === "shared",
   });
 
-  const isLoading = isLoadingCategoryByGroup || isLoadingTemplate;
-  const isFetching = isFetchingCategoryByGroup || isFetchingTemplate;
+  const isLoading = isLoadingTemplate;
+  const isFetching = isFetchingTemplate;
   return {
-    categoryByGroups,
     templates,
     isLoading,
     isFetching,

@@ -22,7 +22,8 @@ export type FilterQueryResult<T> = {
 const inValidParamValue = "[object Object]";
 
 export const useBaseFilter = <T extends MyCustomType>(input?: {
-  keyIsListFilter: (keyof T)[];
+  keyIsListFilter?: (keyof T)[];
+  excludeCheckFilter?: (keyof T)[];
 }): FilterQueryResult<T> => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -147,12 +148,16 @@ export const useBaseFilter = <T extends MyCustomType>(input?: {
       // remove page and limit
       delete params["page"];
       delete params["limit"];
+      (input?.excludeCheckFilter || []).forEach(
+        (a) => delete params[`${a as any}`]
+      );
       // remove empty value
       for (const key in params) {
         if (params[key] === "" || params[key] === undefined) {
           delete params[key];
         }
       }
+      if (Object.keys(params).length === 0) return "";
       return "search";
     };
     return convertParamsToFilter(params);

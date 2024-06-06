@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { defaultBlankTemplate } from "../../../../constants";
-
+import blankThumbImage from "src/assets/img/new-blank-template.png";
 interface Props {
   isLoading?: boolean;
   copyTemplateId?: number;
@@ -69,8 +69,12 @@ const TemplateItemCard = ({
         <CardMedia
           component="img"
           height="150"
-          image={template.thumbnail.url}
-          alt={template.thumbnail.name}
+          image={
+            template?.thumbnail?.url
+              ? `/api/files/data/${template?.thumbnail?.url}`
+              : blankThumbImage
+          }
+          alt={template?.thumbnail?.name}
         />
         <CardContent>
           <Typography gutterBottom component="div">

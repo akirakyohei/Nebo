@@ -12,6 +12,8 @@ public class Session {
     private long userId;
     private String refreshToken;
     private String token;
+    private String ipAddress;
+    private String userAgent;
     private Instant expiredDate;
     private Instant createdAt;
 }

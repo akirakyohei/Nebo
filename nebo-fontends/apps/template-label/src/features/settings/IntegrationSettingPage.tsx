@@ -6,7 +6,7 @@ import { useGetApiKeysQuery } from "../../data/api_key.api";
 import { ApiKeyFilterRequest } from "../../types";
 import { useBaseFilter } from "../../utils/useBaseFilterQuery";
 import { ApiKeyManageModal } from "./components/integration/ApiKeyManageModal";
-import { Box } from "@mui/material";
+import { Box, Card, CardContent } from "@mui/material";
 
 export default function MediaFilePage() {
   const {
@@ -24,8 +24,7 @@ export default function MediaFilePage() {
   } = useBaseFilter<ApiKeyFilterRequest>();
   const {
     data: apiKeys = {
-      data: [
-      ],
+      data: [],
       metadata: {
         page: 1,
         limit: 20,
@@ -50,12 +49,16 @@ export default function MediaFilePage() {
         onAction: openUploadFile,
       }}
     >
-      <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>
-        <ApiKeyTable apiKeys={apiKeys} />
-        {isOpenUploadFile && (
-          <ApiKeyManageModal open onClose={closeUploadFile} apiKeyId={0} />
-        )}
-      </Box>
+      <Card>
+        <CardContent>
+          <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>
+            <ApiKeyTable apiKeys={apiKeys} />
+            {isOpenUploadFile && (
+              <ApiKeyManageModal open onClose={closeUploadFile} apiKeyId={0} />
+            )}
+          </Box>
+        </CardContent>
+      </Card>
     </Page>
   );
 }

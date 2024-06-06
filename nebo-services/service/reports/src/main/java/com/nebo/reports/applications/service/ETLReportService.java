@@ -1,7 +1,6 @@
 package com.nebo.reports.applications.service;
 
 import com.nebo.reports.applications.model.*;
-import com.nebo.reports.insfrastructures.domain.model.DimUser;
 import com.nebo.types.DebeziumOperation;
 
 public interface ETLReportService {

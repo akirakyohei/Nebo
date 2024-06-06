@@ -20,9 +20,13 @@ export type UserUpdateRequest = {
   first_name?: string;
   last_name?: string;
   email?: string;
-  password?: string;
   phone_number?: string;
   avatar?: FileDataUploadRequest;
+  confirm_password?: string;
+};
+
+export type UserChangePasswordRequest = {
+  password?: string;
   confirm_password?: string;
 };
 

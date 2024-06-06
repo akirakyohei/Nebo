@@ -1,14 +1,19 @@
-import { Paper, Skeleton } from "@mui/material";
+import { Box, CircularProgress, Paper, Skeleton } from "@mui/material";
 
 export const LayoutSkeleton = () => {
   return (
-    <Paper>
-      <Skeleton
-        sx={{ bgcolor: "grey.900" }}
-        variant="rectangular"
-        width={"100vw"}
+    <Box sx={{ height: "100%", width: "100%" }}>
+      <Box
         height={"100vh"}
-      />
-    </Paper>
+        width="100vw"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    </Box>
   );
 };

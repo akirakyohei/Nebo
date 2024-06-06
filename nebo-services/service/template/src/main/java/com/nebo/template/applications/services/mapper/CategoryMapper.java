@@ -17,6 +17,5 @@ public interface CategoryMapper {
     Category fromRequestToDomain(CategoryCreateRequest request);
 
     @Mapping(source = "name", target = "name", qualifiedByName = "optional", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "groupId", target = "groupId", qualifiedByName = "optional", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCategory(CategoryUpdateRequest request, @MappingTarget Category category);
 }

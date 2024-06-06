@@ -4,11 +4,9 @@ import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
-import com.nebo.template.applications.model.template.TemplatePrintRequest;
+import com.nebo.template.applications.model.template.TemplatePrintModel;
 import com.nebo.template.infrastructures.util.SizeUtils;
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
-import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
-import com.openhtmltopdf.pdfboxout.PdfBoxUtil;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.Loader;
@@ -21,7 +19,6 @@ import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,7 +31,7 @@ public class TemplatePrintService {
 
     private NeboFeignClient neboFeignClient;
 
-    public byte[] print(long userId, TemplatePrintRequest request) throws IOException {
+    public byte[] print(long userId, TemplatePrintModel request) throws IOException {
         var html = request.getHtml();
         if (request.isFillData()) {
             html = fillData(html, userId, request);
@@ -48,7 +45,7 @@ public class TemplatePrintService {
         }
     }
 
-    public byte[] printToImage(long userId, TemplatePrintRequest request) throws IOException {
+    public byte[] printToImage(long userId, TemplatePrintModel request) throws IOException {
         var pdfByteArrays = print(userId, request);
         var pdfDocument = Loader.loadPDF(pdfByteArrays);
         try (var imageOutputStream = new ByteArrayOutputStream()) {
@@ -59,7 +56,7 @@ public class TemplatePrintService {
         }
     }
 
-    private String fillData(String html, long userId, TemplatePrintRequest request) throws IOException {
+    private String fillData(String html, long userId, TemplatePrintModel request) throws IOException {
         var handlebars = new Handlebars();
         var template = handlebars.compileInline(html);
         var context = buildContextVariables(userId, request.getVariables());
@@ -67,7 +64,7 @@ public class TemplatePrintService {
     }
 
     private Context buildContextVariables(long userId, Map<String, Object> variables) {
-        var user = neboFeignClient.getUserById(userId, B.widthUserId(userId)).getUser();
+        var user = neboFeignClient.getUserById(userId, B.withUserId(userId)).getUser();
         var context = Context.newBuilder(Map.of("user", user));
         if (variables != null) {
             context.combine(variables);
@@ -75,7 +72,7 @@ public class TemplatePrintService {
         return context.build();
     }
 
-    private Document parseDocument(String html, TemplatePrintRequest request) {
+    private Document parseDocument(String html, TemplatePrintModel request) {
         var document = Jsoup.parse(html, "UTF-8");
         document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         document.body().attr("margin", MessageFormat.format("{0} {1} {2} {3}", request.getOptions().getMargin().getTop(),
@@ -85,7 +82,7 @@ public class TemplatePrintService {
         return document;
     }
 
-    private void parseToPdf(Document document, OutputStream outputStream, TemplatePrintRequest request) throws IOException, IllegalAccessException {
+    private void parseToPdf(Document document, OutputStream outputStream, TemplatePrintModel request) throws IOException, IllegalAccessException {
         var width = SizeUtils.splitSize(request.getOptions().getWidth());
         var height = SizeUtils.splitSize(request.getOptions().getHeight());
 

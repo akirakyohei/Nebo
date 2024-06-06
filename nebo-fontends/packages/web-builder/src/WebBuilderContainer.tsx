@@ -1,4 +1,4 @@
-import grapesjs, { Editor, usePlugin } from "grapesjs";
+import grapesjs, { Editor, EditorConfig, usePlugin } from "grapesjs";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import {
   Button,
@@ -42,9 +42,9 @@ import zoomPlugin from "./plugins/zoom";
 import draggableDocumentPlugin from "./plugins/draggable-document";
 import barcodePlugin from "./plugins/barcode/barcode";
 import qrcodePlugin from "./plugins/qrcode/qrcode";
-import gridSystemPlugin from "./plugins/grid-system/grid-system";
+import gridSystemPlugin from "./plugins/grid-system";
 import { EditorContext } from "./context/EditorContext";
-import { Template } from "./types/template";
+import { FileUploadData, Template } from "./types/template";
 import BlockManager from "./components/BlockManager";
 import Modal from "./components/Modal";
 import AssetManager from "./components/AssetManager";
@@ -55,6 +55,8 @@ import TraitManager from "./components/TraitManger";
 // import ModalProvider from "./components/ModalProvider";
 import { Unit, convertUnits } from "@karibash/pixel-units";
 import { split_unit } from "./utils";
+import { defaultGridStyle } from "./plugins/grid-system/styles";
+import blockComponentPlugin, { protectedCss } from "./plugins/block-component";
 
 export const ckeConfig = {
   toolbar: [
@@ -124,6 +126,8 @@ interface Props {
   designingMode?: boolean;
   template: Template;
   onUpdate?: (id: number, _value: Data) => void;
+  showToast?: (value: string, option?: { isError?: boolean }) => void;
+  uploadFile?: (value: FileUploadData) => void;
 }
 
 const theme = createTheme({});
@@ -132,13 +136,16 @@ export const WebBuilderContainer = ({
   designingMode = true,
   template,
   onUpdate,
+  showToast,
+  uploadFile,
 }: Props) => {
-  const options = useMemo(() => {
+  const options: EditorConfig = useMemo(() => {
     const widthPx = convertUnits(template.options.width as any, "px");
     const width = split_unit(widthPx);
     const heightPx = convertUnits(template.options.height as any, "px");
     const height = split_unit(heightPx);
     return {
+      container: "nebo-editor",
       storageManager: {
         // type: "remote-local",
         type: "local",
@@ -164,7 +171,7 @@ export const WebBuilderContainer = ({
         ],
       },
       // assetManager: {},
-      protectedCss: `body { margin: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};}`,
+      protectedCss: `body { margin: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};}  ${defaultGridStyle} `,
       // pageManager: {},
       // showDevices: false,
       // panels: {
@@ -255,11 +262,11 @@ export const WebBuilderContainer = ({
               blockBarcode: { category: "Nội dung" },
             }),
             usePlugin(qrcodePlugin, { blockQrcode: { category: "Nội dung" } }),
-            usePlugin(gridSystemPlugin, {
-              default_css: true,
-              default_components: true,
-              imgDefault: "",
-            }),
+            // usePlugin(gridSystemPlugin, {
+            //   default_css: true,
+            //   default_components: true,
+            //   imgDefault: "",
+            // }),
             usePlugin(zoomPlugin),
             usePlugin(draggableDocumentPlugin),
             usePlugin(ckePlugin, {
@@ -335,13 +342,19 @@ export const WebBuilderContainer = ({
               />
             )}
           </ModalProvider> */}
-          {/* <AssetsProvider>
+          <AssetsProvider>
             {({ assets, select, close, Container }) => (
               <Container>
-                <AssetManager assets={assets} select={select} close={close} />
+                <AssetManager
+                  assets={assets}
+                  select={select}
+                  close={close}
+                  showToast={showToast as any}
+                  uploadFile={uploadFile as any}
+                />
               </Container>
             )}
-          </AssetsProvider> */}
+          </AssetsProvider>
         </GjsEditor>
       </div>
     </ThemeProvider>

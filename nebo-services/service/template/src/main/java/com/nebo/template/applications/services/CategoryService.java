@@ -5,7 +5,6 @@ import com.nebo.template.applications.services.mapper.CategoryMapper;
 import com.nebo.template.infrastructures.domain.Specifiaction.CategorySpecification;
 import com.nebo.template.infrastructures.domain.model.Category_;
 import com.nebo.template.infrastructures.domain.repository.JpaCategoryRepository;
-import com.nebo.template.infrastructures.util.CategoryGroupUtils;
 import com.nebo.web.applications.exception.ConstraintViolationException;
 import com.nebo.web.applications.exception.NotFoundException;
 import jakarta.transaction.Transactional;
@@ -15,8 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -28,20 +25,11 @@ public class CategoryService {
     private final JpaCategoryRepository categoryRepository;
 
     private final CategoryMapper categoryMapper;
+    ;
 
-    private final List<CategoryGroup> categoryGroups = CategoryGroupUtils.loadData();
-
-    public List<CategoryByGroup> getCategoryByGroups(long userId) {
-        var categories = categoryRepository.findAllByUserId(userId);
-        return categoryGroups.stream().map(group -> new CategoryByGroup(group.getId(), categories.stream().filter(item -> Objects.equals(item.getGroupId(), group.getId()))
-                .map(categoryMapper::fromDomainToResponse)
-                .toList())).toList();
-    }
 
     @Transactional
     public CategoryResponse createCategory(long userId, CategoryCreateRequest request) throws ConstraintViolationException {
-        if (categoryGroups.stream().filter(item -> Objects.equals(item.getId(), request.getGroupId())).findFirst().isEmpty())
-            throw new ConstraintViolationException("group_id", "GroupId not found");
         var category = categoryMapper.fromRequestToDomain(request);
         category.setUserId(userId);
         category = categoryRepository.save(category);
@@ -50,8 +38,6 @@ public class CategoryService {
 
     @Transactional
     public CategoryResponse updateCategory(long userId, int categoryId, CategoryUpdateRequest request) throws ConstraintViolationException {
-        if (request.getGroupId() != null && request.getGroupId().isPresent() && categoryGroups.stream().filter(item -> Objects.equals(item.getId(), request.getGroupId().get())).findFirst().isEmpty())
-            throw new ConstraintViolationException("group_id", "GroupId not found");
         var category = categoryRepository.findCategoryByUserIdAndId(userId, categoryId)
                 .orElseThrow(NotFoundException::new);
         categoryMapper.updateCategory(request, category);

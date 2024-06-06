@@ -55,6 +55,7 @@ public class User implements Serializable {
     private String providerId;
 
     private Long avatarId;
+    private String avatarUrl;
 
     @CreationTimestamp
     private Instant createdAt;

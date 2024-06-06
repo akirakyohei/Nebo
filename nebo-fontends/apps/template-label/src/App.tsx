@@ -1,6 +1,7 @@
 import { Provider as StoreProvider } from "react-redux";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { NotificationProvider } from "./components/notification/NotificationContext";
+import { LoadingProvider } from "./components/loading/LoadingContext";
 import { store } from "./store/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { routes } from "./routes/router.config";
@@ -33,11 +34,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <StoreProvider store={store}>
-        <NotificationProvider>
-          <RouterProvider
-            router={createBrowserRouter(transformRouter(routes))}
-          />
-        </NotificationProvider>
+        <LoadingProvider>
+          <NotificationProvider>
+            <RouterProvider
+              router={createBrowserRouter(transformRouter(routes))}
+            />
+          </NotificationProvider>
+        </LoadingProvider>
       </StoreProvider>
     </ThemeProvider>
   );

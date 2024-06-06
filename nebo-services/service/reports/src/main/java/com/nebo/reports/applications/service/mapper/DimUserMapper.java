@@ -1,7 +1,7 @@
 package com.nebo.reports.applications.service.mapper;
 
 import com.nebo.reports.applications.model.User;
-import com.nebo.reports.insfrastructures.domain.model.DimUser;
+import com.nebo.reports.infrastructures.domain.model.DimUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

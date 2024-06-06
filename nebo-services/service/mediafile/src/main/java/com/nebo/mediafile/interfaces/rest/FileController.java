@@ -38,9 +38,7 @@ public class FileController {
     @GetMapping(path = "/data/**")
     public void fileDownload(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var key = request.getRequestURI().substring("/api/files/data/".length());
-        log.info("Request to receive a file with id: {}", key);
         mediaService.getFile(key, response);
-        log.info("File was sent in response");
     }
 
     @GetMapping(path = "/metadata/by_ids")

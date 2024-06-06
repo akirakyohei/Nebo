@@ -1,4 +1,14 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import { TopUsedPaperType } from "../../../types";
 interface Props {
   topUsedPaperTypes: TopUsedPaperType[];
@@ -7,10 +17,26 @@ interface Props {
 export const TopUsedPaperTypeCard = ({ topUsedPaperTypes }: Props) => {
   return (
     <Card>
+      <CardHeader title={"Top loại giấy sử dụng"} sx={{ paddingBottom: 0 }} />
       <CardContent>
-        <Typography variant="h5" component="h2">
-          Top used paper type
-        </Typography>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ background: "#fafafb" }}>
+              <TableCell>Loại giấy</TableCell>
+              <TableCell align="right">Số lượng</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {topUsedPaperTypes.map((topUsedPaperType) => (
+              <TableRow key={topUsedPaperType.paper_type.paper_type_id}>
+                <TableCell>{topUsedPaperType.paper_type.name}</TableCell>
+                <TableCell align="right">
+                  {topUsedPaperType.total_used}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );

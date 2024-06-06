@@ -7,7 +7,6 @@ import com.nebo.lib.feignclient.client.model.FileDataUploadRequest;
 import com.nebo.sso.applications.model.*;
 import com.nebo.sso.infrastructures.domain.model.User;
 import com.nebo.sso.infrastructures.domain.model.User_;
-import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
 import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
 import com.nebo.sso.infrastructures.domain.specifiation.UserSpecification;
 import com.nebo.utils.IOUtils;
@@ -17,6 +16,7 @@ import com.nebo.web.applications.exception.ConstraintViolationException;
 import com.nebo.web.applications.exception.ExpiredTokenRefreshException;
 import com.nebo.web.applications.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,6 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserService {
@@ -37,6 +40,8 @@ public class UserService {
     private final JpaUserRepository userRepository;
 
     private final UserMapper userMapper;
+
+    private final BlackListService blackListService;
 
     @Transactional
     public UserResponse create(UserCreateRequest request) throws ConstraintViolationException {
@@ -53,8 +58,9 @@ public class UserService {
                                 .name("avatar." + IOUtils.getExtension(request.getAvatar().getContentType()))
                                 .data(request.getAvatar().getData())
                                 .build())
-                        .build(), B.widthUserId(user.getId())).getFile();
+                        .build(), B.withUserId(user.getId())).getFile();
                 user.setAvatarId(res.getId());
+                user.setAvatarUrl(res.getKey());
                 user = userRepository.save(user);
             } catch (Exception ex) {
             }
@@ -72,7 +78,7 @@ public class UserService {
         if (request.getLastName() != null) {
             user.setLastName(request.getLastName().get());
         }
-        if (request.getEmail() != null && StringUtils.equals(request.getEmail().get(), user.getEmail())) {
+        if (request.getEmail() != null && !StringUtils.equals(request.getEmail().get(), user.getEmail())) {
             if (request.getEmail().get() != null) {
                 var existUser = userRepository.findFirstByEmail(request.getEmail().get()).orElse(null);
                 if (existUser != null)
@@ -82,7 +88,7 @@ public class UserService {
             needConfirmPassword = true;
         }
 
-        if (request.getPhoneNumber() != null && StringUtils.equals(request.getPhoneNumber().get(), user.getPhoneNumber())) {
+        if (request.getPhoneNumber() != null && !StringUtils.equals(request.getPhoneNumber().get(), user.getPhoneNumber())) {
             if (request.getPhoneNumber().get() != null) {
                 var existUser = userRepository.findFirstByPhoneNumber(request.getPhoneNumber().get()).orElse(null);
                 if (existUser != null)
@@ -93,15 +99,15 @@ public class UserService {
         }
         if (needConfirmPassword) {
             if (request.getConfirmPassword() == null || !passwordEncoder.matches(request.getConfirmPassword(), user.getPassword()))
-                throw new AccessDeniedException("access denied");
+                throw new AccessDeniedException("Required password access denied");
         }
         if (user.getEmail() == null && user.getPhoneNumber() == null)
             throw new ConstraintViolationException("credential", "require email or phone number not null");
 
         if (request.getAvatar() != null) {
             try {
-                if (user.getAvatarId() == null) {
-                    neboFeignClient.deleteFileMetadata(user.getAvatarId(), B.widthUserId(userId));
+                if (user.getAvatarId() != null) {
+                    neboFeignClient.deleteFileMetadata(user.getAvatarId(), B.withUserId(userId));
                 }
                 var res = neboFeignClient.uploadFile(FileDataUploadRequest.builder()
                         .file(FileDataUploadRequest.FileDataUpload.builder()
@@ -110,24 +116,42 @@ public class UserService {
                                 .name("avatar." + IOUtils.getExtension(request.getAvatar().getContentType()))
                                 .data(request.getAvatar().getData())
                                 .build())
-                        .build(), B.widthUserId(user.getId())).getFile();
+                        .build(), B.withUserId(user.getId())).getFile();
                 user.setAvatarId(res.getId());
+                user.setAvatarUrl(res.getKey());
 
             } catch (Exception ex) {
+                log.error("", ex);
             }
         }
         userRepository.save(user);
         return getUser(userId);
     }
 
+    @Transactional
+    public UserResponse changePassword(long userId, UserChangePasswordRequest request) throws ConstraintViolationException {
+        var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        if (!passwordEncoder.matches(request.getConfirmPassword(), user.getPassword()))
+            throw new AccessDeniedException("Required password access denied");
+
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword()))
+            throw new ConstraintViolationException("new_password", "New password not same old password");
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
+        blackListService.blockByUserId(userId);
+        return getUser(userId);
+    }
+
     public UserResponse getUser(long userId) {
         var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         var res = userMapper.fromDomainToResponse(user);
-        if (user.getAvatarId() != null) {
-            var image = neboFeignClient.getFileMetadata(user.getAvatarId(), B.widthUserId(userId)).getFile();
-            res.setAvatarUrl(image.getKey());
-        }
         return res;
+    }
+
+    public UsersResponse getFilter(UserFilterRequest request) {
+        var spec = UserSpecification.toFilter(request);
+        var page = userRepository.findAll(spec, request.toPageable(Sort.by(Sort.Direction.DESC, User_.CREATED_AT)));
+        return new UsersResponse(page.map(userMapper::fromDomainToResponse));
     }
 
 
@@ -135,12 +159,13 @@ public class UserService {
     public UserResponse changeStatus(long userId, boolean status) {
         var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         user.setStatus(status);
-        user = userRepository.save(user);
+        userRepository.save(user);
         return getUser(userId);
     }
 
     @Transactional
-    public JwtResponse signup(UserCreateRequest request, String ipAddress, String userAgent) throws ConstraintViolationException {
+    public JwtResponse signup(UserCreateRequest request, String ipAddress, String userAgent) throws
+            ConstraintViolationException {
         validateCreateRequest(request);
         var user = userMapper.toUser(request);
         user.setProvider(User.AuthProvider.local);
@@ -149,9 +174,10 @@ public class UserService {
     }
 
 
-    public JwtResponse authenticate(Long userId, UserLoginRequest request, String ipAddress, String userAgent) throws AuthenticationException, ConstraintViolationException {
+    public JwtResponse authenticate(Long userId, UserLoginRequest request, String ipAddress, String userAgent) throws
+            AuthenticationException, ConstraintViolationException {
         var user = validateLoginRequest(request);
-        if (userId == user.getId())
+        if (Objects.equals(userId, user.getId()))
             throw new ConstraintViolationException("authenticated", "Authenticated");
         return authenticateProvider.generateJwtToken(user, ipAddress, userAgent);
     }
@@ -181,7 +207,8 @@ public class UserService {
         }
     }
 
-    private User validateLoginRequest(UserLoginRequest request) throws ConstraintViolationException, AuthenticationException {
+    private User validateLoginRequest(UserLoginRequest request) throws
+            ConstraintViolationException, AuthenticationException {
         if (request.getPhoneNumber() == null && request.getEmail() == null)
             throw new ConstraintViolationException("user", "Required email or phone number");
         if (request.getPhoneNumber() != null) {

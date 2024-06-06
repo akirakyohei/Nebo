@@ -26,9 +26,12 @@ public class FileData {
     private String extension;
     private long size;
 
+    @Column(updatable = false)
+    private boolean system;
+
     @CreationTimestamp
     private Instant createdAt;
 
     @UpdateTimestamp
-    private  Instant updatedAt;
+    private Instant updatedAt;
 }

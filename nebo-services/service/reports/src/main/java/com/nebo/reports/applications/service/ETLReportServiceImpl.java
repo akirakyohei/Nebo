@@ -4,8 +4,8 @@ import com.nebo.reports.applications.model.*;
 import com.nebo.reports.applications.service.mapper.DimTemplateMapper;
 import com.nebo.reports.applications.service.mapper.DimUserMapper;
 import com.nebo.reports.applications.service.mapper.FactSessionMapper;
-import com.nebo.reports.insfrastructures.domain.model.*;
-import com.nebo.reports.insfrastructures.domain.repository.*;
+import com.nebo.reports.infrastructures.domain.model.*;
+import com.nebo.reports.infrastructures.domain.repository.*;
 import com.nebo.types.DebeziumOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -101,6 +101,7 @@ public class ETLReportServiceImpl implements ETLReportService {
         Assert.notNull(dimUser, "dim user not null");
         var factSession = factSessionMapper.fromModelToDomain(session);
         factSession.setUserKey(dimUser.getUserKey());
+        factSessionRepository.save(factSession);
     }
 
     private DimDatetime getDimDateTime(Instant date) {

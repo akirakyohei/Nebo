@@ -7,7 +7,7 @@ import { useUpdateAccountMutation } from "../../../../data/user.api";
 import { UpdateUserRequestModel } from "../../types";
 import { Controller, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
-import { isBlank } from "../../../../utils/base";
+import { defaultIfBlank, isBlank } from "../../../../utils/base";
 import { PasswordField } from "../../../../components/PasswordField";
 import { User } from "../../../../types";
 import { TextField } from "../../../../components/TextField";
@@ -25,6 +25,7 @@ export const UpdateAccountModal = ({ open, onClose, user }: Props) => {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitting },
   } = useForm<UpdateUserRequestModel>({
     defaultValues: {
@@ -51,13 +52,20 @@ export const UpdateAccountModal = ({ open, onClose, user }: Props) => {
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
-        if (/Email already existed/.test(error)) error = "Email đã tồn tại";
+        if (ex.status === 403) error = "Mật khẩu không chính xác";
+        if (/Email or password incorrect/.test(error))
+          if (/Email already existed/.test(error)) error = "Email đã tồn tại";
         if (/Phone number already existed/.test(error))
           error = "Số điện thoại đã tồn tại";
         showToast(error, { variant: "error" });
       }
     }
   });
+
+  const needConfirmPassword =
+    defaultIfBlank(user.phone_number) !==
+      defaultIfBlank(watch("phone_number")) ||
+    defaultIfBlank(user.email) !== defaultIfBlank(watch("email"));
 
   return (
     <Modal
@@ -143,8 +151,8 @@ export const UpdateAccountModal = ({ open, onClose, user }: Props) => {
             rules={{
               validate: {
                 not_blank: (_value) => {
-                  if (isBlank(_value)) {
-                    return "Email không được để trống";
+                  if (isBlank(_value) && isBlank(watch("phone_number"))) {
+                    return "Email hoặc số điện thoại không được để trống";
                   }
                 },
                 email: (_value) => {
@@ -181,8 +189,8 @@ export const UpdateAccountModal = ({ open, onClose, user }: Props) => {
             rules={{
               validate: {
                 not_blank: (_value) => {
-                  if (isBlank(_value)) {
-                    return "Số điện thoại không được để trống";
+                  if (isBlank(_value) && isBlank(watch("email"))) {
+                    return "Email hoặc số điện thoại không được để trống";
                   }
                 },
                 phone: (_value) => {
@@ -213,39 +221,42 @@ export const UpdateAccountModal = ({ open, onClose, user }: Props) => {
               );
             }}
           />
-          <Controller
-            control={control}
-            name="confirm_password"
-            rules={{
-              validate: {
-                not_blank: (_value) => {
-                  if (isBlank(_value)) {
-                    return "Mật khẩu không được để trống";
-                  }
+          {needConfirmPassword && (
+            <Controller
+              control={control}
+              name="confirm_password"
+              rules={{
+                validate: {
+                  not_blank: (_value) => {
+                    if (isBlank(_value)) {
+                      return "Mật khẩu không được để trống";
+                    }
+                  },
+                  min_length: (_value) => {
+                    if (!isBlank(_value) && _value.length < 6)
+                      return "Mật khẩu ít nhất 6 ký tự";
+                  },
+                  max_length: (_value) => {
+                    if (!isBlank(_value) && _value.length > 30)
+                      return "Mật khẩu không được vượt quá 30 ký tự";
+                  },
                 },
-                min_length: (_value) => {
-                  if (!isBlank(_value) && _value.length < 6)
-                    return "Mật khẩu ít nhất 6 ký tự";
-                },
-                max_length: (_value) => {
-                  if (!isBlank(_value) && _value.length > 30)
-                    return "Mật khẩu không được vượt quá 30 ký tự";
-                },
-              },
-            }}
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            render={({ field: { ref, ...otherProps } }) => {
-              const error = control._formState.errors[otherProps.name]?.message;
-              return (
-                <PasswordField
-                  label="Mật khẩu"
-                  placeholder="Nhập mật khẩu"
-                  error={error}
-                  {...otherProps}
-                />
-              );
-            }}
-          />
+              }}
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              render={({ field: { ref, ...otherProps } }) => {
+                const error =
+                  control._formState.errors[otherProps.name]?.message;
+                return (
+                  <PasswordField
+                    label="Xác nhận mật khẩu"
+                    placeholder="Nhập mật khẩu"
+                    error={error}
+                    {...otherProps}
+                  />
+                );
+              }}
+            />
+          )}
         </Stack>
       </Modal.Section>
     </Modal>

@@ -59,7 +59,6 @@ export default function Modal({
   //     }
   //   };
   // }, [ref.current]);
-
   return (
     <ModalMUI onClose={close} {...props}>
       <Fade in={props.open}>

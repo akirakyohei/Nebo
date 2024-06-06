@@ -177,7 +177,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                     />
                   </Grid>
                   <Grid item>
-                    <Typography>Thể loại</Typography>
+                    <Typography>Danh mục</Typography>
                   </Grid>
                   <Grid item>
                     <Controller

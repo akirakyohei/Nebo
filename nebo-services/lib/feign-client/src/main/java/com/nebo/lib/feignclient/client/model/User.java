@@ -11,7 +11,7 @@ public class User {
     private long id;
     private String firstName;
     private String lastName;
-    private String imageUrl;
+    private String avatarUrl;
     private String email;
     private String phoneNumber;
     private List<String> permissions;

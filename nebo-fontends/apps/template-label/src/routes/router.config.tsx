@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { CustomizeRouteObject } from "./types";
+import { WorkspacePageSkeleton } from "../features/workspaces/components/WorkspacePageSkeleton";
 
 export const routes: CustomizeRouteObject[] = [
   {
@@ -42,7 +43,12 @@ export const routes: CustomizeRouteObject[] = [
             ),
           },
           {
+            path: "categories",
+            Component: lazy(() => import("../features/documents/CategoryPage")),
+          },
+          {
             path: "templates",
+            fallback: <WorkspacePageSkeleton />,
             Component: lazy(() => import("../features/documents/TemplatePage")),
           },
         ],
@@ -80,9 +86,15 @@ export const routes: CustomizeRouteObject[] = [
         children: [
           {
             path: ":id",
-            fallback: <div>olikfd</div>,
+            fallback: <WorkspacePageSkeleton />,
             Component: lazy(
               () => import("../features/workspaces/EditorManagePage")
+            ),
+          },
+          {
+            path: "",
+            Component: lazy(
+              () => import("../features/layout/ErrorBoundary/NotFoundPage")
             ),
           },
           {

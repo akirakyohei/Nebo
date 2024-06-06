@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private User user;
+    protected User user;
 
     public long getId() {
         return user.getId();

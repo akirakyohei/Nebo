@@ -44,3 +44,9 @@ export type Template = {
 export type TemplateResponse = {
   template: Template;
 };
+
+export type FileUploadData = {
+  name: string;
+  content_type: string;
+  data: string;
+};

@@ -1,11 +1,16 @@
-import { CSSProperties } from "react";
-import { AutocompleteSelect } from "../../../components/AutocompleteSelect";
+import { CSSProperties, useMemo } from "react";
+
 import { Option } from "../../../components/types";
-import { useGetCategoriesWithInfiniteQuery } from "../../../data/category.api";
+import {
+  useGetCategoriesQuery,
+  useGetCategoriesWithInfiniteQuery,
+} from "../../../data/category.api";
 import { Category, ListResponse } from "../../../types";
 import { useSimpleFilters } from "../../../utils/useSimpleFilters";
 import { useSimpleFiltersQuery } from "../../../utils/useSimpleFiltersQuery";
 import { Height } from "@mui/icons-material";
+import AutocompleteSelect from "../../../components/AutocompleteSelect2";
+import { toString } from "lodash-es";
 
 interface Props {
   label?: string;
@@ -30,6 +35,18 @@ export const CategoryTemplateSelect = ({
     debounceQuery,
     changeDebounceQuery,
   } = useSimpleFilters(20);
+
+  const {
+    data: selected = {
+      data: [],
+      metadata: { total_element: 0, limit: 250, page: 1 },
+    },
+  } = useGetCategoriesQuery({
+    limit: 250,
+    page: 1,
+    ids: values,
+  });
+
   const {
     data: categories = {
       data: [],
@@ -48,13 +65,27 @@ export const CategoryTemplateSelect = ({
     label: item.name,
   }));
 
+  const selectedOptions: Option<number>[] = useMemo(
+    () =>
+      selected.data
+        .filter((a) =>
+          values.some((v) =>
+            typeof v === "string" ? v === toString(a.id) : v === a.id
+          )
+        )
+        .map((a) => ({
+          value: a.id,
+          label: a.name,
+        })),
+    [selected.data, values]
+  );
   return (
     <AutocompleteSelect
-      values={values}
+      values={selectedOptions}
       label={label}
       options={options}
       multiple
-      placeholder="Chọn loại"
+      placeholder="Chọn danh mục"
       query={query}
       height={height}
       minWidth={"150px"}

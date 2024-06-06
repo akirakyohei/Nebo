@@ -10,11 +10,11 @@ import {
 import { ComplexAction } from "./types";
 import { filterNonNull } from "../utils/base";
 import { Button } from "./Button";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { isElement } from "lodash-es";
 
 interface Props {
-  title?: string;
+  title?: string | ReactNode;
   children?: React.ReactNode;
   fullHeight?: boolean;
   sx?: SxProps<Theme>;
@@ -38,7 +38,7 @@ export const Page = ({
 }: Props) => {
   const footerMarkup = filterNonNull<ComplexAction>([
     ...(secondaryActions?.map((item) => ({ ...item, outline: true })) || []),
-    primaryAction && !isElement(primaryAction)
+    primaryAction && !React.isValidElement(primaryAction)
       ? { color: "primary", ...(primaryAction as ComplexAction) }
       : null,
   ]).map((item, index) => <Button key={index} {...item} />);
@@ -58,15 +58,22 @@ export const Page = ({
               direction={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
+              sx={{ paddingRight: 2, paddingLeft: 2 }}
             >
-              <Typography variant="h6" fontWeight={"500"}>
-                {title}
-              </Typography>
+              {typeof title === "string" ? (
+                <Typography variant="h6" fontWeight={"500"}>
+                  {title}
+                </Typography>
+              ) : (
+                title
+              )}
               <Box>
-                {footerMarkup ? (
+                {footerMarkup.length > 0 ? (
                   <ButtonGroup>{footerMarkup}</ButtonGroup>
                 ) : null}
-                {isElement(primaryAction) ? (primaryAction as ReactNode) : null}
+                {React.isValidElement(primaryAction)
+                  ? (primaryAction as ReactNode)
+                  : null}
               </Box>
             </Stack>
           </Box>
@@ -75,6 +82,8 @@ export const Page = ({
           sx={{
             minHeight: fullHeight ? "100vh" : undefined,
             padding: contentSpacing,
+            backgroundColor: "transparent",
+            boxShadow: "none",
             ...sx,
           }}
         >

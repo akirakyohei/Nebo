@@ -1,9 +1,8 @@
+import { TYPES } from "../constants";
 import { BarcodePluginOptions } from "./types";
 
-export const cmpId = "barcode";
-
 export const defaultOptions: BarcodePluginOptions = {
-  blocks: [cmpId],
+  blocks: [TYPES.barcode],
   // default options
   script:
     "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js",
@@ -13,7 +12,7 @@ export const defaultOptions: BarcodePluginOptions = {
   blockBarcode: {
     label: "Barcode",
     content: {
-      type: cmpId,
+      type: TYPES.barcode,
     },
   },
 

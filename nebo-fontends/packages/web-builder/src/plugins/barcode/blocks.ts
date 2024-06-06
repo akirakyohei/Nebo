@@ -1,6 +1,6 @@
 import { Editor } from "grapesjs";
-import { cmpId } from "./constants";
 import { BarcodeBlockOptions, BarcodePluginOptions } from "./types";
+import { TYPES } from "../constants";
 
 export const barcodeBlock: BarcodeBlockOptions = {
   label: "Barcode",
@@ -11,14 +11,14 @@ export const barcodeBlock: BarcodeBlockOptions = {
   active: true,
   select: true,
   content: {
-    type: cmpId,
+    type: TYPES.barcode,
   },
 };
 
 export default (editor: Editor, options: BarcodePluginOptions) => {
-  const {BlockManager} = editor;
+  const { BlockManager } = editor;
   const { blocks = [], blockBarcode = {} } = options;
   if (!blocks || !Array.isArray(blocks)) return;
-  if (blocks.includes(cmpId))
-    BlockManager.add(cmpId, { ...barcodeBlock, ...blockBarcode });
+  if (blocks.includes(TYPES.barcode))
+    BlockManager.add(TYPES.barcode, { ...barcodeBlock, ...blockBarcode });
 };

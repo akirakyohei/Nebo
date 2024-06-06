@@ -4,6 +4,7 @@ import { isClientError } from "../../../../utils/client";
 import { useNavigate } from "react-router";
 import { useToast } from "../../../../components/notification/useToast";
 import {
+  useChangePasswordMutation,
   useSignupMutation,
   useUpdateAccountMutation,
 } from "../../../../data/user.api";
@@ -26,7 +27,7 @@ interface Props {
 export const ChangePasswordModal = ({ open, onClose, user }: Props) => {
   const navigate = useNavigate();
   const { show: showToast } = useToast();
-  const [updateAccount] = useUpdateAccountMutation();
+  const [changePassword] = useChangePasswordMutation();
 
   const {
     control,
@@ -43,16 +44,18 @@ export const ChangePasswordModal = ({ open, onClose, user }: Props) => {
   });
   const submit = handleSubmit(async (data: ChangePasswordRequestModel) => {
     try {
-      const result = await updateAccount({
+      const result = await changePassword({
         password: data.new_password,
         confirm_password:
           data.old_password !== "" ? data.old_password : undefined,
       }).unwrap();
       showToast("Cập nhật mật khẩu thành công");
       onClose();
+      navigate("/");
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
+        if (ex.status === 403) error = "Mật khẩu không chính xác";
         if (/Email already existed/.test(error)) error = "Email đã tồn tại";
         if (/Phone number already existed/.test(error))
           error = "Số điện thoại đã tồn tại";

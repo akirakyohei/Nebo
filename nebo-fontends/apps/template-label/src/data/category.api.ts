@@ -2,8 +2,6 @@ import { storefontApi, transformAxiosErrorResponse } from "./api";
 import {
   Category,
   ListResponse,
-  CategoryByGroup,
-  CategoryByGroupFilterRequest,
   CategoryFilterRequest,
   CategoryRequest,
 } from "../types";
@@ -11,7 +9,7 @@ import { toQueryString } from "../utils/url";
 
 const categoryApi = storefontApi.injectEndpoints({
   endpoints: (builder) => ({
-    createCategory: builder.mutation<Category, CategoryRequest>({
+    createCategory: builder.mutation<Category, Partial<CategoryRequest>>({
       query: (q) => {
         return {
           url: `/api/categories`,
@@ -26,7 +24,7 @@ const categoryApi = storefontApi.injectEndpoints({
     }),
     updateCategory: builder.mutation<
       Category,
-      { id: number; request: CategoryRequest }
+      { id: number; request: Partial<CategoryRequest> }
     >({
       query: (q) => {
         return {
@@ -40,15 +38,15 @@ const categoryApi = storefontApi.injectEndpoints({
         response.category,
       invalidatesTags: (result, _error) => (result ? ["category"] : []),
     }),
-    getCategoryByGroup: builder.query<
-      CategoryByGroup[],
-      CategoryByGroupFilterRequest
-    >({
-      query: (q) => `/api/categories/by_groups${!q.owner ? "/default" : ""}`,
-      transformErrorResponse: transformAxiosErrorResponse,
-      transformResponse: (res: { category_by_groups: CategoryByGroup[] }) =>
-        res.category_by_groups,
-    }),
+    getCategories: builder.query<ListResponse<Category>, CategoryFilterRequest>(
+      {
+        query: (q) => `/api/categories${toQueryString(q)}`,
+        transformResponse: (response: { categories: ListResponse<Category> }) =>
+          response.categories,
+        transformErrorResponse: transformAxiosErrorResponse,
+        providesTags: (result, _error) => (result ? ["category"] : []),
+      }
+    ),
     getCategoriesWithInfinite: builder.query<
       ListResponse<Category>,
       CategoryFilterRequest
@@ -91,6 +89,6 @@ export const {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
-  useGetCategoryByGroupQuery,
+  useGetCategoriesQuery,
   useGetCategoriesWithInfiniteQuery,
 } = categoryApi;

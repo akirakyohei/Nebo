@@ -12,7 +12,6 @@ import java.time.Instant;
 public class CategoryResponse {
     private int id;
     private String name;
-    private int groupId;
     private Instant createdAt;
     private Instant updatedAt;
 }

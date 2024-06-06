@@ -1,6 +1,6 @@
 import { Editor } from "grapesjs";
-import { cmpId } from "./constants";
 import { QrcodePluginOptions } from "./types";
+import { TYPES } from "../constants";
 
 export const qrcodeBlock = {
   label: "QR Code",
@@ -10,7 +10,7 @@ export const qrcodeBlock = {
   category: "Content",
   activate: true,
   select: true,
-  content: { type: cmpId },
+  content: { type: TYPES.qrcode },
 };
 
 export default (editor: Editor, options: QrcodePluginOptions) => {
@@ -19,6 +19,6 @@ export default (editor: Editor, options: QrcodePluginOptions) => {
   const { blocks = [], blockQrcode = {} } = options;
 
   if (!blocks || !Array.isArray(blocks)) return;
-  if (blocks.includes(cmpId))
-    BlockManager.add(cmpId, { ...qrcodeBlock, ...blockQrcode });
+  if (blocks.includes(TYPES.qrcode))
+    BlockManager.add(TYPES.qrcode, { ...qrcodeBlock, ...blockQrcode });
 };

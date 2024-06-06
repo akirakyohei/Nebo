@@ -29,10 +29,11 @@ export type Template = {
   field_schema?: object;
   html: string;
   testData?: { [key: string]: string };
+  shared_status?: string;
   active: boolean;
   trashed: boolean;
   options: TemplateOptions;
-  thumbnail: FileDataUploadResponse;
+  thumbnail: FileDataUploadResponse | null;
   size: number;
   created_at: string;
   updated_at: string;
@@ -47,6 +48,7 @@ export type TemplateFilterRequest = PageFilterRequest & {
   type?: string;
   owner?: boolean;
   active?: string;
+  shared?: boolean;
   sort_direction?: string;
   sort_by?: string;
 };
@@ -56,8 +58,10 @@ export type TemplateRequest = {
   category_ids: number[];
   paper_type_id: number;
   assets: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   components: any;
   css: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   styles: any;
   field_schema?: object;
   html: string;
@@ -65,5 +69,4 @@ export type TemplateRequest = {
   active: boolean;
   trashed: boolean;
   options: TemplateOptions;
-  thumbnail: FileDataUploadResponse;
 };

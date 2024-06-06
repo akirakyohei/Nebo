@@ -1,15 +1,14 @@
 package com.nebo.reports.applications.service;
 
+import com.nebo.lib.feignclient.client.B;
+import com.nebo.lib.feignclient.client.NeboFeignClient;
 import com.nebo.reports.applications.model.*;
 import com.nebo.reports.applications.service.mapper.*;
-import com.nebo.reports.insfrastructures.domain.dto.TopUsedPaperTypeDto;
-import com.nebo.reports.insfrastructures.domain.dto.TopUsedTemplateDto;
-import com.nebo.reports.insfrastructures.domain.model.DimPaperType;
-import com.nebo.reports.insfrastructures.domain.model.DimTemplate;
-import com.nebo.reports.insfrastructures.domain.model.FactAggregate;
-import com.nebo.reports.insfrastructures.domain.model.FactSession_;
-import com.nebo.reports.insfrastructures.domain.repository.*;
-import com.nebo.reports.insfrastructures.domain.specification.FactSessionSpecification;
+import com.nebo.reports.infrastructures.domain.dto.TopUsedPaperTypeDto;
+import com.nebo.reports.infrastructures.domain.dto.TopUsedTemplateDto;
+import com.nebo.reports.infrastructures.domain.model.*;
+import com.nebo.reports.infrastructures.domain.repository.*;
+import com.nebo.reports.infrastructures.domain.specification.FactSessionSpecification;
 import com.nebo.types.PagingFilterRequest;
 import com.nebo.utils.Lists;
 import com.nebo.web.applications.exception.NotFoundException;
@@ -42,10 +41,11 @@ public class ReportServiceImpl implements ReportService {
     private final FactUsedTemplateMapper factUsedTemplateMapper;
     private final DimPaperTypeMapper paperTypeMapper;
     private final DimTemplateMapper templateMapper;
+    private final NeboFeignClient neboFeignClient;
 
     @Override
     public HistorySessionsResponse getHistorySession(long userId, HistorySessionFilterRequest request) {
-        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
+        var dimUser = getDimUserById(userId);
         var spec = FactSessionSpecification.toFilter(dimUser.getUserKey(), request);
         var page = factSessionRepository.findAll(spec, request.toPageable(Sort.by(Sort.Direction.DESC, FactSession_.CREATED_AT)));
         return new HistorySessionsResponse(page.map(factSessionMapper::fromDomainToResponse));
@@ -53,14 +53,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public AggregateReportResponse getAggregateReport(long userId) {
-        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
+        var dimUser = getDimUserById(userId);
         var aggregate = factAggregateRepository.findFactAggregateByUserKey(dimUser.getUserKey()).orElse(FactAggregate.getDefault(dimUser.getUserKey()));
         return factAggregateMapper.fromDomainToResponse(aggregate);
     }
 
     @Override
     public List<TopUsedPaperTypeResponse> getTopUsedPaperTypeResponse(long userId, long top, TimeRequest timeRequest) {
-        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
+        var dimUser = getDimUserById(userId);
         var list = factUsedPaperTypeRepository.getTopUsedPaperTypeDto(dimUser.getUserKey(), top, timeRequest);
         return dimPaperTypeRepository.findAll()
                 .stream()
@@ -80,7 +80,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<TopUsedTemplateResponse> getTopUsedTemplateResponse(long userId, long top, TimeRequest timeRequest) {
-        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
+        var dimUser = getDimUserById(userId);
         var list = factUsedTemplateRepository.getTopUsedTemplateDto(dimUser.getUserKey(), top, timeRequest);
         var templateKeys = list.stream().map(TopUsedTemplateDto::getTemplateKey).toList();
 
@@ -104,7 +104,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public UsedTemplatesResponse getUsedTemplates(long userId, List<Long> templateIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest) {
-        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
+        var dimUser = getDimUserById(userId);
         var templateKeys = !CollectionUtils.isEmpty(templateIds) ? dimTemplateRepository.findAllByUserKeyAndTemplateIdIn(dimUser.getUserKey(), templateIds).stream().map(DimTemplate::getTemplateKey).toList() : null;
         var page = factUsedTemplateRepository.getUsedTemplates(dimUser.getUserKey(), templateKeys, timeRequest, pagingFilterRequest);
         var aggregate = factUsedTemplateRepository.aggregateUsedTemplates(dimUser.getUserKey(), templateKeys, timeRequest);
@@ -113,11 +113,28 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public UsedPaperTypesResponse getUsedPaperTypes(long userId, List<Integer> paperTypeIds, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest) {
-        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElseThrow(NotFoundException::new);
+        var dimUser = getDimUserById(userId);
         var paperTypeKeys = !CollectionUtils.isEmpty(paperTypeIds) ? dimPaperTypeRepository.findAllByPaperTypeIdIn(paperTypeIds)
                 .stream().map(DimPaperType::getPaperTypeKey).toList() : null;
         var page = factUsedPaperTypeRepository.getUsedPaperTypes(dimUser.getUserKey(), paperTypeKeys, timeRequest, pagingFilterRequest);
         var aggregate = factUsedPaperTypeRepository.aggregateUsedPaperTypes(dimUser.getUserKey(), paperTypeKeys, timeRequest);
         return (new UsedPaperTypesResponse(page.map(factUsedPaperTypeMapper::fromDtoToResponse))).aggregates(aggregate);
+    }
+
+    private DimUser getDimUserById(long userId) {
+        var dimUser = dimUserRepository.findDimUserByUserId(userId).orElse(null);
+        if (dimUser != null)
+            return dimUser;
+        try {
+            var user = neboFeignClient.getUserById(userId, B.withUserId(userId)).getUser();
+            dimUser = new DimUser(userId, user.getFirstName(), user.getLastName(), user.getAvatarUrl());
+            try {
+                dimUserRepository.save(dimUser);
+            } catch (Exception ex) {
+            }
+            return dimUser;
+        } catch (Exception ex) {
+        }
+        throw new NotFoundException();
     }
 }

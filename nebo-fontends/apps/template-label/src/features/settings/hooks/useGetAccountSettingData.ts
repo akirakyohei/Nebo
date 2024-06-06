@@ -20,7 +20,12 @@ export const useGetAccountSettingData = (): Data => {
 
   const {
     data: historySessions = {
-      data: [{ ip_address: "127.0.0.1", user_agent: "" }],
+      data: [],
+      metadata: {
+        total_element: 0,
+        limit: 5,
+        page: 1,
+      },
     } as ListResponse<HistorySession>,
     isLoading: isLoadingHistorySession,
     isFetching: isFetchingHistorySession,

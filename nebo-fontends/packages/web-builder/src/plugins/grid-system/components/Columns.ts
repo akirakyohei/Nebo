@@ -21,7 +21,7 @@ export default (
   const { rowProps = {}, maxGrid, oldMaxGrid } = config;
   const componentType = rowProps.type || TYPES.columns;
   const gsType = GS_TYPES.columns;
-  const droppable = `[data-gjs-type='${GS_TYPES.column}'], [data-dm-category='column'], [data-dm-category='content']`;
+  const droppable = `[data-gjs-type='${GS_TYPES.column}'], [data-dm-category='column'], [data-dm-category='content'],[data-gjs-type="wrapper"]`;
 
   const def: AddComponentTypeOptions = {
     extend: "row",
@@ -39,6 +39,8 @@ export default (
         this.on(
           "component:update:components",
           (component, components, update) => {
+            debugger;
+            if (editor.Config.dragMode === "absolute") return;
             if (
               component.getAttributes()["data-columns-reset"] ===
               GS_TYPES.column

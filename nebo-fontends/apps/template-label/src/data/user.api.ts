@@ -1,5 +1,6 @@
 import {
   User,
+  UserChangePasswordRequest,
   UserCreateRequest,
   UserLoginRequest,
   UserToken,
@@ -64,6 +65,21 @@ export const userApi = storefontApi.injectEndpoints({
       },
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (response: { user: User }) => response.user,
+      invalidatesTags: (result, _error) =>
+        result ? ["user", "credentials"] : [],
+    }),
+    changePassword: builder.mutation<User, UserChangePasswordRequest>({
+      query: (q) => {
+        return {
+          url: `/api/users/change_password`,
+          method: "POST",
+          body: { user: q },
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      transformResponse: (response: { user: User }) => response.user,
+      invalidatesTags: (result, _error) =>
+        result ? ["user", "credentials"] : [],
     }),
   }),
 });
@@ -74,4 +90,5 @@ export const {
   useRefreshTokenQuery,
   useLogoutMutation,
   useUpdateAccountMutation,
+  useChangePasswordMutation,
 } = userApi;

@@ -32,6 +32,7 @@ axios.interceptors.response.use(
       if (error.response.status === 403)
         cookies.set(TOKEN_HEADER, false, { path: "/" });
     }
+    throw error;
   }
 );
 
@@ -95,7 +96,14 @@ export function transformAxiosErrorResponse({
 export const storefontApi = createApi({
   reducerPath: "storefontApi",
   baseQuery: axiosBaseQuery(),
-  tagTypes: ["credentials", "template","media_file","category","api_key"],
+  tagTypes: [
+    "user",
+    "credentials",
+    "template",
+    "media_file",
+    "category",
+    "api_key",
+  ],
   endpoints: (builder) => ({
     getCurrentUser: builder.query<User, void>({
       query: () => {

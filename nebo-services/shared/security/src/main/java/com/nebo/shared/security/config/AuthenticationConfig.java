@@ -59,9 +59,22 @@ public class AuthenticationConfig {
                 .anyRequest().denyAll();
     }
 
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, NeboSecurityCustomizer neboSecurityCustomizer) throws Exception {
+    @ConditionalOnMissingBean(NeboHttpConfigurerCustomizer.class)
+    public NeboHttpConfigurerCustomizer defaultNeboHttpConfigurer() {
+        return http -> {
+        };
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, NeboHttpConfigurerCustomizer neboHttpConfigurerCustomizer, NeboSecurityCustomizer neboSecurityCustomizer) throws Exception {
         http.with(new NeboHttpConfigurer(), cus -> {
+            try {
+                neboHttpConfigurerCustomizer.configure(http);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }).authorizeHttpRequests(neboSecurityCustomizer::getConfigure);
         return http.build();
     }

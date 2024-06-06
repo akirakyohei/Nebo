@@ -25,9 +25,6 @@ public class UserUpdateRequest {
 
     private Optional<@Email String> email;
 
-    @Password
-    private String password;
-
     private Optional<@PhoneNumber String> phoneNumber;
 
     private String confirmPassword;

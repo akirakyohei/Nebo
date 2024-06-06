@@ -5,9 +5,9 @@ import {
   TraitProperties,
 } from "grapesjs";
 import { BarcodePluginOptions } from "./types";
-import { cmpId } from "./constants";
 import Barcode from "jsbarcode";
 import { transform } from "typescript";
+import { TYPES } from "../constants";
 
 export default (editor: Editor, opts: BarcodePluginOptions) => {
   const { DomComponents } = editor;
@@ -160,7 +160,7 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
   barcodeProps.textPosition = "bottom";
   barcodeProps.rotation = "N";
 
-  DomComponents.addType(cmpId, {
+  DomComponents.addType(TYPES.barcode, {
     extend: "image",
     model: {
       defaults: opts?.props({

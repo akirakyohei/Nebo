@@ -16,6 +16,7 @@ import { Box, Grid } from "@mui/material";
 import { Template } from "../../types";
 import { useToast } from "../../components/notification/useToast";
 import { isClientError } from "../../utils/client";
+import { WorkspacePageSkeleton } from "./components/WorkspacePageSkeleton";
 
 export default function EditorManagePage() {
   const { show: showToast } = useToast();
@@ -73,7 +74,7 @@ export default function EditorManagePage() {
     setDesigning(_value);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <WorkspacePageSkeleton />;
 
   // if (!template) return <Navigate to={"/"} />;
 

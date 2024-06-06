@@ -1,31 +1,15 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from "@mui/material";
-
-import { useState } from "react";
 import { Page } from "../../components/Page";
-import { TabOption, Tabs } from "../../components/Tabs";
 import { useBaseFilter } from "../../utils/useBaseFilterQuery";
 import { TemplateFilterRequestModel } from "./types";
 import { useGetTemplatesData } from "./hooks/useGetTemplatesData";
-import {
-  ArrowDownward,
-  ArrowUpward,
-  ControlPointOutlined,
-  SearchOutlined,
-} from "@mui/icons-material";
-import { CategoryTemplateSelect } from "../workspaces/components/CategoryTemplateSelect";
+import { ControlPointOutlined } from "@mui/icons-material";
 import { TemplateFilters } from "./components/template/TemplateFilters";
 import { useToggle } from "../../utils/useToggle";
 import { TemplateAddModal } from "./components/template/TemplateAddModal";
 import { TemplateTable } from "./components/template/TemplateTable";
+import { TemplateSkeleton } from "./components/template/TemplateSkeleton";
+import { Loading } from "../../components/loading";
+import { EmptyStateImage } from "../../components/EmptyStatePage";
 
 export default function TemplatePage() {
   const {
@@ -34,22 +18,24 @@ export default function TemplatePage() {
     setFalse: closeCreateTemplate,
   } = useToggle(false);
 
-  const {
-    filter,
-    isFilter,
-    onChangeSearchParams,
-    onChangeSearchParamsAll,
-  } = useBaseFilter<TemplateFilterRequestModel>({
-    keyIsListFilter: ["category_ids"],
+  const { filter, isFilter, onChangeSearchParams, onChangeSearchParamsAll } =
+    useBaseFilter<TemplateFilterRequestModel>({
+      keyIsListFilter: ["category_ids"],
+      excludeCheckFilter: ["tab"],
+    });
+
+  const { templates, isLoading, isFetching } = useGetTemplatesData({
+    ...filter,
   });
 
-  const { categoryByGroups, templates, isLoading, isFetching } =
-    useGetTemplatesData({ ...filter });
+  if (isLoading) return <TemplateSkeleton />;
 
+  const isFirstScreen =
+    isFilter === "" && templates.metadata.total_element === 0;
   return (
     <Page
       title="Mẫu"
-      fullHeight
+      // fullHeight
       fluid
       primaryAction={{
         icon: <ControlPointOutlined />,
@@ -57,12 +43,35 @@ export default function TemplatePage() {
         onAction: openCreateTemplate,
       }}
     >
+      {isFetching && <Loading />}
       <TemplateFilters
         filter={filter}
         onChangeSearchParams={onChangeSearchParams}
         onChangeSearchParamsAll={onChangeSearchParamsAll}
       />
-      <TemplateTable templates={templates} />
+      {isFirstScreen && (
+        <EmptyStateImage
+          title={
+            filter.tab !== "shared"
+              ? "Bạn chưa có mẫu nào"
+              : "Bạn chưa được chia sẻ mẫu nào"
+          }
+          description="Hãy bắt đầu bằng cách tạo mẫu mới hoặc xem các mẫu chia sẻ với bạn"
+          primaryAction={{
+            content: "Tạo mẫu mới",
+            icon: <ControlPointOutlined />,
+            onAction: openCreateTemplate,
+          }}
+        />
+      )}
+      {!isFirstScreen && (
+        <TemplateTable
+          templates={templates}
+          filter={filter}
+          onChangeSearchParams={onChangeSearchParams}
+          onChangeSearchParamsAll={onChangeSearchParamsAll}
+        />
+      )}
       {isOpenCreateTemplate && (
         <TemplateAddModal onClose={closeCreateTemplate} />
       )}

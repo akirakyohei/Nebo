@@ -47,9 +47,15 @@ public class Template {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "option_id", referencedColumnName = "id")
     private TemplateOption options;
-    private boolean active;
+
+    @Builder.Default
+    private boolean active = true;
     private boolean trashed;
     private Long thumbnailImageId;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private SharedStatus sharedStatus = SharedStatus.only_you;
     private long size;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -69,5 +75,11 @@ public class Template {
         this.options = options;
         options.setTemplate(this);
         options.setUserId(this.getUserId());
+    }
+
+    public enum SharedStatus {
+        only_you,
+        allow_all,
+        share_many
     }
 }

@@ -1,4 +1,4 @@
-function stringToColor(string: string) {
+export function stringToColor(string: string) {
   let hash = 0;
   let i;
 
@@ -29,6 +29,6 @@ export function stringAvatar(
       height: size ? size : undefined,
       width: size ? size : undefined,
     },
-    children: `${last_name?.[0]}${first_name[0]}`,
+    children: `${last_name?.[0] || ""}${first_name[0] || ""}`,
   };
 }

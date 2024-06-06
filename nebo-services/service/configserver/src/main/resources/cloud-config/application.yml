@@ -32,11 +32,11 @@ spring:
   kafka:
     bootstrap: localhost:9092
     topic:
-      user-log: kafka.topic.user
-      session-log: kafka.topic.session
-      file-data-raw-log: kafka.topic.session
-      template-raw-log: kafka.topic.session
-      print-log: kafka.topic.session
+      user-raw-log: dbtenants.tenantdb.users
+      session-raw-log: dbtenants.tenantdb.sessions
+      file-data-raw-log: dbserver1.templatedb.file_datas
+      template-raw-log: dbserver1.templatedb.templates
+      print-log-raw-log: dbserver1.templatedb.print_logs
   redis:
     host: localhost
     port: 6379

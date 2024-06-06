@@ -12,7 +12,7 @@ import { isClientError } from "../../../../utils/client";
 import Modal from "../../../../components/Modal";
 import { stringAvatar } from "../../../../utils/stringAvatar";
 import { useUpdateAccountMutation } from "../../../../data/user.api";
-
+import { Buffer } from "buffer";
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -38,7 +38,7 @@ export const UpdateAvatarModal = ({ open, onClose, user }: Props) => {
     try {
       const res = updateAccount({
         avatar: { ...data.file },
-      });
+      }).unwrap();
       showToast("Cập nhật thành công");
       onClose();
     } catch (ex) {
@@ -81,8 +81,8 @@ export const UpdateAvatarModal = ({ open, onClose, user }: Props) => {
           content_type: file.type,
           data:
             typeof reader.result !== "string"
-              ? reader.result
-              : new TextEncoder().encode(reader.result),
+              ? Buffer.from(reader.result).toString("base64")
+              : reader.result,
         });
       };
       reader.readAsArrayBuffer(file);
@@ -131,7 +131,9 @@ export const UpdateAvatarModal = ({ open, onClose, user }: Props) => {
                   src={
                     !watch("file")
                       ? user?.avatar_url
-                      : URL.createObjectURL(new Blob([watch("file.data")]))
+                      : URL.createObjectURL(
+                          new Blob([Buffer.from(watch("file.data"), "base64")])
+                        )
                   }
                   {...stringAvatar(user.first_name, user.last_name, 100)}
                 />

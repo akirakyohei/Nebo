@@ -1,8 +1,11 @@
 import {
   Autocomplete,
+  Box,
   Checkbox,
   TextField,
   TextFieldProps,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import { Option } from "./types";
 import { isArray } from "lodash-es";
@@ -55,7 +58,7 @@ export function AutocompleteSelect<T extends Value>({
       options.filter(
         (item) => values?.includes(item.value) || value === item.value
       ),
-    [options]
+    [options, value, values]
   );
 
   const ListBoxComponent = React.forwardRef<
@@ -87,6 +90,7 @@ export function AutocompleteSelect<T extends Value>({
         options={options}
         itemType=""
         isOptionEqualToValue={(option, value) => {
+          debugger;
           return option.value === value.value;
         }}
         getOptionKey={(option) => option.value}
@@ -94,28 +98,30 @@ export function AutocompleteSelect<T extends Value>({
         getOptionDisabled={(option) => option.disabled || false}
         // ListboxComponent={ListBoxComponent}
         onChange={(_event, _value) => {
+          debugger;
+          values;
+          seletedOptions;
           onChange(isArray(_value) ? _value.map((item) => item.value) : []);
         }}
         limitTags={4}
-        renderOption={
-          multiple
-            ? (props, option, { selected }) => (
-                <li key={option.value} {...props}>
-                  <Checkbox
-                    icon={icon}
-                    checkedIcon={checkedIcon}
-                    style={{ marginRight: 8 }}
-                    checked={selected}
-                  />
-                  {option.label}
-                </li>
-              )
-            : (props, option, { selected }) => (
-                <li key={option.value} {...props}>
-                  {option.label}
-                </li>
-              )
-        }
+        renderOption={(props, option, { selected }) => (
+          <Box
+            component={"li"}
+            key={option.value}
+            {...props}
+            sx={{ paddingLeft: "0 !important" }}
+          >
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              style={{ marginRight: 8 }}
+              checked={selected}
+            />
+            <Tooltip title={option.label} placement="right">
+              <Typography>{option.label}</Typography>
+            </Tooltip>
+          </Box>
+        )}
         disableClearable={disableClearable}
         filterSelectedOptions
         renderInput={(params) => (
@@ -132,6 +138,7 @@ export function AutocompleteSelect<T extends Value>({
               sx: {
                 height: height || "41px",
                 minWidth: minWidth,
+                background: "#ffff",
                 "> input": {
                   padding: "0 16px !important",
                   height: "100% !important",
@@ -166,9 +173,18 @@ export function AutocompleteSelect<T extends Value>({
         }}
         limitTags={4}
         renderOption={(props, option, { selected }) => (
-          <li key={option.value} {...props}>
-            {option.label}
-          </li>
+          <div
+            key={option.value}
+            {...(props as any)}
+            style={{
+              background: selected ? "#accbad" : undefined,
+              paddingLeft: "0 !important",
+            }}
+          >
+            <Tooltip title={option.label} placement="right">
+              <Typography>{option.label}</Typography>
+            </Tooltip>
+          </div>
         )}
         disableClearable={disableClearable}
         filterSelectedOptions

@@ -11,4 +11,5 @@ import lombok.Setter;
 @SupportParamName
 public class UserFilterRequest extends PagingFilterRequest {
     private String query;
+    private String ids;
 }

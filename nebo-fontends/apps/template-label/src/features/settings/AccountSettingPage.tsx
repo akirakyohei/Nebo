@@ -1,6 +1,8 @@
 import {
   Avatar,
   Box,
+  Card,
+  CardContent,
   Grid,
   Stack,
   Tab,
@@ -40,7 +42,7 @@ export default function AccountSettingPage() {
     value: isOpenUpdateAccountModal,
     setTrue: openUpdateAccountModal,
     setFalse: closeUpdateAccountModal,
-  } = useToggle(true);
+  } = useToggle(false);
 
   const {
     value: isOpenChangePasswordModal,
@@ -50,8 +52,8 @@ export default function AccountSettingPage() {
 
   const {
     currentUser = {
-      first_name: "dsk",
-      last_name: "dsj",
+      first_name: "",
+      last_name: "",
       id: 0,
       avatar_url: "",
       email: "",
@@ -83,134 +85,144 @@ export default function AccountSettingPage() {
         },
       ]}
     >
-      <Stack gap={3}>
-        <Stack>
-          <Box>
-            <Typography variant="h6">Thông tin tài khoản</Typography>
-          </Box>
-          <Box flex={1}>
-            <Grid display={"grid"} gridTemplateColumns={"30% auto"}>
-              <Box
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems="center"
-              >
-                <Box
-                  sx={{
-                    position: "relative",
-                    "&:hover": {
-                      "&> div:not(:first-of-type)": {
-                        display: "flex",
-                      },
-                    },
-                  }}
-                >
-                  <Avatar
-                    src={currentUser.avatar_url}
-                    {...stringAvatar(
-                      currentUser.first_name,
-                      currentUser.last_name,
-                      100
-                    )}
-                  />
-                  <Box
-                    sx={{
-                      width: "100px",
-                      height: "50px",
-                      background: "gray",
-                      borderBottomLeftRadius: "50px",
-                      borderBottomRightRadius: "50px",
-                      position: "absolute",
-                      opacity: "0.8",
-                      color: "#ffffff",
-                      bottom: 0,
-                      left: 0,
-                      cursor: "pointer",
-                      display: "none",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    onClick={openUpdateAvatar}
-                  >
-                    <Typography>Sửa</Typography>
-                  </Box>
-                </Box>
+      <Card>
+        <CardContent>
+          <Stack gap={3}>
+            <Stack>
+              <Box>
+                <Typography variant="h6">Thông tin tài khoản</Typography>
               </Box>
-              <Table>
-                <TableBody>
-                  <TableRow sx={{ background: "#fafafb" }}>
-                    <TableCell>Họ</TableCell>
-                    <TableCell>{currentUser.last_name}</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ background: "#fafafb" }}>
-                    <TableCell>Tên</TableCell>
-                    <TableCell>{currentUser.first_name}</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ background: "#fafafb" }}>
-                    <TableCell>Email</TableCell>
-                    <TableCell>{currentUser.email}</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ background: "#fafafb" }}>
-                    <TableCell>Số điện thoại</TableCell>
-                    <TableCell>{currentUser.phone_number}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Grid>
-          </Box>
-        </Stack>
+              <Box flex={1}>
+                <Grid display={"grid"} gridTemplateColumns={"30% auto"}>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems="center"
+                  >
+                    <Box
+                      sx={{
+                        position: "relative",
+                        "&:hover": {
+                          "&> div:not(:first-of-type)": {
+                            display: "flex",
+                          },
+                        },
+                      }}
+                    >
+                      <Avatar
+                        src={
+                          currentUser.avatar_url
+                            ? currentUser.avatar_url.startsWith("http")
+                              ? currentUser.avatar_url
+                              : `/api/files/data/${currentUser.avatar_url}`
+                            : undefined
+                        }
+                        {...stringAvatar(
+                          currentUser.first_name,
+                          currentUser.last_name,
+                          100
+                        )}
+                      />
+                      <Box
+                        sx={{
+                          width: "100px",
+                          height: "50px",
+                          background: "gray",
+                          borderBottomLeftRadius: "50px",
+                          borderBottomRightRadius: "50px",
+                          position: "absolute",
+                          opacity: "0.8",
+                          color: "#ffffff",
+                          bottom: 0,
+                          left: 0,
+                          cursor: "pointer",
+                          display: "none",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        onClick={openUpdateAvatar}
+                      >
+                        <Typography>Sửa</Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Table>
+                    <TableBody>
+                      <TableRow sx={{ background: "#fafafb" }}>
+                        <TableCell>Họ</TableCell>
+                        <TableCell>{currentUser.last_name}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ background: "#fafafb" }}>
+                        <TableCell>Tên</TableCell>
+                        <TableCell>{currentUser.first_name}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ background: "#fafafb" }}>
+                        <TableCell>Email</TableCell>
+                        <TableCell>{currentUser.email}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ background: "#fafafb" }}>
+                        <TableCell>Số điện thoại</TableCell>
+                        <TableCell>{currentUser.phone_number}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Grid>
+              </Box>
+            </Stack>
 
-        {historySessions?.data && historySessions?.data?.length > 0 ? (
-          <Stack>
-            <Box>
-              <Typography variant="h6">Lịch sử đăng nhập</Typography>
-            </Box>
-            <Box flex={1}>
-              <Table>
-                <TableHead>
-                  <TableRow sx={{ background: "#fafafb" }}>
-                    <TableCell>Ip</TableCell>
-                    <TableCell>Thiết bị</TableCell>
-                    <TableCell>Hệ điều hành</TableCell>
-                    <TableCell>Trình duyệt</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {historySessions.data.map((session, index) => (
-                    <TableRow key={index} sx={{ background: "#fafafb" }}>
-                      <TableCell>{session.ip_address}</TableCell>
-                      <TableCell>{session.device.model}</TableCell>
-                      <TableCell>{session.os.name}</TableCell>
-                      <TableCell>{session.browser.name}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
+            {historySessions?.data && historySessions?.data?.length > 0 ? (
+              <Stack>
+                <Box>
+                  <Typography variant="h6">Lịch sử đăng nhập</Typography>
+                </Box>
+                <Box flex={1}>
+                  <Table>
+                    <TableHead>
+                      <TableRow sx={{ background: "#fafafb" }}>
+                        <TableCell>Ip</TableCell>
+                        <TableCell>Thiết bị</TableCell>
+                        <TableCell>Hệ điều hành</TableCell>
+                        <TableCell>Trình duyệt</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {historySessions.data.map((session, index) => (
+                        <TableRow key={index} sx={{ background: "#fafafb" }}>
+                          <TableCell>{session.ip_address}</TableCell>
+                          <TableCell>{session.device.model}</TableCell>
+                          <TableCell>{session.os.name}</TableCell>
+                          <TableCell>{session.browser.name}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Box>
+              </Stack>
+            ) : null}
+            {isOpenUpdateAvatar && (
+              <UpdateAvatarModal
+                open
+                onClose={closeUpdateAvatar}
+                user={currentUser}
+              />
+            )}
+            {isOpenUpdateAccountModal && (
+              <UpdateAccountModal
+                open
+                onClose={closeUpdateAccountModal}
+                user={currentUser}
+              />
+            )}
+            {isOpenChangePasswordModal && (
+              <ChangePasswordModal
+                open
+                onClose={closeChangePasswordModal}
+                user={currentUser}
+              />
+            )}
           </Stack>
-        ) : null}
-        {isOpenUpdateAvatar && (
-          <UpdateAvatarModal
-            open
-            onClose={closeUpdateAvatar}
-            user={currentUser}
-          />
-        )}
-        {isOpenUpdateAccountModal && (
-          <UpdateAccountModal
-            open
-            onClose={closeUpdateAccountModal}
-            user={currentUser}
-          />
-        )}
-        {isOpenChangePasswordModal && (
-          <ChangePasswordModal
-            open
-            onClose={closeChangePasswordModal}
-            user={currentUser}
-          />
-        )}
-      </Stack>
+        </CardContent>
+      </Card>
     </Page>
   );
 }

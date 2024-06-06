@@ -12,10 +12,6 @@ import java.util.Map;
 @AllArgsConstructor
 @JsonRootName("template_print")
 public class TemplatePrintRequest {
-    private String html;
+
     private Map<String, Object> variables;
-    private boolean fillData;
-
-    private TemplateOptionResponse options;
-
 }

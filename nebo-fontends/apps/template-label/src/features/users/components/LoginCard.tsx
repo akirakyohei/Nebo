@@ -102,8 +102,8 @@ export const LoginCard = () => {
               }}
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field: { ref, ...otherProps } }) => {
-                const error = control._formState.errors[otherProps.name]
-                  ?.message ;
+                const error =
+                  control._formState.errors[otherProps.name]?.message;
                 return (
                   <TextField
                     label="Email hoặc số điện thoại"
@@ -143,8 +143,8 @@ export const LoginCard = () => {
               }}
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field: { ref, ...otherProps } }) => {
-                const error = control._formState.errors[otherProps.name]
-                  ?.message ;
+                const error =
+                  control._formState.errors[otherProps.name]?.message;
                 return (
                   <PasswordField
                     label="Mật khẩu"
@@ -183,6 +183,7 @@ export const LoginCard = () => {
             <Grid item>
               <Button
                 variant="outlined"
+                href="/api/auth/oauth2/google?redirect_uri=http://nebo.com/documents"
                 startIcon={
                   <Box
                     component="img"
@@ -199,6 +200,7 @@ export const LoginCard = () => {
             <Grid item>
               <Button
                 variant="outlined"
+                href="/api/auth/oauth2/facebook?redirect_uri=http://nebo.com/documents"
                 startIcon={
                   <Box
                     component="img"

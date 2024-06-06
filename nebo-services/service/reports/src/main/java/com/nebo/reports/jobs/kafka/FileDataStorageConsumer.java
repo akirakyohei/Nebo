@@ -11,6 +11,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 @RequiredArgsConstructor
 public class FileDataStorageConsumer {
@@ -21,8 +23,8 @@ public class FileDataStorageConsumer {
             topics = "#{'${spring.kafka.topic.file-data-raw-log}'.split(',')}",
             concurrency = "5"
     )
-    public void process(ConsumerRecord<String, String> record) {
-        var templateKafka = KafkaConnectUtils.<FileData>marshallRaw(record.value());
+    public void process(ConsumerRecord<String, String> record) throws IOException {
+        var templateKafka = KafkaConnectUtils.marshallRaw(record.value(),FileData.class);
         var delta = 0L;
         var userId = 0L;
         if (DebeziumOperation.c.equals(templateKafka.getOp())) {

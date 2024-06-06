@@ -1,6 +1,6 @@
 package com.nebo.sso.applications.model;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+
 import com.nebo.types.PageResponse;
 import org.springframework.data.domain.Page;
 

@@ -2,7 +2,7 @@ package com.nebo.reports.applications.service.mapper;
 
 import com.nebo.reports.applications.model.Template;
 import com.nebo.reports.applications.model.TemplateResponse;
-import com.nebo.reports.insfrastructures.domain.model.DimTemplate;
+import com.nebo.reports.infrastructures.domain.model.DimTemplate;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

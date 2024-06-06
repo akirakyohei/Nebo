@@ -48,6 +48,7 @@ public class MediaServiceImpl implements MediaService {
                 .key(request.getKey())
                 .extension(IOUtils.getExtension(request.getContentType()))
                 .size(request.getData().length)
+                .system(TokenType.basic_auth.equals(NeboSecurityUtils.getTokenType()))
                 .build();
         fileData = fileDataRepository.save(fileData);
         try (var inputStream = new ByteArrayInputStream(request.getData())) {

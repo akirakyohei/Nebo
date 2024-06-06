@@ -15,7 +15,7 @@ export const useGetMetadatasData = (filter: FileDataFilterRequest): Data => {
   const {
     data: fileMetadatas = {
       data: [],
-      metadata: { total_element: 0, page: 1, limit: filter.limit },
+      metadata: { total_element: 0, page: 1, limit: filter.limit || 20 },
     } as ListResponse<FileDataUpload>,
     isLoading,
     isFetching,

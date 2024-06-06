@@ -18,7 +18,6 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private long userId;
-    private int groupId;
     private String name;
     private Instant createdAt;
     private Instant updatedAt;

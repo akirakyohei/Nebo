@@ -29,7 +29,7 @@ export default defineConfig({
     cors: false,
     proxy: {
       "/api": {
-        target: "http://nebo.com:8000",
+        target: "http://localhost:8000",
         changeOrigin: true,
         secure: true,
         configure(proxy, _options) {

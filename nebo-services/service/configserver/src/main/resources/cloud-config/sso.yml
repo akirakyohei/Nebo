@@ -1,2 +1,33 @@
 server:
   port: 8071
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 678536023699-eu93o8vib10t6h75fjf8evbo3lnupaee.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "https://nebo.com/api/auth/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
+          facebook:
+            client-id: 1009861313989158
+            client-secret: ed9cb70091b708932b73159d904cddc6
+            redirect-uri: "https://nebo.com/api/auth/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+      provider:
+        facebook:
+          authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+          tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+          userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+nebo:
+  app:
+    oauth2:
+      authorizedRedirectUri: "https://nebo.com/oauth2/redirect"
+
+

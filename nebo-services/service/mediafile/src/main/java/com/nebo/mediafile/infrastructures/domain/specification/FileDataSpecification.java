@@ -14,6 +14,7 @@ public class FileDataSpecification {
         return (root, cq, cb) -> {
             var predicates = new ArrayList<Predicate>();
             predicates.add(cb.equal(root.get(FileData_.USER_ID), userId));
+            predicates.add(cb.equal(root.get(FileData_.SYSTEM), false));
             if (request.getQuery() != null) {
                 predicates.add(cb.like(root.get(FileData_.FILE_NAME), "%" + request.getQuery() + "%"));
             }

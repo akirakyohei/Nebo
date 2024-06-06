@@ -1,5 +1,6 @@
 import {
   AnalyticsOutlined,
+  CategoryOutlined,
   FolderZipOutlined,
   HomeOutlined,
   ImageOutlined,
@@ -20,6 +21,11 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   Paper,
   TextField,
@@ -34,7 +40,12 @@ import {
   NavigateSectionProp,
 } from "../../components/Navbar";
 import { useToggle } from "../../utils/useToggle";
-import { Outlet, matchPath, useLocation } from "react-router-dom";
+import { Outlet, matchPath, useLocation, useNavigate } from "react-router-dom";
+import { useWorkspaceContext } from "../../utils/useWorkspaceContext";
+import { stringAvatar } from "../../utils/stringAvatar";
+import { getFullName } from "../../utils/base";
+import { useLogoutMutation } from "../../data/user.api";
+import { useToast } from "../../components/notification/useToast";
 
 const navigateItems: NavigateSectionProp[] = [
   {
@@ -49,6 +60,11 @@ const navigateItems: NavigateSectionProp[] = [
         icon: <ImageOutlined />,
         label: "Ảnh tải lên",
         url: "/documents/assets",
+      },
+      {
+        icon: <CategoryOutlined />,
+        label: "Danh mục",
+        url: "/documents/categories",
       },
       {
         icon: <AnalyticsOutlined />,
@@ -72,26 +88,6 @@ const navigateItems: NavigateSectionProp[] = [
       },
     ],
   },
-  {
-    label: "Công cụ",
-    items: [
-      {
-        icon: <StoreOutlined />,
-        label: "Tự động hoá dữ liệu",
-        url: "/documents/auto_informations",
-      },
-    ],
-  },
-  {
-    label: "Bản in",
-    items: [
-      {
-        icon: <PrintOutlined />,
-        label: "In",
-        url: "/documents/prints",
-      },
-    ],
-  },
 ];
 
 export default function DocumentLayout() {
@@ -101,9 +97,29 @@ export default function DocumentLayout() {
     setTrue: openNavbar,
     setFalse: closeNavbar,
   } = useToggle(false);
+  const { user: currentUser } = useWorkspaceContext();
+
+  const navigate = useNavigate();
+  const { show: showToast } = useToast();
+  const [logout, { isLoading: isLoadingLogout }] = useLogoutMutation();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      showToast("Đăng xuất thành công");
+      navigate("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      if (e.status === 403) {
+        navigate("/");
+        return;
+      }
+      showToast("Có lỗi xảy ra", { variant: "error" });
+    }
+  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -149,7 +165,13 @@ export default function DocumentLayout() {
           justifyContent={"space-between"}
         >
           <Grid lg={5} md={4} item>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={(theme) => ({
+                display: "flex",
+                alignItems: "center",
+                color: theme.palette.primary.main,
+              })}
+            >
               {!isOpenNavbar ? (
                 <MenuOutlined
                   sx={{
@@ -186,39 +208,7 @@ export default function DocumentLayout() {
               display: { xs: "none", md: "flex" },
               justifyContent: "center",
             }}
-          >
-            <Box
-            // sx={{
-            //   flexGrow: 1,
-            //   display: { xs: "none", md: "flex" },
-            //   justifyContent: "center",
-            // }}
-            >
-              <Box
-                sx={{
-                  width: "80%",
-                  maxWidth: "400px",
-                }}
-              >
-                <TextField
-                  variant="outlined"
-                  placeholder={`Tìm kiếm ${activeTab}`}
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchOutlined />
-                      </InputAdornment>
-                    ),
-                    sx: (theme) => ({
-                      height: "38px",
-                      background: theme.palette.background.paper,
-                    }),
-                  }}
-                />
-              </Box>
-            </Box>
-          </Grid>
+          ></Grid>
 
           <Grid
             lg={5}
@@ -229,9 +219,23 @@ export default function DocumentLayout() {
             paddingRight={{ md: 3 }}
           >
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title="Tài khoản">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar
+                    sizes="small"
+                    src={
+                      currentUser.avatar_url
+                        ? currentUser.avatar_url.startsWith("http")
+                          ? currentUser.avatar_url
+                          : `/api/files/data/${currentUser.avatar_url}`
+                        : undefined
+                    }
+                    {...stringAvatar(
+                      currentUser.first_name,
+                      currentUser.last_name,
+                      50
+                    )}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -249,7 +253,37 @@ export default function DocumentLayout() {
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
-              ></Menu>
+              >
+                <List sx={{ paddingLeft: 1, paddingRight: 1 }}>
+                  <ListItemText
+                    sx={{ padding: 1 }}
+                    primary="Tài khoản"
+                    secondary={`${getFullName({ ...currentUser })}`}
+                  />
+
+                  {!!currentUser.email && (
+                    <ListItemText
+                      sx={{ padding: 1 }}
+                      primary="email"
+                      secondary={currentUser.email}
+                    />
+                  )}
+                  {!!currentUser.phone_number && (
+                    <ListItemText
+                      sx={{ padding: 1 }}
+                      primary="Số điện thoại"
+                      secondary={currentUser.phone_number}
+                    />
+                  )}
+                  <ListItemButton
+                    sx={{ padding: 1 }}
+                    selected={isLoadingLogout}
+                    onClick={handleLogout}
+                  >
+                    Đăng xuất
+                  </ListItemButton>
+                </List>
+              </Menu>
             </Box>
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import React, { createElement, memo, useEffect, useState } from "react";
-import { noop } from "../utils";
 import { useEditorMaybe } from "@grapesjs/react";
 import { WrapDom } from "../utils/react";
+import { noop } from "../utils";
 
 export interface ModalState {
   /**

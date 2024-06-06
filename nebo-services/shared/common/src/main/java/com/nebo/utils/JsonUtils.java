@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy;
 
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class JsonUtils {
     public static final ObjectMapper OBJECT_MAPPER = createObjectMapper();
@@ -27,6 +30,7 @@ public class JsonUtils {
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new Jdk8Module());
         return objectMapper;
     }
 
@@ -35,7 +39,8 @@ public class JsonUtils {
             throw new RuntimeException("Exception when converting Json to object, the data is:" + json);
         } else {
             try {
-                return (T) OBJECT_MAPPER.readValue(json, tr);
+                var jsonNode = OBJECT_MAPPER.readTree(json);
+                return OBJECT_MAPPER.convertValue(jsonNode, tr);
             } catch (Exception e) {
                 throw new RuntimeException("Exception when converting Json to object, the data is:" + json, e);
             }

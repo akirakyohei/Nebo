@@ -24,6 +24,7 @@ dependencies {
     implementation project(':shared:autoconfigure')
     implementation project(':shared:common')
     implementation project(':shared:security')
+    implementation project(":lib:feign-client")
 
     testCompileOnly 'org.projectlombok:lombok'
     testCompileOnly "org.mapstruct:mapstruct"

@@ -1,5 +1,4 @@
 import { FileDataUpload, Template } from "./types";
-import { GroupCategory } from "./types/category";
 import blankThumbImage from "src/assets/img/new-blank-template.png";
 import {
   AdjustOutlined,
@@ -12,51 +11,6 @@ import {
 } from "@mui/icons-material";
 
 export const TOKEN_HEADER = "nebo_authenticated";
-
-export const GROUP_CATEGORIES: GroupCategory[] = [
-  {
-    id: 0,
-    name: "Thương hiệu",
-    icon: <AdjustOutlined />,
-    description: "",
-  },
-  {
-    id: 1,
-    name: "Truyền thông kỹ thuật số & xã hội",
-    icon: <ThumbUpAltOutlined />,
-    description: "",
-  },
-  {
-    id: 2,
-    name: "Ngày lễ & sự kiện",
-    icon: <DateRangeOutlined />,
-    description: "",
-  },
-  {
-    id: 3,
-    name: "Quảng cáo tiếp thị",
-    icon: <PieChartOutline />,
-    description: "",
-  },
-  {
-    id: 4,
-    name: "Bao bì",
-    icon: <Inventory2Outlined />,
-    description: "",
-  },
-  {
-    id: 5,
-    name: "Trình bày & tài liệu",
-    icon: <NewspaperOutlined />,
-    description: "",
-  },
-  {
-    id: 6,
-    name: "In & xuất bản",
-    icon: <PrintOutlined />,
-    description: "",
-  },
-];
 
 export const defaultBlankTemplate: Template = {
   name: "Mẫu mặc định",
@@ -80,12 +34,7 @@ export const defaultBlankTemplate: Template = {
       top: "0px",
     },
   },
-  thumbnail: {
-    extension: "png",
-    name: "blank",
-    url: blankThumbImage,
-    updated_at: "",
-  },
+  thumbnail: null,
   size: 0,
   created_at: "2024-05-24T17:18:41.959Z",
   updated_at: "2024-05-24T17:18:41.959Z",

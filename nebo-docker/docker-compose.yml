@@ -124,24 +124,26 @@ services:
       KAFKA_REST_LISTENERS: "http://rest-proxy:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
     restart: on-failure
-  # kafka-connect-ui:
-  #   image: landoop/kafka-connect-ui:0.9.7
-  #   hostname: kafka-connect-ui
-  #   container_name: kafka-topics-ui
-  #   # kafka-connect-ui binds to port 8000, but we are going to expose it on our local
-  #   # machine on port 8002.
-  #   ports:
-  #     - "8002:8002"
-  #   environment:
-  #     # Required. Instructs the UI where it can find Kafka Connect.
-  #     CONNECT_URL: http://kafka-connect:8083;dev cluster
-  #     # This instructs the docker image to use Caddy to proxy traffic to kafka-connect-ui.
-  #     PROXY: "true"
-  #   # kafka-connect-ui relies upon Kafka Connect.
-  #   # This will instruct docker to wait until those services are up
-  #   # before attempting to start kafka-connect-ui.
-  #   depends_on:
-  #     - kafka-connect
+  kafka-connect-ui:
+    image: landoop/kafka-connect-ui:0.9.7
+    hostname: kafka-connect-ui
+    container_name: kafka-topics-ui
+    # kafka-connect-ui binds to port 8000, but we are going to expose it on our local
+    # machine on port 8002.
+    ports:
+      - "8009:8009"
+
+    environment:
+      # Required. Instructs the UI where it can find Kafka Connect.
+      CONNECT_URL: http://kafka-connect:8083;dev cluster
+      # This instructs the docker image to use Caddy to proxy traffic to kafka-connect-ui.
+      PROXY: "true"
+      PORT: 8009
+    # kafka-connect-ui relies upon Kafka Connect.
+    # This will instruct docker to wait until those services are up
+    # before attempting to start kafka-connect-ui.
+    depends_on:
+      - kafka-connect
   debezium-ui:
     image: debezium/debezium-ui:1.9
     container_name: debezium-ui
@@ -187,6 +189,12 @@ services:
     environment:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: abhcsdhjjdsdjjska
+      MINIO_CACHE: ON
+      MINIO_CACHE_DRIVERS: "/export"
+      MINIO_CACHE_QUOTA: 40
+      MINIO_CAHCE_AFTER: 0
+      MINIO_CAHCE_WATERMARK_LOW: 70
+      MINIO_CACHE_WATERMARK_HIGH: 90
     command: server --console-address ":9001" /data
 
   kong-migrations:

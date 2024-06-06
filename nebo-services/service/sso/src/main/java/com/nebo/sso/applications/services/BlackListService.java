@@ -29,6 +29,7 @@ public class BlackListService {
         userRepository.findById(userId).orElseThrow(NotFoundException::new);
         var sessions = sessionRepository.findAllByUserId(userId);
         blockTokens(userId, sessions.stream().map(Session::getToken).toList());
+        sessionRepository.deleteAll(sessions);
     }
 
     public void blockByUserIdAndToken(long userId, String token) {

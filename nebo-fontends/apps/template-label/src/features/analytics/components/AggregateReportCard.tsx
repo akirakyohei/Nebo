@@ -22,46 +22,41 @@ export const AggregateReportCard = ({ aggregate }: Props) => {
       title: "Lưu trữ",
       content: aggregate.total_data,
       icon: <PermMedia fontSize="large" />,
-      color: "#fa3729",
+      color: "#6200EA",
     },
     {
       title: "Tổng số mẫu",
       content: aggregate.total_data,
       icon: <Newspaper fontSize="large" />,
-      color: "#FF5739",
+      color: "#FFB300",
     },
     {
       title: "Số lượt dùng mẫu",
       content: aggregate.total_data,
       icon: <LocalPrintshop fontSize="large" />,
-      color: "#FF5739",
+      color: "#9C27B0",
     },
   ];
   return (
-    <Card sx={{ padding: 0 }}>
-      <CardContent sx={{ padding: "0 !important" }}>
-        <Box>
-          <Grid
-            container
-            width={"100%"}
-            display={"flex"}
-            // display={"grid"}
-            // gridTemplateColumns={"1fr 1fr 1fr"}
-          >
-            {data.map((item, index) => (
-              <>
-                {index !== 0 ? (
-                  <Divider orientation="vertical" flexItem></Divider>
-                ) : null}
-                <Box flex={1}>
-                  <ItemCard {...item} />
-                </Box>
-              </>
-            ))}
-          </Grid>
-        </Box>
-      </CardContent>
-    </Card>
+    <Box sx={{ padding: 0, background: "transparent" }}>
+      <Box>
+        <Grid
+          container
+          width={"100%"}
+          display={"grid"}
+          gridTemplateColumns={{ md: "1fr 1fr 1fr", sm: "1fr" }}
+          columnGap={4}
+          rowGap={1}
+          sx={{ background: "transparent" }}
+        >
+          {data.map((item, index) => (
+            <Box key={index} flex={1}>
+              <ItemCard {...item} />
+            </Box>
+          ))}
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 
@@ -73,30 +68,47 @@ interface ItemCardProps {
 }
 const ItemCard = ({ icon, title, content, color }: ItemCardProps) => {
   return (
-    <Stack direction={"row"} alignItems={"center"} height={"100%"}>
-      <Box
-        padding={2}
-        height={"100%"}
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        sx={{ background: "#557aff", color: "#d2d8e7" }}
-      >
-        {icon}
-      </Box>
+    <Stack
+      direction={"row"}
+      alignItems={"center"}
+      height={"100%"}
+      sx={(theme) => ({
+        background: color,
+        borderRadius: "5px",
+        boxShadow: theme.shadows[3],
+      })}
+      padding={1}
+    >
       <Stack
         flex={1}
-        sx={{ background: color, color: "#FFFFFF" }}
+        sx={{ color: "#FFFFFF" }}
         height={"100%"}
         justifyContent={"space-between"}
       >
-        <Typography textAlign={"center"} variant="h4">
+        <Typography textAlign={"center"} variant="h5">
           {title}
         </Typography>
         <Typography variant="h3" textAlign={"center"}>
           {content}
         </Typography>
       </Stack>
+      <Box>
+        <Box
+          padding={2}
+          height={"100%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          sx={{
+            background: "#fff",
+            opacity: 0.4,
+            color: color,
+            borderRadius: "50%",
+          }}
+        >
+          {icon}
+        </Box>
+      </Box>
     </Stack>
   );
 };

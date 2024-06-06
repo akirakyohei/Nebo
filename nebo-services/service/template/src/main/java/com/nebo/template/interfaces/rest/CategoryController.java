@@ -17,11 +17,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/by_groups")
-    public List<CategoryByGroup> getCategoryByGroups(@UserId long userId) {
-        return categoryService.getCategoryByGroups(userId);
-    }
-
     @PostMapping
     public CategoryResponse createCategory(@UserId long userId, @RequestBody @Valid CategoryCreateRequest request) throws ConstraintViolationException {
         return categoryService.createCategory(userId, request);
@@ -49,11 +44,11 @@ public class CategoryController {
 
     @GetMapping("/default")
     public CategoriesResponse getDefaultCategories(CategoryFilterRequest request) {
-        return getDefaultCategories(request);
+        return categoryService.getDefaultCategories(request);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCategory(@UserId long userId, @PathVariable("id") int categoryId) {
-        deleteCategory(userId, categoryId);
+        categoryService.deleteCategory(userId, categoryId);
     }
 }

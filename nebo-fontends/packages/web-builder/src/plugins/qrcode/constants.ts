@@ -1,9 +1,8 @@
+import { TYPES } from "../constants";
 import { QrcodePluginOptions } from "./types";
 
-export const cmpId = "qr-code";
-
 export const defaultOptions: QrcodePluginOptions = {
-  blocks: [cmpId],
+  blocks: [TYPES.qrcode],
   // default options
   script: "https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js",
   api: "https://barcodes-xdm4ptfota-uc.a.run.app/api/v1/qrcodes",
@@ -12,7 +11,7 @@ export const defaultOptions: QrcodePluginOptions = {
   blockQrcode: {
     label: "Qrcode",
     content: {
-      type: cmpId,
+      type: TYPES.qrcode,
     },
   },
 

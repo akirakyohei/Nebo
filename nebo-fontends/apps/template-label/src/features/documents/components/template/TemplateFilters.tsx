@@ -1,4 +1,4 @@
-import { Category, CategoryByGroup } from "../../../../types";
+import { Category } from "../../../../types";
 import { TemplateFilterRequestModel } from "../../types";
 import { FilterQueryResult } from "../../../../utils/useBaseFilterQuery";
 import {
@@ -23,10 +23,12 @@ import {
 } from "@mui/icons-material";
 import { TextField } from "../../../../components/TextField";
 import { CategoryTemplateSelect } from "../../../workspaces/components/CategoryTemplateSelect";
+import { useEffect, useState } from "react";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 
 const tabs: TabOption[] = [
   { label: "Mẫu cá nhân", value: "person" },
-  { label: "Mẫu chia sẻ với bạn", value: "share" },
+  { label: "Mẫu chia sẻ với bạn", value: "shared" },
 ];
 
 const sorts: { value: string; label: string; icon: React.ReactNode }[] = [
@@ -84,6 +86,22 @@ export const TemplateFilters = ({
   onChangeSearchParams,
   onChangeSearchParamsAll,
 }: Props) => {
+  const [query, setQuery] = useState(filter.query);
+
+  const handleChangeDebounceQuery = useDebouncedCallback((value: string) => {
+    onChangeSearchParams("query", value);
+  }, 500);
+
+  const handleChangeQuery = (value: string) => {
+    setQuery(value);
+    handleChangeDebounceQuery.cancel();
+    handleChangeDebounceQuery(value);
+  };
+
+  useEffect(() => {
+    setQuery(filter.query || "");
+  }, [filter, name]);
+
   return (
     <Box>
       <Stack
@@ -97,6 +115,7 @@ export const TemplateFilters = ({
             onChange={(_value) => {
               onChangeSearchParamsAll(
                 {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   tab: _value !== "person" ? (_value as any) : undefined,
                 },
                 true
@@ -125,6 +144,10 @@ export const TemplateFilters = ({
                 variant="outlined"
                 placeholder={`Tìm kiếm`}
                 fullWidth
+                value={query}
+                onChange={(event) => {
+                  handleChangeQuery(event.target.value);
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -174,6 +197,7 @@ export const TemplateFilters = ({
                 sx={{
                   paddingRight: 0,
                   height: "38px",
+                  background: "#fff",
                   "> div": { paddingRight: "4px !important", paddingLeft: 2 },
                 }}
               >
@@ -219,7 +243,7 @@ export const TemplateFilters = ({
                         : "false"
                   );
                 }}
-                sx={{ padding: 0, height: "38px" }}
+                sx={{ padding: 0, height: "38px", background: "#fff" }}
               >
                 {statuses.map((status, index) => (
                   <MenuItem key={index} value={status.value}>

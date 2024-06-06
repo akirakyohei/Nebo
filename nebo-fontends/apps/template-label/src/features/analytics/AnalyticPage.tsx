@@ -78,7 +78,7 @@ export default function AnalyticPage() {
           flex={"1 1 auto"}
           display={"grid"}
           width={"100%"}
-          gridTemplateColumns={"1fr 1fr"}
+          gridTemplateColumns={{ md: "1fr 1fr", sm: "1fr" }}
           rowGap={4}
           columnGap={4}
         >

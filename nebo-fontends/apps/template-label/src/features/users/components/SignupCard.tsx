@@ -122,8 +122,8 @@ export const SignupCard = () => {
                     }}
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     render={({ field: { ref, ...otherProps } }) => {
-                      const error = control._formState.errors[otherProps.name]
-                        ?.message ;
+                      const error =
+                        control._formState.errors[otherProps.name]?.message;
                       return (
                         <TextField
                           label="Họ"
@@ -153,8 +153,8 @@ export const SignupCard = () => {
                     }}
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     render={({ field: { ref, ...otherProps } }) => {
-                      const error = control._formState.errors[otherProps.name]
-                        ?.message ;
+                      const error =
+                        control._formState.errors[otherProps.name]?.message;
                       return (
                         <TextField
                           label="Tên"
@@ -204,8 +204,8 @@ export const SignupCard = () => {
                   }}
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: { ref, ...otherProps } }) => {
-                    const error = control._formState.errors[otherProps.name]
-                      ?.message ;
+                    const error =
+                      control._formState.errors[otherProps.name]?.message;
                     return (
                       <TextField
                         label="Email hoặc số điện thoại"
@@ -259,8 +259,8 @@ export const SignupCard = () => {
                   }}
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: { ref, ...otherProps } }) => {
-                    const error = control._formState.errors[otherProps.name]
-                      ?.message ;
+                    const error =
+                      control._formState.errors[otherProps.name]?.message;
                     return (
                       <PasswordField
                         label="Mật khẩu"
@@ -292,6 +292,7 @@ export const SignupCard = () => {
               <Stack spacing={2}>
                 <Button
                   variant="outlined"
+                  href="/api/auth/oauth2/google?redirect_uri=http://nebo.com/documents"
                   startIcon={
                     <Box
                       component="img"
@@ -305,6 +306,7 @@ export const SignupCard = () => {
                 </Button>
                 <Button
                   variant="outlined"
+                  href="/api/auth/oauth2/facebook?redirect_uri=http://nebo.com/documents"
                   startIcon={
                     <Box
                       component="img"
