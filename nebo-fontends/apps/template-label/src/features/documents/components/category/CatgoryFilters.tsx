@@ -75,7 +75,7 @@ export const CategoryFilters = ({
                 variant="outlined"
                 placeholder={`Tìm kiếm`}
                 fullWidth
-                value={query}
+                value={query || ""}
                 onChange={(event) => {
                   handleChangeQuery(event.target.value);
                 }}

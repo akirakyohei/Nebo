@@ -20,7 +20,7 @@ export const TemplateSkeleton = () => {
     return 1;
   }, [xlUp, lgUp, mdUp, smUp]);
   return (
-    <PageSkeleton>
+    <PageSkeleton fluid>
       <Loading />
       <Skeleton height={45} />
       <Grid

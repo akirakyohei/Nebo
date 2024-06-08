@@ -1,10 +1,9 @@
-import { Box } from "@mui/material";
-import barsRotateFadeSpinner from "src/assets/icon/bars-rotate-fade.svg";
+import { Box, CircularProgress } from "@mui/material";
 
 export const Spinner = () => {
   return (
     <Box display={"flex"}>
-      <Box component={"img"} src={barsRotateFadeSpinner}></Box>
+      <CircularProgress size={"1.5rem"} color="inherit" />
     </Box>
   );
 };

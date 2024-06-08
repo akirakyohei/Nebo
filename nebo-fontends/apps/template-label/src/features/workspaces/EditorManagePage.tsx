@@ -103,6 +103,7 @@ export default function EditorManagePage() {
             flexGrow={"1"}
             overflow={"hidden"}
             marginBottom={"auto"}
+            position={"relative"}
           >
             <WebBuilderContainer
               designingMode={designing}

@@ -34,6 +34,7 @@
     "grapesjs-icons": "^0.0.4",
     "grapesjs-plugin-ckeditor": "^1.0.1",
     "grapesjs-plugin-expose": "^0.1.2",
+    "grapesjs-plugin-forms": "^2.0.6",
     "grapesjs-project-manager": "^2.0.6",
     "grapesjs-rte-extensions": "^1.0.10",
     "grapesjs-rulers": "^1.0.8",

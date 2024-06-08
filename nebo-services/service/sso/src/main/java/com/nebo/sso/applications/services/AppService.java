@@ -1,13 +1,16 @@
 package com.nebo.sso.applications.services;
 
+import com.nebo.lib.feignclient.client.B;
+import com.nebo.lib.feignclient.client.NeboFeignClient;
+import com.nebo.shared.web.applications.exception.NotFoundException;
+import com.nebo.sso.domain.model.AppClient;
+import com.nebo.sso.domain.model.AppClient_;
+import com.nebo.sso.domain.repository.JpaAppClientRepository;
 import com.nebo.sso.applications.model.ApiKeyDetailResponse;
 import com.nebo.sso.applications.model.ApiKeyFilterRequest;
 import com.nebo.sso.applications.model.ApiKeyRequest;
 import com.nebo.sso.applications.model.ApiKeysResponse;
-import com.nebo.sso.infrastructures.domain.model.AppClient;
-import com.nebo.sso.infrastructures.domain.model.AppClient_;
-import com.nebo.sso.infrastructures.domain.repository.JpaAppClientRepository;
-import com.nebo.web.applications.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
@@ -22,13 +25,16 @@ public class AppService {
     private final JpaAppClientRepository appClientRepository;
 
     private final AppClientMapper appClientMapper;
+    private final NeboFeignClient neboFeignClient;
 
+    @Transactional
     public ApiKeyDetailResponse createApiKey(long userId, ApiKeyRequest request) {
         var appClient = new AppClient(userId, StringUtils.defaultIfBlank(request.getName(), ""), generateApiKey());
         appClientRepository.save(appClient);
         return appClientMapper.fromDomainToDetailResponse(appClient);
     }
 
+    @Transactional
     public ApiKeyDetailResponse updateApiKey(long userId, long id, ApiKeyRequest request) {
         var appClient = appClientRepository.findAppClientByUserIdAndId(userId, id).orElseThrow(NotFoundException::new);
         if (request.getName() != null)
@@ -55,9 +61,14 @@ public class AppService {
         return new ApiKeysResponse(page.map(appClientMapper::fromDomainToResponse));
     }
 
+    @Transactional
     public void deleteApiKey(long userId, long id) {
         var appClient = appClientRepository.findAppClientByUserIdAndId(userId, id).orElseThrow(NotFoundException::new);
         appClientRepository.delete(appClient);
+        try {
+            neboFeignClient.removeTemplateAppPermission(id, B.withUserId(userId));
+        } catch (Exception ex) {
+        }
     }
 
     private String generateApiKey() {

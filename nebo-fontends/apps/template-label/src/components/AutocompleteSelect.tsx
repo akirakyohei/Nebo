@@ -10,7 +10,6 @@ import {
 import { Option } from "./types";
 import { isArray } from "lodash-es";
 import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
-import ListBox from "./ListBox";
 import React, { CSSProperties, useMemo } from "react";
 
 type Value = number | string;
@@ -60,26 +59,6 @@ export function AutocompleteSelect<T extends Value>({
       ),
     [options, value, values]
   );
-
-  const ListBoxComponent = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLElement>
-  >((_props, ref) => (
-    <ListBox
-      ref={ref}
-      total={props.willLoadMoreResults ? options.length + 1 : options.length}
-      loading={loading}
-      willLoadMoreResults={props.willLoadMoreResults}
-      onLoadMore={props.onLoadMore}
-      {..._props}
-    >
-      {options.map((item, index) => (
-        <ListBox.Row key={index}>{item.label}</ListBox.Row>
-      ))}
-    </ListBox>
-  ));
-  ListBoxComponent.displayName = "ListBoxComponent";
-
   if (multiple) {
     return (
       <Autocomplete
@@ -96,7 +75,6 @@ export function AutocompleteSelect<T extends Value>({
         getOptionKey={(option) => option.value}
         getOptionLabel={(option) => option.label}
         getOptionDisabled={(option) => option.disabled || false}
-        // ListboxComponent={ListBoxComponent}
         onChange={(_event, _value) => {
           debugger;
           values;

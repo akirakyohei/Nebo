@@ -144,7 +144,7 @@ export const TemplateFilters = ({
                 variant="outlined"
                 placeholder={`Tìm kiếm`}
                 fullWidth
-                value={query}
+                value={query || ""}
                 onChange={(event) => {
                   handleChangeQuery(event.target.value);
                 }}
@@ -170,6 +170,7 @@ export const TemplateFilters = ({
             >
               <CategoryTemplateSelect
                 height={"38px"}
+                width={"200px"}
                 values={filter.category_ids || []}
                 onChange={(_values) => {
                   onChangeSearchParams("category_ids", _values);

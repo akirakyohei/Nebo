@@ -1,3 +1,4 @@
+import { defaultBlankTemplate } from "../../../constants";
 import { useGetTemplatesQuery } from "../../../data/template.api";
 import { Template } from "../../../types";
 import { TemplateFilterRequestModel } from "../types";
@@ -5,8 +6,8 @@ import { TemplateFilterRequestModel } from "../types";
 export const useGetTemplatesData = (filter: TemplateFilterRequestModel) => {
   const {
     data: templates = {
-      data: [] as Template[],
-      metadata: { total_element: 0, limit: filter.limit || 20, page: 1 },
+      data: [defaultBlankTemplate] as Template[],
+      metadata: { total_element: 1, limit: filter.limit || 20, page: 1 },
     },
     isLoading: isLoadingTemplate,
     isFetching: isFetchingTemplate,

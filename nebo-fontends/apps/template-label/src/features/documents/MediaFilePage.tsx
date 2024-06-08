@@ -23,13 +23,13 @@ export default function MediaFilePage() {
 
   const { data, isLoading, isFetching } = useGetMetadatasData(filter);
   if (isLoading) return <MediaFileSkeleton />;
-  const isFirstScreen =
-    isFilter === "" && data.metadata.total_element === 0;
+  const isFirstScreen = isFilter === "" && data.metadata.total_element === 0;
   return (
     <Page
       title="Ảnh tải lên"
       fullHeight
       fluid
+      paddingHeader={2}
       primaryAction={{
         icon: <ControlPointOutlined />,
         content: "Tải ảnh lên",

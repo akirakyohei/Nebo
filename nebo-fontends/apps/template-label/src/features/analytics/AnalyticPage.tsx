@@ -6,6 +6,8 @@ import { TopUsedPaperTypeCard } from "./components/TopUsedPaperTypeCard";
 import { TopUsedTemplateCard } from "./components/TopUsedTemplateCard";
 import { UsedPaperTypeCard } from "./components/UsedPaperTypeCard";
 import { UsedTemplateCard } from "./components/UsedTemplateCard";
+import { Loading } from "../../components/loading";
+import { AnalyticsReportSkeleton } from "./components/AnalyticsReportSkeleton";
 
 export default function AnalyticPage() {
   const {
@@ -67,9 +69,15 @@ export default function AnalyticPage() {
       },
       aggregate: 0,
     },
+    isLoading,
+    isFetching,
   }: Data = useGetReportData();
+
+  if (isLoading) return <AnalyticsReportSkeleton />;
+
   return (
-    <Page title="Phân tích">
+    <Page title="Phân tích" contentSpacing={0}>
+      {isFetching && <Loading />}
       <Stack gap={4}>
         <Grid>
           <AggregateReportCard aggregate={aggregateReport} />

@@ -1,19 +1,8 @@
 package com.nebo.template.applications.model.template;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.nebo.persistences.ListIntegerConverter;
-import com.nebo.persistences.ListStringConverter;
-import com.nebo.template.infrastructures.domain.model.TemplateOption;
-import com.vladmihalcea.hibernate.type.json.JsonType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Convert;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import java.sql.Timestamp;
 import java.util.List;

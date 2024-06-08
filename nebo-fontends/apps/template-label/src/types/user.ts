@@ -1,4 +1,6 @@
 import { FileDataUploadRequest } from "./mediafile";
+import { PageFilterRequest } from "./common";
+import { TemplateUserPermission } from "./templatePermission";
 
 export type UserCredentials = {
   id: number;
@@ -55,4 +57,12 @@ export type User = {
   permissions: string[];
   provider: CredentialProvider;
   provider_id: string;
+};
+
+export type UserWithUserPermission = User & {
+  user_permission?: TemplateUserPermission;
+};
+
+export type UserFilterRequest = PageFilterRequest & {
+  query?: string;
 };

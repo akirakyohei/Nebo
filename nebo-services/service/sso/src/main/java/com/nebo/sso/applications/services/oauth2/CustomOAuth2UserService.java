@@ -1,8 +1,8 @@
 package com.nebo.sso.applications.services.oauth2;
 
+import com.nebo.sso.domain.model.User;
+import com.nebo.sso.domain.repository.JpaUserRepository;
 import com.nebo.sso.applications.model.oauth2.OAuth2UserInfo;
-import com.nebo.sso.infrastructures.domain.model.User;
-import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
 import com.nebo.sso.applications.model.oauth2.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

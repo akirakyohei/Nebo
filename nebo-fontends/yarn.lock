@@ -3036,6 +3036,7 @@ __metadata:
     grapesjs-icons: "npm:^0.0.4"
     grapesjs-plugin-ckeditor: "npm:^1.0.1"
     grapesjs-plugin-expose: "npm:^0.1.2"
+    grapesjs-plugin-forms: "npm:^2.0.6"
     grapesjs-project-manager: "npm:^2.0.6"
     grapesjs-rte-extensions: "npm:^1.0.10"
     grapesjs-rulers: "npm:^1.0.8"
@@ -3770,6 +3771,25 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10c0/3eb9bca143abc21eb781aa5cb1bded0c9335689d515bf0513fb8e63217b7a8122c6a323ecd5644a06938727e1f467ee061d8df1c93b68825a80ff1b47ab777a2
+  languageName: node
+  linkType: hard
+
+"@types/react-window-infinite-loader@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "@types/react-window-infinite-loader@npm:1.0.9"
+  dependencies:
+    "@types/react": "npm:*"
+    "@types/react-window": "npm:*"
+  checksum: 10c0/d4f0b1c36cbca7d01c50740c942275f3e6dadb13b0aa563c266e8ecdfbaa338fdb623cc59635fcbb7e37938dc295cb6d2949e9f9aff6098faf2089d2e3752da6
+  languageName: node
+  linkType: hard
+
+"@types/react-window@npm:*, @types/react-window@npm:^1.8.8":
+  version: 1.8.8
+  resolution: "@types/react-window@npm:1.8.8"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 10c0/2170a3957752603e8b994840c5d31b72ddf94c427c0f42b0175b343cc54f50fe66161d8871e11786ec7a59906bd33861945579a3a8f745455a3744268ec1069f
   languageName: node
   linkType: hard
 
@@ -8011,6 +8031,13 @@ __metadata:
   peerDependencies:
     grapesjs: 0.x
   checksum: 10c0/21692a95d043057ff7d7763f130fd4ca6c357ebb5af6a6bc61c0f33d2ae33f25dfb25d4f4f637819317bebe15173332402385bd7fd86ed01447ef73d19e0a351
+  languageName: node
+  linkType: hard
+
+"grapesjs-plugin-forms@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "grapesjs-plugin-forms@npm:2.0.6"
+  checksum: 10c0/8ee94462f07639c0c21b0b3d3c006e6a5f8f71422fe9efdc71b89341d769d172a24bad2dbe160e7e7fb6265adcc1a08139ab712de6df2de2de6b4cdf2c04378a
   languageName: node
   linkType: hard
 
@@ -13435,6 +13462,8 @@ __metadata:
     "@types/node": "npm:^20.11.30"
     "@types/react": "npm:^18.2.66"
     "@types/react-dom": "npm:^18.2.22"
+    "@types/react-window": "npm:^1.8.8"
+    "@types/react-window-infinite-loader": "npm:^1.0.9"
     "@types/ua-parser-js": "npm:^0.7.39"
     "@types/validator": "npm:^13.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"

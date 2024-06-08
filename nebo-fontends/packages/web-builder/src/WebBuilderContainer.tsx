@@ -38,17 +38,17 @@ import ckePlugin from "grapesjs-plugin-ckeditor";
 import styleBgPlugin from "grapesjs-style-bg";
 import borderPlugin from "grapesjs-style-border";
 import iconPlugin from "grapesjs-icons";
+import formsPlugin from "grapesjs-plugin-forms";
 import zoomPlugin from "./plugins/zoom";
 import draggableDocumentPlugin from "./plugins/draggable-document";
 import barcodePlugin from "./plugins/barcode/barcode";
 import qrcodePlugin from "./plugins/qrcode/qrcode";
 import gridSystemPlugin from "./plugins/grid-system";
-import { EditorContext } from "./context/EditorContext";
 import { FileUploadData, Template } from "./types/template";
 import BlockManager from "./components/BlockManager";
 import Modal from "./components/Modal";
 import AssetManager from "./components/AssetManager";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, createTheme, ThemeProvider } from "@mui/material";
 import StyleManager from "./components/StyleManager";
 import LayerManager from "./components/LayerManager";
 import TraitManager from "./components/TraitManger";
@@ -218,7 +218,10 @@ export const WebBuilderContainer = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <div id="nebo-container">
+      <Box
+        id="nebo-container"
+        sx={{ position: "absolute", top: "0", left: "0", width: "100%" }}
+      >
         <GjsEditor
           className="gjs-custom-editor "
           grapesjs={grapesjs}
@@ -261,7 +264,21 @@ export const WebBuilderContainer = ({
             usePlugin(barcodePlugin, {
               blockBarcode: { category: "Nội dung" },
             }),
-            usePlugin(qrcodePlugin, { blockQrcode: { category: "Nội dung" } }),
+            usePlugin(qrcodePlugin, {
+              blockQrcode: { category: "Nội dung" },
+            }),
+            usePlugin(formsPlugin, {
+              blocks: [
+                "input",
+                "textarea",
+                "select",
+                "button",
+                "label",
+                "checkbox",
+                "radio",
+              ],
+              category: "Biểu mẫu",
+            }),
             // usePlugin(gridSystemPlugin, {
             //   default_css: true,
             //   default_components: true,
@@ -356,7 +373,7 @@ export const WebBuilderContainer = ({
             )}
           </AssetsProvider>
         </GjsEditor>
-      </div>
+      </Box>
     </ThemeProvider>
   );
 };

@@ -1,14 +1,12 @@
 package com.nebo.sso.applications.model;
 
-import com.nebo.sso.infrastructures.domain.model.User;
+import com.nebo.sso.domain.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor

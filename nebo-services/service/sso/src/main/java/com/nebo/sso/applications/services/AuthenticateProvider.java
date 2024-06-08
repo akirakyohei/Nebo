@@ -4,7 +4,7 @@ import com.nebo.shared.security.config.NeboJwtConfigureProperties;
 import com.nebo.sso.applications.model.JwtResponse;
 import com.nebo.sso.applications.model.UserDetailsImpl;
 
-import com.nebo.sso.infrastructures.domain.model.User;
+import com.nebo.sso.domain.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;

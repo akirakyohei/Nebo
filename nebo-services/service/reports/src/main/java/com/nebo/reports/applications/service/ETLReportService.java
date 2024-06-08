@@ -1,7 +1,7 @@
 package com.nebo.reports.applications.service;
 
 import com.nebo.reports.applications.model.*;
-import com.nebo.types.DebeziumOperation;
+import com.nebo.shared.common.types.DebeziumOperation;
 
 public interface ETLReportService {
     void loadUser(User user);

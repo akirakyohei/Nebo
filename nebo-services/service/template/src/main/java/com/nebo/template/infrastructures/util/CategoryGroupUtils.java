@@ -1,8 +1,8 @@
 package com.nebo.template.infrastructures.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nebo.shared.web.applications.utils.JsonUtils;
 import com.nebo.template.applications.model.category.CategoryGroup;
-import com.nebo.web.applications.utils.JsonUtils;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileInputStream;

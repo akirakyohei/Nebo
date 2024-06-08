@@ -1,7 +1,7 @@
 package com.nebo.mediafile.applications.services;
 
 import com.nebo.mediafile.applications.model.*;
-import com.nebo.web.applications.exception.ConstraintViolationException;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.UnsupportedEncodingException;

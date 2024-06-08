@@ -30,6 +30,8 @@ import { useToggle } from "../../utils/useToggle";
 import { UpdateAvatarModal } from "./components/account/UpdateAvatarModal";
 import { UpdateAccountModal } from "./components/account/UpdateAccountModal";
 import { ChangePasswordModal } from "./components/account/ChangePasswordModal";
+import { AccountSettingSkeleton } from "./components/account/AccountSettingSkeleton";
+import { Loading } from "../../components/loading";
 
 export default function AccountSettingPage() {
   const {
@@ -67,11 +69,12 @@ export default function AccountSettingPage() {
     isFetching,
   }: Data = useGetAccountSettingData();
 
-  // if (isLoadingCurrentUser || !currentUser) return null;
+  if (isLoading) return <AccountSettingSkeleton />;
 
   return (
     <Page
       title="Tài khoản"
+      contentSpacing={0}
       secondaryActions={[
         {
           icon: <Edit />,
@@ -85,6 +88,7 @@ export default function AccountSettingPage() {
         },
       ]}
     >
+      {isFetching && <Loading />}
       <Card>
         <CardContent>
           <Stack gap={3}>

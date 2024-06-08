@@ -1,11 +1,12 @@
 package com.nebo.shared.security.services;
 
-import com.nebo.shared.security.config.NeboJwtConfigureProperties;
-import com.nebo.shared.security.client.AppClient;
-import com.nebo.shared.security.client.UserCredentialResponse;
-import com.nebo.grpc.NeboGrpc;
 import com.nebo.grpc.lib.AppClientAuthenticationRequest;
 import com.nebo.grpc.lib.AuthenticationRequest;
+import com.nebo.shared.grpc.NeboGrpc;
+
+import com.nebo.shared.security.client.AppClient;
+import com.nebo.shared.security.client.UserCredentialResponse;
+import com.nebo.shared.security.config.NeboJwtConfigureProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;

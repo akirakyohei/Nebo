@@ -2,11 +2,9 @@ package com.nebo.sso.interfaces.grpc;
 
 
 import com.nebo.grpc.lib.*;
+import com.nebo.shared.web.applications.exception.AuthenticationException;
 import com.nebo.sso.applications.services.AppService;
-import com.nebo.sso.applications.services.AuthenticateProvider;
 import com.nebo.sso.applications.services.BlackListService;
-import com.nebo.web.applications.exception.AuthenticationException;
-import com.nebo.web.applications.utils.JsonUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

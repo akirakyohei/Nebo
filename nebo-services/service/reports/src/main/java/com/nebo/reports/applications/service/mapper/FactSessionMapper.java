@@ -2,7 +2,7 @@ package com.nebo.reports.applications.service.mapper;
 
 import com.nebo.reports.applications.model.HistorySessionResponse;
 import com.nebo.reports.applications.model.Session;
-import com.nebo.reports.infrastructures.domain.model.FactSession;
+import com.nebo.reports.domain.model.FactSession;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

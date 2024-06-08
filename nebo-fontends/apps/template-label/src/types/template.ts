@@ -29,7 +29,7 @@ export type Template = {
   field_schema?: object;
   html: string;
   testData?: { [key: string]: string };
-  shared_status?: string;
+  shared_status?: SharedStatus;
   active: boolean;
   trashed: boolean;
   options: TemplateOptions;
@@ -38,6 +38,7 @@ export type Template = {
   created_at: string;
   updated_at: string;
 };
+export type SharedStatus = "only_you" | "allow_all" | "share_many";
 
 export type TemplateResponse = {
   template: Template;

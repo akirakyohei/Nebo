@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,8 +29,8 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @Configuration
-@EntityScan(basePackages = "com.nebo.reports.infrastructures")
-@EnableJpaRepositories(basePackages = {"com.nebo.reports.infrastructures.domain.repository"},
+@EntityScan(basePackages = "com.nebo.reports.domain")
+@EnableJpaRepositories(basePackages = {"com.nebo.reports.domain.repository"},
         transactionManagerRef = "reportsTransactionManager",
         entityManagerFactoryRef = "reportsEntityManagerFactory")
 public class DatasourceConfig {
@@ -73,4 +74,10 @@ public class DatasourceConfig {
         }
         return adapter;
     }
+
+    @Bean("reportNamedParameterJdbcTemplate")
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
+        return new NamedParameterJdbcTemplate(dataSource());
+    }
+
 }

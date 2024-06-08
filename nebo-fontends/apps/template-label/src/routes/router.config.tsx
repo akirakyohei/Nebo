@@ -1,6 +1,12 @@
 import { lazy } from "react";
 import { CustomizeRouteObject } from "./types";
 import { WorkspacePageSkeleton } from "../features/workspaces/components/WorkspacePageSkeleton";
+import { AnalyticsReportSkeleton } from "../features/analytics/components/AnalyticsReportSkeleton";
+import { ApiKeySettingSkeleton } from "../features/settings/components/integration/ApiKeySettingSkeleton";
+import { AccountSettingSkeleton } from "../features/settings/components/account/AccountSettingSkeleton";
+import { CategoryTemplateSelect } from "../features/workspaces/components/CategoryTemplateSelect";
+import { CategorySkeleton } from "../features/documents/components/category/CategorySkeleton";
+import { MediaFileSkeleton } from "../features/documents/components/media_file/MediaFileSkeleton";
 
 export const routes: CustomizeRouteObject[] = [
   {
@@ -9,7 +15,7 @@ export const routes: CustomizeRouteObject[] = [
     children: [
       {
         path: "",
-        Component: lazy(() => import("../features/dashboard/DashboardPage")),
+        Component: lazy(() => import("../features/home/HomePage")),
         index: true,
       },
       {
@@ -38,12 +44,14 @@ export const routes: CustomizeRouteObject[] = [
           },
           {
             path: "assets",
+            fallback: <MediaFileSkeleton />,
             Component: lazy(
               () => import("../features/documents/MediaFilePage")
             ),
           },
           {
             path: "categories",
+            fallback: <CategorySkeleton />,
             Component: lazy(() => import("../features/documents/CategoryPage")),
           },
           {
@@ -59,6 +67,7 @@ export const routes: CustomizeRouteObject[] = [
         children: [
           {
             path: "",
+            fallback: <AnalyticsReportSkeleton />,
             Component: lazy(() => import("../features/analytics/AnalyticPage")),
           },
         ],
@@ -69,12 +78,14 @@ export const routes: CustomizeRouteObject[] = [
         children: [
           {
             path: "account",
+            fallback: <AccountSettingSkeleton />,
             Component: lazy(
               () => import("../features/settings/AccountSettingPage")
             ),
           },
           {
             path: "integration",
+            fallback: <ApiKeySettingSkeleton />,
             Component: lazy(
               () => import("../features/settings/IntegrationSettingPage")
             ),

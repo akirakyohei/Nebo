@@ -1,9 +1,9 @@
 package com.nebo.template.applications.services.mapper;
 
+import com.nebo.template.domain.model.Category;
 import com.nebo.template.applications.model.category.CategoryCreateRequest;
 import com.nebo.template.applications.model.category.CategoryResponse;
 import com.nebo.template.applications.model.category.CategoryUpdateRequest;
-import com.nebo.template.infrastructures.domain.model.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

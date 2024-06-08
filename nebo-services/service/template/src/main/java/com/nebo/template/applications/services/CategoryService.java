@@ -1,12 +1,12 @@
 package com.nebo.template.applications.services;
 
-import com.nebo.template.applications.model.category.*;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
+import com.nebo.shared.web.applications.exception.NotFoundException;
 import com.nebo.template.applications.services.mapper.CategoryMapper;
-import com.nebo.template.infrastructures.domain.Specifiaction.CategorySpecification;
-import com.nebo.template.infrastructures.domain.model.Category_;
-import com.nebo.template.infrastructures.domain.repository.JpaCategoryRepository;
-import com.nebo.web.applications.exception.ConstraintViolationException;
-import com.nebo.web.applications.exception.NotFoundException;
+import com.nebo.template.domain.Specifiaction.CategorySpecification;
+import com.nebo.template.domain.model.Category_;
+import com.nebo.template.applications.model.category.*;
+import com.nebo.template.domain.repository.JpaCategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

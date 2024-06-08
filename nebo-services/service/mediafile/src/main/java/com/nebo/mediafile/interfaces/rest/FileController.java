@@ -2,8 +2,8 @@ package com.nebo.mediafile.interfaces.rest;
 
 import com.nebo.mediafile.applications.model.*;
 import com.nebo.mediafile.applications.services.MediaService;
-import com.nebo.web.applications.bind.UserId;
-import com.nebo.web.applications.exception.ConstraintViolationException;
+import com.nebo.shared.web.applications.bind.UserId;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

@@ -1,6 +1,6 @@
 package com.nebo.sso.applications.model.oauth2;
 
-import com.nebo.sso.infrastructures.domain.model.User;
+import com.nebo.sso.domain.model.User;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package com.nebo.shared.security.tokens;
 
-import com.nebo.shared.security.constant.TokenType;
 import com.nebo.shared.security.client.AppClientDetail;
+import com.nebo.shared.security.constant.TokenType;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 

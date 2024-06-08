@@ -1,5 +1,7 @@
 import {
   Autocomplete,
+  AutocompleteOwnerState,
+  AutocompleteRenderOptionState,
   Box,
   Checkbox,
   TextField,
@@ -10,8 +12,13 @@ import {
 import { Option } from "./types";
 import { isArray } from "lodash-es";
 import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
-import ListBox from "./ListBox";
-import React, { CSSProperties, useMemo } from "react";
+import React, {
+  CSSProperties,
+  FocusEventHandler,
+  ReactNode,
+  useMemo,
+} from "react";
+import { ListboxComponent } from "./ListBox";
 
 type Value = number | string;
 interface Props<T extends Value> {
@@ -33,6 +40,12 @@ interface Props<T extends Value> {
   error?: string;
   query?: string;
   onChangeQuery?: (value: string) => void;
+  renderOption?: (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: Option<T>
+  ) => React.ReactNode;
+  noOptionText?: ReactNode;
+  onBlur?: (event: React.FocusEvent<HTMLDivElement, Element>) => void;
 }
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
@@ -50,27 +63,13 @@ export default function AutocompleteSelect<T extends Value>({
   height,
   disableClearable,
   onChangeQuery,
+  onLoadMore,
+  willLoadMoreResults,
+  noOptionText,
+  renderOption,
+  onBlur,
   ...props
 }: Props<T>) {
-  const ListBoxComponent = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLElement>
-  >((_props, ref) => (
-    <ListBox
-      ref={ref}
-      total={props.willLoadMoreResults ? options.length + 1 : options.length}
-      loading={loading}
-      willLoadMoreResults={props.willLoadMoreResults}
-      onLoadMore={props.onLoadMore}
-      {..._props}
-    >
-      {options.map((item, index) => (
-        <ListBox.Row key={index}>{item.label}</ListBox.Row>
-      ))}
-    </ListBox>
-  ));
-  ListBoxComponent.displayName = "ListBoxComponent";
-
   const isSelected = (value: T) => {
     return (values || []).findIndex((item) => item.value === value) > -1;
   };
@@ -84,38 +83,52 @@ export default function AutocompleteSelect<T extends Value>({
         value={values && values?.length > 0 ? values : []}
         options={options}
         itemType=""
+        onBlur={onBlur}
         isOptionEqualToValue={(option, value) => {
           return option.value === value.value;
         }}
         getOptionKey={(option) => option.value}
         getOptionLabel={(option) => option.label}
         getOptionDisabled={(option) => option.disabled || false}
-        // ListboxComponent={ListBoxComponent}
+        ListboxComponent={(props) => (
+          <ListboxComponent {...props} onLoadMore={() => {}} />
+        )}
         onChange={(_event, _value) => {
-          onChange(isArray(_value) ? _value.map((item) => item.value) : []);
+          if (_event.type === "click")
+            onChange(isArray(_value) ? _value.map((item) => item.value) : []);
         }}
         renderTags={(value, getTagProps) => {
           return `Đã chọn ${value.length}`;
         }}
-        renderOption={(props, option) => (
-          <Box
-            component={"li"}
-            key={option.value}
-            {...props}
-            sx={{ paddingLeft: "0 !important" }}
-          >
-            <Checkbox
-              icon={icon}
-              checkedIcon={checkedIcon}
-              style={{ marginRight: 8 }}
-              checked={isSelected(option.value)}
-            />
-            <Tooltip title={option.label} placement="right">
-              <Typography>{option.label}</Typography>
-            </Tooltip>
-          </Box>
-        )}
+        filterOptions={(preOptions, state) => {
+          debugger;
+          onChangeQuery?.(state.inputValue);
+          return preOptions;
+        }}
+        renderOption={(props, option) =>
+          renderOption ? (
+            renderOption(props, option)
+          ) : (
+            <Box
+              component={"li"}
+              key={option.value}
+              {...props}
+              sx={{ paddingLeft: "0 !important" }}
+            >
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={isSelected(option.value)}
+              />
+              <Tooltip title={option.label} placement="right">
+                <Typography>{option.label}</Typography>
+              </Tooltip>
+            </Box>
+          )
+        }
         disableCloseOnSelect
+        noOptionsText={noOptionText}
         disableClearable={disableClearable}
         renderInput={(params) => (
           <TextField
@@ -125,7 +138,7 @@ export default function AutocompleteSelect<T extends Value>({
             error={!!error}
             helperText={error ? error : undefined}
             label={props.label}
-            onChange={(e) => onChangeQuery?.(e.target.value)}
+            // onChange={(e) => onChangeQuery?.(e.target.value)}
             InputLabelProps={{ sx: { top: "-6px" }, ...params.InputLabelProps }}
             InputProps={{
               sx: {
@@ -180,6 +193,8 @@ export default function AutocompleteSelect<T extends Value>({
         )}
         disableClearable={disableClearable}
         filterSelectedOptions
+        noOptionsText={noOptionText}
+        onBlur={onBlur}
         renderInput={(params) => (
           <TextField
             {...params}

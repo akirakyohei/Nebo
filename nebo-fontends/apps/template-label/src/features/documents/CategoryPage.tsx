@@ -30,6 +30,7 @@ export default function CategoryPage() {
       title="Danh mục"
       fullHeight
       fluid
+      paddingHeader={2}
       primaryAction={{
         icon: <ControlPointOutlined />,
         content: "Tạo mới",

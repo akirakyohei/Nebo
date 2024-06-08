@@ -1,8 +1,8 @@
 package com.nebo.sso.applications.services.oauth2;
 
 import com.nebo.shared.security.config.NeboJwtConfigureProperties;
-import com.nebo.sso.applications.model.UserDetailsImpl;
 import com.nebo.sso.applications.services.AuthenticateProvider;
+import com.nebo.sso.applications.model.UserDetailsImpl;
 import com.nebo.sso.infrastructures.util.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

@@ -24,8 +24,8 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @Configuration
-@EntityScan(basePackages = "com.nebo.template.infrastructures")
-@EnableJpaRepositories(basePackages = {"com.nebo.mediafile.infrastructures.domain.repository"},
+@EntityScan(basePackages = "com.nebo.template.domain")
+@EnableJpaRepositories(basePackages = {"com.nebo.mediafile.domain.repository"},
         transactionManagerRef = "templateTransactionManager",
         entityManagerFactoryRef = "templateEntityManagerFactory")
 public class DatasourceConfig {

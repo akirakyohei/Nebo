@@ -37,6 +37,7 @@ export default function TemplatePage() {
       title="Mẫu"
       // fullHeight
       fluid
+      paddingHeader={2}
       primaryAction={{
         icon: <ControlPointOutlined />,
         content: "Thêm mẫu mới",

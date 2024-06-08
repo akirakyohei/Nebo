@@ -1,10 +1,10 @@
 package com.nebo.sso.applications.services;
 
 import com.nebo.shared.security.config.NeboJwtConfigureProperties;
-import com.nebo.sso.infrastructures.domain.model.Session;
-import com.nebo.sso.infrastructures.domain.repository.JpaSessionRepository;
-import com.nebo.sso.infrastructures.domain.repository.JpaUserRepository;
-import com.nebo.web.applications.exception.NotFoundException;
+import com.nebo.shared.web.applications.exception.NotFoundException;
+import com.nebo.sso.domain.model.Session;
+import com.nebo.sso.domain.repository.JpaSessionRepository;
+import com.nebo.sso.domain.repository.JpaUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

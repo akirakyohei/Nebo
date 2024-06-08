@@ -1,8 +1,8 @@
 package com.nebo.sso.applications.model;
 
 
-import com.nebo.types.PagingFilterRequest;
-import com.nebo.web.applications.bind.SupportParamName;
+import com.nebo.shared.web.applications.bind.SupportParamName;
+import com.nebo.shared.common.types.PagingFilterRequest;
 import lombok.Getter;
 import lombok.Setter;
 

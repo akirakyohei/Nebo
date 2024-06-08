@@ -105,8 +105,7 @@ export const ChangePasswordModal = ({ open, onClose, user }: Props) => {
             }}
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { ref, ...otherProps } }) => {
-              const error = control._formState.errors[otherProps.name]
-                ?.message as any;
+              const error = control._formState.errors[otherProps.name]?.message;
               return (
                 <PasswordField
                   label="Mật khẩu cũ"
@@ -153,8 +152,7 @@ export const ChangePasswordModal = ({ open, onClose, user }: Props) => {
             }}
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { ref, ...otherProps } }) => {
-              const error = control._formState.errors[otherProps.name]
-                ?.message as any;
+              const error = control._formState.errors[otherProps.name]?.message;
               return (
                 <PasswordField
                   label="Mật khẩu mới"
@@ -183,8 +181,7 @@ export const ChangePasswordModal = ({ open, onClose, user }: Props) => {
             }}
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             render={({ field: { ref, ...otherProps } }) => {
-              const error = control._formState.errors[otherProps.name]
-                ?.message as any;
+              const error = control._formState.errors[otherProps.name]?.message;
               return (
                 <PasswordField
                   label="Nhập lại mật khẩu"

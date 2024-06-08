@@ -1,9 +1,8 @@
 package com.nebo.template.applications.services.mapper;
 
 import com.nebo.template.applications.model.template.*;
-import com.nebo.template.infrastructures.domain.model.FileData;
-import com.nebo.template.infrastructures.domain.model.Template;
-import com.nebo.template.infrastructures.domain.model.TemplateOption;
+import com.nebo.template.domain.model.*;
+import com.nebo.template.domain.model.UserPermission;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
@@ -19,6 +18,10 @@ public interface TemplateMapper {
     TemplateResponse fromDomainToResponse(Template template);
 
     TemplateOptionResponse fromDomainToResponse(TemplateOption option);
+
+    TemplateUserPermission fromDomainToResponse(UserPermission userPermission);
+
+    TemplateAppPermission fromDomainToResponse(AppPermission appPermission);
 
     @Mapping(source = "fileName", target = "name")
     @Mapping(source = "key", target = "url")

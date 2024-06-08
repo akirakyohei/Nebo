@@ -1,7 +1,8 @@
 package com.nebo.template.applications.model.template;
 
 
-import com.nebo.template.infrastructures.domain.model.Template;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.nebo.template.domain.model.Template;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Validated
+@JsonRootName("template_user_permission")
 public class TemplatePermissionRequest {
     private Long templateId;
     private Template.SharedStatus sharedStatus;
@@ -26,7 +28,7 @@ public class TemplatePermissionRequest {
     @Getter
     public static class UserPermissionRequest {
         private long userId;
-        private Set<TemplateUserPermission> permissions;
+        private Set<UserPermission> permissions;
     }
 
 }

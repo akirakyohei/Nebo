@@ -1,4 +1,5 @@
 import { ButtonTypeMap, IconProps } from "@mui/material";
+import { ReactNode } from "react";
 
 export type Action = {
   url?: string;
@@ -28,5 +29,6 @@ export type ComplexAction = Action &
 export type Option<T = number> = {
   value: T;
   label: string;
+  renderInput?: string | ReactNode;
   disabled?: boolean;
 };

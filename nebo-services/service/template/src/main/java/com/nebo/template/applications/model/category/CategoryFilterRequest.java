@@ -1,7 +1,6 @@
 package com.nebo.template.applications.model.category;
 
-import com.nebo.types.PagingFilterRequest;
-import com.nebo.web.applications.bind.ParamName;
+import com.nebo.shared.common.types.PagingFilterRequest;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,14 +1,12 @@
 package com.nebo.template.interfaces.rest;
 
-import com.nebo.template.applications.model.category.*;
+import com.nebo.shared.web.applications.bind.UserId;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import com.nebo.template.applications.services.CategoryService;
-import com.nebo.web.applications.bind.UserId;
-import com.nebo.web.applications.exception.ConstraintViolationException;
+import com.nebo.template.applications.model.category.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

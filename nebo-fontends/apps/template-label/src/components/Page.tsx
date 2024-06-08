@@ -20,6 +20,7 @@ interface Props {
   sx?: SxProps<Theme>;
   fluid?: boolean;
   spacing?: number;
+  paddingHeader?: number;
   contentSpacing?: number;
   primaryAction?: ComplexAction | ReactNode;
   secondaryActions?: ComplexAction[];
@@ -30,6 +31,7 @@ export const Page = ({
   children,
   fullHeight,
   spacing = 2,
+  paddingHeader,
   contentSpacing = 2,
   sx,
   primaryAction,
@@ -53,12 +55,12 @@ export const Page = ({
         }
       >
         {(title || footerMarkup.length > 0) && (
-          <Box sx={{ marginLeft: 1, paddingBottom: 1 }}>
+          <Box sx={{ paddingBottom: 1 }}>
             <Stack
               direction={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
-              sx={{ paddingRight: 2, paddingLeft: 2 }}
+              sx={{ paddingRight: paddingHeader, paddingLeft: paddingHeader }}
             >
               {typeof title === "string" ? (
                 <Typography variant="h6" fontWeight={"500"}>

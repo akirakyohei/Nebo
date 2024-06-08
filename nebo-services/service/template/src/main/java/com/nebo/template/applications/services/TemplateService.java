@@ -3,23 +3,24 @@ package com.nebo.template.applications.services;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
 import com.nebo.lib.feignclient.client.model.FileDataUploadRequest;
+import com.nebo.shared.security.utils.NeboSecurityUtils;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
+import com.nebo.shared.web.applications.exception.NotFoundException;
 import com.nebo.template.applications.model.template.*;
 import com.nebo.template.applications.services.mapper.TemplateMapper;
-import com.nebo.template.infrastructures.domain.model.Template;
-import com.nebo.template.infrastructures.domain.repository.JpaCategoryRepository;
-import com.nebo.template.infrastructures.domain.repository.JpaFileDataRepository;
-import com.nebo.template.infrastructures.domain.repository.JpaTemplateRepository;
-import com.nebo.template.infrastructures.domain.repository.TemplateRepository;
-import com.nebo.utils.MediaUtils;
-import com.nebo.web.applications.exception.ConstraintViolationException;
-import com.nebo.web.applications.exception.NotFoundException;
+import com.nebo.template.domain.model.Template;
+import com.nebo.shared.common.utils.MediaUtils;
+import com.nebo.template.domain.repository.JpaCategoryRepository;
+import com.nebo.template.domain.repository.JpaFileDataRepository;
+import com.nebo.template.domain.repository.JpaTemplateRepository;
+import com.nebo.template.domain.repository.TemplateRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -29,7 +30,6 @@ import java.nio.file.AccessDeniedException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +88,7 @@ public class TemplateService {
         var template = jpaTemplateRepository.findById(templateId)
                 .orElseThrow(NotFoundException::new);
         var permissions = templatePermissionService.evaluatePermission(userId, template);
-        if (!permissions.contains(TemplateUserPermission.write))
+        if (!permissions.contains(UserPermission.write))
             throw new AccessDeniedException("template access denied");
         if (template.isTrashed()) {
             if (!Objects.equals(template.getUserId(), userId))
@@ -158,8 +158,9 @@ public class TemplateService {
     public TemplateResponse getTemplate(long userId, long templateId) throws AccessDeniedException {
         var template = jpaTemplateRepository.findById(templateId)
                 .orElseThrow(NotFoundException::new);
+        evaluateAppPermissionByTemplateId(userId, templateId);
         var permissions = templatePermissionService.evaluatePermission(userId, template);
-        if (!permissions.contains(TemplateUserPermission.read))
+        if (!permissions.contains(UserPermission.read))
             throw new AccessDeniedException("Template access denied");
         return fromDomainToResponse(userId, List.of(template)).get(0);
     }
@@ -168,12 +169,23 @@ public class TemplateService {
         return getTemplate(defaultUserId, templateId);
     }
 
-    public TemplatesResponse getTemplates(long userId, TemplateFilterRequest request) {
+    public TemplatesResponse getTemplates(long userId, TemplateFilterRequest request) throws ConstraintViolationException {
+        var appId = NeboSecurityUtils.detectAppId();
+        if (appId != null) {
+            if (request.getShared())
+                throw new ConstraintViolationException("shared", "Unsupport for app permission");
+            var templateIds = evaluateAppPermissionByAppId(userId, appId);
+            if (!CollectionUtils.isEmpty(templateIds)) {
+                request.setIds(CollectionUtils.isEmpty(request.getIds()) ? templateIds : request.getIds().stream().filter(templateIds::contains).toList());
+            } else if (templateIds != null) {
+                return new TemplatesResponse(Page.empty());
+            }
+        }
         var page = templateRepository.findAll(userId, request);
-        return new TemplatesResponse(new PageImpl<>(fromDomainToResponse(userId, page.getContent()),request.toPageable(), page.getTotalElements()));
+        return new TemplatesResponse(new PageImpl<>(fromDomainToResponse(userId, page.getContent()), request.toPageable(), page.getTotalElements()));
     }
 
-    public TemplatesResponse getDefaultTemplates(TemplateFilterRequest request) {
+    public TemplatesResponse getDefaultTemplates(TemplateFilterRequest request) throws ConstraintViolationException {
         return getTemplates(defaultUserId, request);
     }
 
@@ -187,7 +199,8 @@ public class TemplateService {
     public Pair<byte[], String> print(long userId, long templateId, TemplatePrintRequest request) throws IOException {
         var template = jpaTemplateRepository.findById(templateId).orElseThrow(NotFoundException::new);
         var permissions = templatePermissionService.evaluatePermission(userId, template);
-        if (!permissions.contains(TemplateUserPermission.read))
+        evaluateAppPermissionByTemplateId(userId, templateId);
+        if (!permissions.contains(UserPermission.read))
             throw new AccessDeniedException("template access denied");
         var result = printService.print(userId, TemplatePrintModel.builder()
                 .fillData(request != null && request.getVariables() != null && !request.getVariables().isEmpty())
@@ -199,6 +212,7 @@ public class TemplateService {
         return Pair.of(result, template.getName());
     }
 
+    //#region [Permission]
     @Transactional
     public TemplateResponse shareTemplate(long userId, long templateId, TemplatePermissionRequest request) throws AccessDeniedException {
         var template = jpaTemplateRepository.findTemplateByUserIdAndId(userId, templateId).orElseThrow(NotFoundException::new);
@@ -210,6 +224,54 @@ public class TemplateService {
         return getTemplate(userId, templateId);
     }
 
+    @Transactional
+    public TemplateAppPermission saveTemplateAppPermission(long userId, TemplateAppPermissionRequest request) {
+        try {
+            neboFeignClient.getApiAppById(request.getAppId(), B.withUserId(userId));
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
+        var templates = jpaTemplateRepository.findAllByUserIdAndIdIn(userId, request.getTemplateIds());
+        return templatePermissionService.saveTemplateAppPermission(userId, request.getAppId(), templates.stream().map(Template::getId).toList());
+    }
+
+    public TemplateAppPermission getTemplateAppPermission(long userId, long appId) {
+        try {
+            neboFeignClient.getApiAppById(appId, B.withUserId(userId));
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
+        return templatePermissionService.getTemplateAppPermission(userId, appId);
+    }
+
+    public TemplateUserPermissionsResponse getTemplatePermissions(long userId, long templateId, TemplateUserPermissionFilterRequest request) {
+        var template = jpaTemplateRepository.findTemplateByUserIdAndId(userId, templateId).orElseThrow(NotFoundException::new);
+        return templatePermissionService.getTemplatePermissions(userId, template, request);
+    }
+
+    public void evaluateAppPermissionByTemplateId(long userId, long templateId) throws AccessDeniedException {
+        var appId = NeboSecurityUtils.detectAppId();
+        if (appId == null)
+            return;
+        if (!templatePermissionService.evaluateAppPermission(userId, appId, templateId))
+            throw new AccessDeniedException("App permission not allow");
+    }
+
+    public List<Long> evaluateAppPermissionByAppId(long userId, long appId) {
+        var appPermission = getTemplateAppPermission(userId, appId);
+        return appPermission.getTemplateIds();
+    }
+
+    public void deleteTemplateAppPermissionByAppId(long userId, long appId) {
+        templatePermissionService.deleteTemplateAppPermission(userId, appId);
+    }
+
+    public List<EvaluateTemplatePermissionResponse> evaluateTemplatePermissions(long userId, List<Long> templateIds) {
+        var templates = jpaTemplateRepository.findAllByIdIn(templateIds);
+        return templatePermissionService.evaluateTemplatePermissions(userId, templates);
+    }
+
+    //#endregion
 
     private void validateTemplateRequest(long userId, TemplateCreateRequest request) throws ConstraintViolationException {
         validateCategoryIds(userId, request.getCategoryIds());

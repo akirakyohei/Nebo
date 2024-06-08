@@ -1,4 +1,4 @@
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, useCallback, useEffect, useMemo } from "react";
 
 import { Option } from "../../../components/types";
 import {
@@ -11,10 +11,12 @@ import { useSimpleFiltersQuery } from "../../../utils/useSimpleFiltersQuery";
 import { Height } from "@mui/icons-material";
 import AutocompleteSelect from "../../../components/AutocompleteSelect2";
 import { toString } from "lodash-es";
+import { Box } from "@mui/material";
 
 interface Props {
   label?: string;
   values: number[];
+  width?: CSSProperties["width"];
   height?: CSSProperties["height"];
   onChange: (_value: number[]) => void;
   error?: string;
@@ -25,6 +27,7 @@ export const CategoryTemplateSelect = ({
   values,
   onChange,
   error,
+  width,
   height,
 }: Props) => {
   const {
@@ -34,6 +37,7 @@ export const CategoryTemplateSelect = ({
     changeQuery,
     debounceQuery,
     changeDebounceQuery,
+    loadMore,
   } = useSimpleFilters(20);
 
   const {
@@ -79,6 +83,18 @@ export const CategoryTemplateSelect = ({
         })),
     [selected.data, values]
   );
+
+  const numberOfPages = Math.ceil(categories.metadata.total_element / limit);
+  const hasMore = page < numberOfPages;
+
+  const handleLoadMore = useCallback(() => {
+    if (hasMore) {
+      loadMore();
+    }
+  }, [loadMore, hasMore]);
+  useEffect(() => {
+    console.log(query);
+  }, [query]);
   return (
     <AutocompleteSelect
       values={selectedOptions}
@@ -88,11 +104,17 @@ export const CategoryTemplateSelect = ({
       placeholder="Chọn danh mục"
       query={query}
       height={height}
-      minWidth={"150px"}
+      minWidth={width}
+      onBlur={() => {
+        changeQuery("");
+      }}
       onChangeQuery={changeDebounceQuery}
       loading={isFetchingCategories}
+      willLoadMoreResults={hasMore && !isFetchingCategories}
+      onLoadMore={handleLoadMore}
       onChange={onChange}
       error={error}
+      noOptionText={<Box>Không tìm thấy danh mục nào</Box>}
     />
   );
 };

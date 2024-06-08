@@ -1,6 +1,6 @@
 package com.nebo.reports.applications.model;
 
-import com.nebo.types.PageResponse;
+import com.nebo.shared.common.types.PageResponse;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;

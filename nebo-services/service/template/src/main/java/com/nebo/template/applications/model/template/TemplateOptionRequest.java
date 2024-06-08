@@ -1,6 +1,6 @@
 package com.nebo.template.applications.model.template;
 
-import com.nebo.template.infrastructures.domain.model.TemplateOption;
+import com.nebo.template.domain.model.TemplateOption;
 import lombok.Getter;
 import lombok.Setter;
 

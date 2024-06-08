@@ -1,7 +1,7 @@
 package com.nebo.template.applications.model.template;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.nebo.types.PageResponse;
+import com.nebo.shared.common.types.PageResponse;
 import org.springframework.data.domain.Page;
 
 @JsonRootName("templates")

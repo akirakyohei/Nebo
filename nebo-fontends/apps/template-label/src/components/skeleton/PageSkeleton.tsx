@@ -7,12 +7,14 @@ interface Props {
   title?: boolean;
   fluid?: boolean;
   action?: boolean;
+  contentSpacing?: number;
 }
-export const PageSkeleton = ({ children }: Props) => {
+export const PageSkeleton = ({ children, fluid, contentSpacing }: Props) => {
   return (
     <Page
-      fluid
+      fluid={fluid}
       fullHeight
+      contentSpacing={contentSpacing}
       title={<Skeleton width={100} height={45} />}
       primaryAction={<Skeleton width={100} height={45} />}
     >

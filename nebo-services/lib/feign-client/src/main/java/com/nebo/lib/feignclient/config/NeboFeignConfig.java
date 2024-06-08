@@ -9,8 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import feign.*;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
-import feign.codec.ErrorDecoder;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -34,7 +32,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.util.AnnotatedTypeScanner;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Configuration

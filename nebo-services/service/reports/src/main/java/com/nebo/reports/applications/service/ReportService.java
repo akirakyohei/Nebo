@@ -1,7 +1,7 @@
 package com.nebo.reports.applications.service;
 
 import com.nebo.reports.applications.model.*;
-import com.nebo.types.PagingFilterRequest;
+import com.nebo.shared.common.types.PagingFilterRequest;
 
 import java.util.List;
 

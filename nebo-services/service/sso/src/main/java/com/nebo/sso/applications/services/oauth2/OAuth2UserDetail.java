@@ -1,7 +1,7 @@
 package com.nebo.sso.applications.services.oauth2;
 
+import com.nebo.sso.domain.model.User;
 import com.nebo.sso.applications.model.UserDetailsImpl;
-import com.nebo.sso.infrastructures.domain.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;

@@ -1,18 +1,18 @@
 package com.nebo.mediafile.applications.services;
 
+import com.nebo.mediafile.applications.services.mapper.MediaMapper;
+import com.nebo.mediafile.domain.model.FileData;
+import com.nebo.mediafile.domain.model.FileData_;
+import com.nebo.mediafile.domain.repository.JpaFileDataRepository;
+import com.nebo.mediafile.domain.specification.FileDataSpecification;
+import com.nebo.mediafile.infrastructures.utils.IOUtils;
 import com.nebo.shared.security.constant.TokenType;
 import com.nebo.shared.security.utils.NeboSecurityUtils;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
+import com.nebo.shared.web.applications.exception.NotFoundException;
+import com.nebo.shared.common.utils.MediaUtils;
 import com.nebo.mediafile.applications.common.exception.FileNotFoundException;
 import com.nebo.mediafile.applications.model.*;
-import com.nebo.mediafile.applications.services.mapper.MediaMapper;
-import com.nebo.mediafile.infrastructures.domain.model.FileData;
-import com.nebo.mediafile.infrastructures.domain.model.FileData_;
-import com.nebo.mediafile.infrastructures.domain.repository.JpaFileDataRepository;
-import com.nebo.mediafile.infrastructures.domain.specification.FileDataSpecification;
-import com.nebo.mediafile.infrastructures.utils.IOUtils;
-import com.nebo.utils.MediaUtils;
-import com.nebo.web.applications.exception.ConstraintViolationException;
-import com.nebo.web.applications.exception.NotFoundException;
 import io.minio.errors.MinioException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

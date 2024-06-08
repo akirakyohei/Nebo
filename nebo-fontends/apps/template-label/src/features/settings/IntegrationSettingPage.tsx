@@ -7,6 +7,8 @@ import { ApiKeyFilterRequest } from "../../types";
 import { useBaseFilter } from "../../utils/useBaseFilterQuery";
 import { ApiKeyManageModal } from "./components/integration/ApiKeyManageModal";
 import { Box, Card, CardContent } from "@mui/material";
+import { ApiKeySettingSkeleton } from "./components/integration/ApiKeySettingSkeleton";
+import { Loading } from "../../components/loading";
 
 export default function MediaFilePage() {
   const {
@@ -38,6 +40,8 @@ export default function MediaFilePage() {
     page: filter.page,
   });
 
+  if (!isLoading) return <ApiKeySettingSkeleton />;
+
   return (
     <Page
       title="Tích hợp"
@@ -49,6 +53,7 @@ export default function MediaFilePage() {
         onAction: openUploadFile,
       }}
     >
+      {isFetching && <Loading />}
       <Card>
         <CardContent>
           <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>

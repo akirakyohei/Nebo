@@ -1,13 +1,8 @@
 package com.nebo.template.applications.model.template;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nebo.template.infrastructures.domain.model.Template;
-import com.nebo.template.infrastructures.domain.model.TemplateOption;
-import com.vladmihalcea.hibernate.type.json.JsonType;
-import jakarta.persistence.OneToOne;
+import com.nebo.template.domain.model.TemplateOption;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 @Setter
 @Getter

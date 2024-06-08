@@ -1,10 +1,7 @@
 package com.nebo.sso.applications.model;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.nebo.sso.infrastructures.domain.model.User;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotNull;
+import com.nebo.sso.domain.model.User;
 import lombok.Getter;
 import lombok.Setter;
 

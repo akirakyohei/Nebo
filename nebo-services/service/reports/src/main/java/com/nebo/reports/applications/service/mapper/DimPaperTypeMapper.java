@@ -1,7 +1,7 @@
 package com.nebo.reports.applications.service.mapper;
 
 import com.nebo.reports.applications.model.PaperTypeResponse;
-import com.nebo.reports.infrastructures.domain.model.DimPaperType;
+import com.nebo.reports.domain.model.DimPaperType;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

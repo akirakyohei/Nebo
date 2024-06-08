@@ -1,10 +1,10 @@
 package com.nebo.template.interfaces.rest;
 
 import com.google.common.io.ByteStreams;
-import com.nebo.template.applications.model.template.*;
+import com.nebo.shared.web.applications.bind.UserId;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import com.nebo.template.applications.services.TemplateService;
-import com.nebo.web.applications.bind.UserId;
-import com.nebo.web.applications.exception.ConstraintViolationException;
+import com.nebo.template.applications.model.template.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,12 +46,12 @@ public class TemplateController {
     }
 
     @GetMapping
-    public TemplatesResponse getTemplates(@UserId long userId, TemplateFilterRequest request) {
+    public TemplatesResponse getTemplates(@UserId long userId, TemplateFilterRequest request) throws ConstraintViolationException {
         return templateService.getTemplates(userId, request);
     }
 
     @GetMapping("default")
-    public TemplatesResponse getDefaultTemplates(TemplateFilterRequest request) {
+    public TemplatesResponse getDefaultTemplates(TemplateFilterRequest request) throws ConstraintViolationException {
         return templateService.getDefaultTemplates(request);
     }
 
@@ -77,5 +78,30 @@ public class TemplateController {
         return templateService.shareTemplate(userId, templateId, request);
     }
 
+    @GetMapping("/{id}/permissions")
+    public TemplateUserPermissionsResponse getTemplatePermissions(@UserId long userId, @PathVariable("id") long templateId, TemplateUserPermissionFilterRequest request) {
+        return templateService.getTemplatePermissions(userId, templateId, request);
+    }
+
+    @GetMapping("/evaluate_permissions")
+    public List<EvaluateTemplatePermissionResponse> evaluateTemplatePermissions(@UserId long userId, @RequestParam(value = "template_ids", required = true) List<Long> templateIds) {
+        return templateService.evaluateTemplatePermissions(userId, templateIds);
+    }
+
+
+    @PostMapping("/app_permissions")
+    public TemplateAppPermission saveTemplateAppPermission(@UserId long userId, TemplateAppPermissionRequest request) {
+        return templateService.saveTemplateAppPermission(userId, request);
+    }
+
+    @GetMapping("/app_permissions/app_id/{id}")
+    public TemplateAppPermission getTemplateAppPermission(@UserId long userId, @PathVariable("id") long appId) {
+        return templateService.getTemplateAppPermission(userId, appId);
+    }
+
+    @DeleteMapping("/app_permissions/app_id/{id}")
+    public void deleteTemplateAppPermission(@UserId long userId, @PathVariable("id") long appId) {
+        templateService.deleteTemplateAppPermissionByAppId(userId, appId);
+    }
 
 }
