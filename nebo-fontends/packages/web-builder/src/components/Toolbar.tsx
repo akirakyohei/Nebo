@@ -10,7 +10,6 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { ZoomButton } from "./ZoomButton";
-import { EditorContext } from "../context/EditorContext";
 import zoom from "../plugins/zoom";
 import grapesjs, { Editor } from "grapesjs";
 import { useEditor } from "@grapesjs/react";

@@ -81,6 +81,7 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
   ];
   const barcodeProps: ComponentDefinition = {
     format: formats,
+    dataValue: true,
     code: "123456789012",
     lineColor: "#000000",
     width: 2,
@@ -115,7 +116,8 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
     displayValue: true,
   };
 
-  const getTraitType = (value: any) => {
+  const getTraitType = (value: any, name: any) => {
+    if (name === "dataValue") return "switch";
     if (typeof value == "number") return "number";
     if (typeof value == "boolean") return "checkbox";
     if (typeof value == "object") return "select";
@@ -145,7 +147,7 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
                       : {};
     return {
       changeProp: true,
-      type: getTraitType(barcodeProps[name]),
+      type: getTraitType(barcodeProps[name], name),
       options: barcodeProps[name] as TraitOption[],
       min: 0,
       placeholder: "placeholder",
@@ -200,8 +202,11 @@ export default (editor: Editor, opts: BarcodePluginOptions) => {
           textPosition: this.get("textPosition"),
           rotation: this.get("rotation"),
         });
+        const code = !!this.get("dataValue")
+          ? this.code
+          : `{{${this.get("code")}}}`;
         this.set({
-          src: `${opts.api}?code=${this.get("code")}&${params.toString()}`,
+          src: `${opts.api}?code=${code}&${params.toString()}`,
           style: `transform: rotate(${rotation.find((a: { id: string; name: string }) => a.id === this.get("rotation"))?.name});`,
           styles: `.gjs-transform-rotate{transform: rotate(${rotation.find((a: { id: string; name: string }) => a.id === this.get("rotation"))?.name});}`,
         });

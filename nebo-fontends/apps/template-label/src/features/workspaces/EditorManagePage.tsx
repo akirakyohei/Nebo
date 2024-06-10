@@ -17,18 +17,15 @@ import { Template } from "../../types";
 import { useToast } from "../../components/notification/useToast";
 import { isClientError } from "../../utils/client";
 import { WorkspacePageSkeleton } from "./components/WorkspacePageSkeleton";
+import { PreviewContainer } from "./components/preview/PreviewContainer";
 
 export default function EditorManagePage() {
   const { show: showToast } = useToast();
   const params = useParams();
   const idStr = params["id"];
   const id = toNumber(idStr);
-  const isCreate = !id;
-  const urlSearchParams = new URLSearchParams();
-  const copyIdStr = urlSearchParams.get("copy_id");
-  const copyId = toNumber(copyIdStr);
-  const templateId = !isCreate ? id : copyId;
   const [designing, setDesigning] = useState(true);
+  const isPreviewing = location.pathname.endsWith("/preview");
 
   const {
     data: template = {
@@ -41,7 +38,7 @@ export default function EditorManagePage() {
     },
     isLoading: isLoading,
     isFetching: isFetching,
-  } = useGetTemplateQuery(templateId, { skip: !templateId });
+  } = useGetTemplateQuery(id, { skip: !id });
 
   const [updateTemplate] = useUpdateTemplateMutation();
 
@@ -70,10 +67,6 @@ export default function EditorManagePage() {
     }
   };
 
-  const handleChangeMode = (_value: boolean) => {
-    setDesigning(_value);
-  };
-
   if (isLoading) return <WorkspacePageSkeleton />;
 
   // if (!template) return <Navigate to={"/"} />;
@@ -91,11 +84,7 @@ export default function EditorManagePage() {
           direction={"column"}
         >
           <Grid item width={"100%"}>
-            <NavbarMenu
-              template={template}
-              isDesigning={designing}
-              onChangeMode={handleChangeMode}
-            />
+            <NavbarMenu template={template} isDesigning={!isPreviewing} />
           </Grid>
           <Grid
             item
@@ -105,11 +94,15 @@ export default function EditorManagePage() {
             marginBottom={"auto"}
             position={"relative"}
           >
-            <WebBuilderContainer
-              designingMode={designing}
-              template={template}
-              onUpdate={handleUpdateTemplate}
-            />
+            {!isPreviewing ? (
+              <WebBuilderContainer
+                designingMode={designing}
+                template={template}
+                onUpdate={handleUpdateTemplate}
+              />
+            ) : (
+              <PreviewContainer template={template} />
+            )}
           </Grid>
         </Grid>
       </Page>

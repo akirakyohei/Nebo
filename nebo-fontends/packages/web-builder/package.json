@@ -19,6 +19,7 @@
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@mui/material": "^5.15.19",
+    "@mui/x-tree-view": "^7.6.2",
     "@types/jest": "^27.5.2",
     "@types/jquery": "^3.5.30",
     "@types/lodash-es": "^4.17.12",

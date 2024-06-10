@@ -41,8 +41,9 @@ import iconPlugin from "grapesjs-icons";
 import formsPlugin from "grapesjs-plugin-forms";
 import zoomPlugin from "./plugins/zoom";
 import draggableDocumentPlugin from "./plugins/draggable-document";
-import barcodePlugin from "./plugins/barcode/barcode";
-import qrcodePlugin from "./plugins/qrcode/qrcode";
+import barcodePlugin from "./plugins/barcode";
+import qrcodePlugin from "./plugins/qrcode";
+import customFormsPlugin from "./plugins/forms";
 import gridSystemPlugin from "./plugins/grid-system";
 import { FileUploadData, Template } from "./types/template";
 import BlockManager from "./components/BlockManager";
@@ -57,6 +58,7 @@ import { Unit, convertUnits } from "@karibash/pixel-units";
 import { split_unit } from "./utils";
 import { defaultGridStyle } from "./plugins/grid-system/styles";
 import blockComponentPlugin, { protectedCss } from "./plugins/block-component";
+import { DataManager } from "./components/DataManager";
 
 export const ckeConfig = {
   toolbar: [
@@ -130,7 +132,13 @@ interface Props {
   uploadFile?: (value: FileUploadData) => void;
 }
 
-const theme = createTheme({});
+const theme = createTheme({
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
+});
 
 export const WebBuilderContainer = ({
   designingMode = true,
@@ -139,6 +147,8 @@ export const WebBuilderContainer = ({
   showToast,
   uploadFile,
 }: Props) => {
+  const [labPanelLeft, setLabPanelLeft] = useState<string>("block");
+
   const options: EditorConfig = useMemo(() => {
     const widthPx = convertUnits(template.options.width as any, "px");
     const width = split_unit(widthPx);
@@ -268,17 +278,10 @@ export const WebBuilderContainer = ({
               blockQrcode: { category: "Nội dung" },
             }),
             usePlugin(formsPlugin, {
-              blocks: [
-                "input",
-                "textarea",
-                "select",
-                "button",
-                "label",
-                "checkbox",
-                "radio",
-              ],
+              blocks: [],
               category: "Biểu mẫu",
             }),
+            usePlugin(customFormsPlugin),
             // usePlugin(gridSystemPlugin, {
             //   default_css: true,
             //   default_components: true,
@@ -299,8 +302,12 @@ export const WebBuilderContainer = ({
               <div className="p-0 nebo-layout-col">
                 <Tabs
                   fill
-                  defaultActiveKey="block"
+                  // defaultActiveKey="block"
+                  activeKey={labPanelLeft}
                   className="nebo-pn-left-container rounded-0"
+                  onSelect={(event) => {
+                    setLabPanelLeft(event || "block");
+                  }}
                 >
                   <Tab eventKey="block" title="Thêm">
                     <BlocksProvider>
@@ -333,11 +340,13 @@ export const WebBuilderContainer = ({
               <div className="p-0 nebo-layout-col">
                 <Tabs
                   fill
-                  defaultActiveKey="layer"
+                  defaultActiveKey="data"
                   className="nebo-pn-right-container"
                 >
                   <Tab eventKey="data" title="Dữ liệu">
-                    <div id="nebo-data"></div>
+                    <div id="nebo-data">
+                      <DataManager />
+                    </div>
                   </Tab>
                   <Tab eventKey="layer" title="Cấu trúc">
                     <LayersProvider>

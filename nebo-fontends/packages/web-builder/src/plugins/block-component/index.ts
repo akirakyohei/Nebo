@@ -11,8 +11,8 @@ import "grapesjs/dist/css/grapes.min.css";
 import gridSystem from "../grid-system";
 // import propertyToggle from '@documint/grapesjs-property-toggle'
 // import checkbox from '@documint/grapesjs-component-checkbox'
-import barcode from "../barcode/barcode";
-import qrcode from "../qrcode/qrcode";
+import barcode from "../barcode";
+import qrcode from "../qrcode";
 import { MAX_GRID } from "./componentTypes/constants";
 import { Editor } from "grapesjs";
 import commands from "./commands";

@@ -1,6 +1,6 @@
 import _ from "lodash/fp";
 import { typeToOptions, typeToValidFields } from "./constants";
-import { Schema, SchemaType } from "./types";
+import { Schema, SchemaDefault, SchemaObject, SchemaType } from "./types";
 
 export const getAllSchemaKeys = _.keys;
 
@@ -40,13 +40,15 @@ export const setSchemaProperty = (key: string) =>
 
 export const setSchemaItems = setSchemaField("items");
 
+export const setSchemaValue = setSchemaField("value");
+
 export const deleteSchemaField = _.unset;
 
 export const deleteSchemaProperty = (key: string) =>
   deleteSchemaField(["properties", key]);
 
 export const addSchemaProperty = (schema: Schema) =>
-  setSchemaProperty(`__${_.now()}__`)({}, schema);
+  setSchemaProperty(`__${_.now()}__`)({ title: "", type: "string" }, schema);
 
 export const renameSchemaField = (oldKey: string, newKey: string) =>
   //Rename field key but maintains object "order"
@@ -67,7 +69,17 @@ export const renameSchemaProperty = (
     (p) => setSchemaProperties(p, schema),
   ])(schema);
 
-export const isSchemaObject = (schema: Schema) =>
+export const isSchemaDefault = (schema: Schema): schema is SchemaDefault => {
+  return hasSchema(schema);
+};
+
+export const hasSchema = (schema: Schema) => {
+  return (
+    !_.isEmpty(getSchemaField("title")) && !_.isEmpty(getSchemaField("type"))
+  );
+};
+
+export const isSchemaObject = (schema: Schema): schema is SchemaObject =>
   getSchemaType(schema) === "object";
 
 export const isSchemaArray = (schema: Schema) =>

@@ -16,8 +16,6 @@ export default (editor: Editor, opts: QrcodePluginOptions) => {
 
   const qrcodeProps: ComponentDefinition = {
     dataValue: true,
-    varName: "",
-    exampleValue: "",
     code: "https://nebo.com/",
     foreground: "#000000",
   };
@@ -143,12 +141,9 @@ export default (editor: Editor, opts: QrcodePluginOptions) => {
         const params = new URLSearchParams({
           dark: this.get("foreground"),
         });
-        const value = this.getAttributes()["data-value"];
-        const varName = this.get("varName");
-        const code =
-          value !== "static" && varName
-            ? `{{$encodeURIComp ${formatName(varName)}}}`
-            : encodeURIComponent(this.get("code"));
+        const code = !this.get("dataValue")
+          ? `{{$encodeURIComp ${this.get("code")}}}`
+          : encodeURIComponent(this.get("code"));
         this.set({
           src: `${opts.api}?code=${code}&${params.toString()}`,
         });

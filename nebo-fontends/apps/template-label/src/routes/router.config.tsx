@@ -103,6 +103,13 @@ export const routes: CustomizeRouteObject[] = [
             ),
           },
           {
+            path: ":id/preview",
+            fallback: <WorkspacePageSkeleton />,
+            Component: lazy(
+              () => import("../features/workspaces/EditorManagePage")
+            ),
+          },
+          {
             path: "",
             Component: lazy(
               () => import("../features/layout/ErrorBoundary/NotFoundPage")

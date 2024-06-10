@@ -101,7 +101,6 @@ export default function AutocompleteSelect<T extends Value>({
           return `Đã chọn ${value.length}`;
         }}
         filterOptions={(preOptions, state) => {
-          debugger;
           onChangeQuery?.(state.inputValue);
           return preOptions;
         }}
@@ -135,6 +134,9 @@ export default function AutocompleteSelect<T extends Value>({
             {...params}
             {...props}
             value={props.query}
+            onBlur={(e) => {
+              debugger;
+            }}
             error={!!error}
             helperText={error ? error : undefined}
             label={props.label}

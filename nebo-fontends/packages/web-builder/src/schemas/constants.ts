@@ -1,3 +1,4 @@
+import { title } from "process";
 import {
   ArraySchemaFieldOption,
   ArrayValidSchemaField,
@@ -21,6 +22,7 @@ import {
 
 export const defaultSchema: Schema = {
   type: "object",
+  title: "Gốc",
   properties: {},
 };
 

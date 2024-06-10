@@ -6,8 +6,7 @@ export default (editor: Editor, opts: {}) => {
   editor.on("canvas:frame:load:body", ({ window }) => {
     window.document.body?.addEventListener(
       "mousedown",
-      function (e) {
-        console.log("mouse down");
+      function (e: any) {
         isDown = true;
       },
       true

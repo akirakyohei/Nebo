@@ -23,11 +23,10 @@ import { isClientError } from "../../../../utils/client";
 
 interface Props {
   isDesigning: boolean;
-  onChangeMode: (desgining: boolean) => void;
   template: Template;
 }
 
-export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
+export const NavbarMenu = ({ isDesigning, template }: Props) => {
   const { show: showToast } = useToast();
   const {
     value: isOpenActive,
@@ -64,10 +63,6 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
     }
   };
 
-  const onToggle = (_value: boolean) => {
-    onChangeMode(_value);
-  };
-
   const {
     value: isOpenSetting,
     setTrue: openSetting,
@@ -75,7 +70,13 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
   } = useToggle(false);
 
   return (
-    <Grid container width={"100%"} className="border" padding={1}>
+    <Grid
+      container
+      width={"100%"}
+      className="border"
+      padding={1}
+      sx={{ background: "#fff" }}
+    >
       <Grid xs={5} item>
         <Stack direction={"row"} gap={3}>
           <Link href="/" underline="none">
@@ -99,7 +100,7 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
             variant={isDesigning ? "contained" : "outlined"}
             disabled={isDesigning}
             color="primary"
-            onClick={() => onToggle(true)}
+            href={`/workspaces/${template.id || 2}`}
             sx={(theme) => {
               if (isDesigning)
                 return {
@@ -115,7 +116,7 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
             variant={!isDesigning ? "contained" : "outlined"}
             disabled={!isDesigning}
             color="primary"
-            onClick={() => onToggle(false)}
+            href={`/workspaces/${template.id || 2}/preview`}
             sx={(theme) => {
               if (!isDesigning)
                 return {
@@ -132,9 +133,12 @@ export const NavbarMenu = ({ isDesigning, onChangeMode, template }: Props) => {
 
       <Grid xs={5} item display="flex" justifyContent={"end"}>
         <Stack direction="row" gap={3} height={"41px"}>
-          <Button variant="outlined" startIcon={<FileDownload />}>
-            Tải về
-          </Button>
+          {!isDesigning && (
+            <Button variant="outlined" startIcon={<FileDownload />}>
+              Tải về
+            </Button>
+          )}
+
           <Button variant="outlined" startIcon={<Tune />} onClick={openSetting}>
             Cấu hình
           </Button>

@@ -125,21 +125,23 @@ export default function LayerManager({
         padding: 1,
       }}
     >
-      {!!root && (
-        <LayerItem
-          component={root}
-          level={-1}
-          draggingCmp={dragging}
-          dragParent={dragParent}
-        />
-      )}
-      {showIndicator && (
-        <div
-          ref={indicatorRef}
-          className={cx("absolute w-full h-0.5 bg-yellow-400")}
-          style={indicatorStyle}
-        ></div>
-      )}
+      <Box>
+        {!!root && (
+          <LayerItem
+            component={root}
+            level={-1}
+            draggingCmp={dragging}
+            dragParent={dragParent}
+          />
+        )}
+        {showIndicator && (
+          <div
+            ref={indicatorRef}
+            className={cx("absolute w-full h-0.5 bg-yellow-400")}
+            style={indicatorStyle}
+          ></div>
+        )}
+      </Box>
     </Box>
   );
 }
