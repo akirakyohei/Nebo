@@ -13,7 +13,7 @@ import {
 import { storefontApi, transformAxiosErrorResponse } from "./api";
 import { toQueryString } from "../utils/url";
 import { client } from "../utils/client";
-
+import Cookies from "universal-cookie";
 export const userApi = storefontApi.injectEndpoints({
   endpoints: (builder) => ({
     signin: builder.mutation<UserToken, UserLoginRequest>({
@@ -41,17 +41,6 @@ export const userApi = storefontApi.injectEndpoints({
       transformResponse: (response: { user_token: UserToken }) =>
         response.user_token,
     }),
-    refreshToken: builder.query<UserToken, void>({
-      query: () => {
-        return {
-          url: `/api/auth/refresh_token`,
-          method: "POST",
-        };
-      },
-      transformErrorResponse: transformAxiosErrorResponse,
-      transformResponse: (response: { user_token: UserToken }) =>
-        response.user_token,
-    }),
     logout: builder.mutation<void, void>({
       query: () => {
         return {
@@ -60,6 +49,7 @@ export const userApi = storefontApi.injectEndpoints({
         };
       },
       transformErrorResponse: transformAxiosErrorResponse,
+      invalidatesTags: ["credentials"],
     }),
     updateAccount: builder.mutation<User, UserUpdateRequest>({
       query: (q) => {
@@ -136,7 +126,7 @@ export const userApi = storefontApi.injectEndpoints({
         } = await client.request<{
           template_user_permissions: ListResponse<TemplateUserPermission>;
         }>({
-          url: `/api/templates/${arg.templateId}/${toQueryString({ limit: 250, page: 1, shared_user_ids: sharedUserIds })}`,
+          url: `/api/templates/${arg.templateId}/permissions${toQueryString({ limit: 250, page: 1, shared_user_ids: sharedUserIds })}`,
         });
         const data: UserWithUserPermission[] = users.data.map((user) => {
           const userPermission = template_user_permissions.data.find(
@@ -171,7 +161,6 @@ export const userApi = storefontApi.injectEndpoints({
 export const {
   useSigninMutation,
   useSignupMutation,
-  useRefreshTokenQuery,
   useLogoutMutation,
   useUpdateAccountMutation,
   useChangePasswordMutation,

@@ -6,6 +6,7 @@ import { store } from "./store/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { routes } from "./routes/router.config";
 import { transformRouter } from "./routes/transformRouter";
+import AuthProvider from "./features/layout/AuthProvider";
 
 function App() {
   const theme = createTheme({
@@ -34,13 +35,15 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <StoreProvider store={store}>
-        <LoadingProvider>
-          <NotificationProvider>
-            <RouterProvider
-              router={createBrowserRouter(transformRouter(routes))}
-            />
-          </NotificationProvider>
-        </LoadingProvider>
+        <AuthProvider>
+          <LoadingProvider>
+            <NotificationProvider>
+              <RouterProvider
+                router={createBrowserRouter(transformRouter(routes))}
+              />
+            </NotificationProvider>
+          </LoadingProvider>
+        </AuthProvider>
       </StoreProvider>
     </ThemeProvider>
   );

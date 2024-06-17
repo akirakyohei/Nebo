@@ -27,6 +27,32 @@ const mediafileApi = storefontApi.injectEndpoints({
       transformErrorResponse: transformAxiosErrorResponse,
       providesTags: (result, _error) => (result ? ["media_file"] : []),
     }),
+    getAssetsWithInfinite: builder.query<
+      ListResponse<FileDataUpload>,
+      FileDataFilterRequest
+    >({
+      query: (q) => `/api/files/metadata${toQueryString(q)}`,
+      serializeQueryArgs: ({ queryArgs }) => {
+        const { page, ...rest } = queryArgs;
+        return rest;
+      },
+      merge: (currentCache, newItems, { arg }) => {
+        if (!arg.page || arg.page === 1) {
+          return newItems;
+        } else {
+          currentCache.data.push(...newItems.data);
+          currentCache.metadata = newItems.metadata;
+          return currentCache;
+        }
+      },
+      // Refetch when the page arg changes
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page;
+      },
+      transformResponse: (response: { files: ListResponse<FileDataUpload> }) =>
+        response.files,
+      providesTags: (result, _error) => (result ? ["media_file"] : []),
+    }),
     getMetadata: builder.query<FileDataUpload, number>({
       query: (q) => `/api/files/${q}`,
       transformResponse: (response: { file: FileDataUpload }) => response.file,
@@ -48,4 +74,5 @@ export const {
   useGetMetadataQuery,
   useGetMetadatasQuery,
   useDeleteFileMutation,
+  useGetAssetsWithInfiniteQuery,
 } = mediafileApi;

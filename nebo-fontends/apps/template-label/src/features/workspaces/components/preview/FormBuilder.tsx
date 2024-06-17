@@ -70,6 +70,8 @@ const SchemaObjectProperties = ({ schema, onChange }: ObjectProps) => {
               sx={{
                 display: "inline-flex",
                 position: "relative",
+                paddingTop: 0.7,
+                paddingBottom: 0.7,
 
                 ":before": {
                   content: `" "`,

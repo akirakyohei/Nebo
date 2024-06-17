@@ -23,6 +23,8 @@ public class FileDataStorageConsumer {
             concurrency = "5"
     )
     public void process(ConsumerRecord<String, String> record) throws IOException {
+      if(record.value()==null)
+          return;
         var templateKafka = KafkaConnectUtils.marshallRaw(record.value(),FileData.class);
         var delta = 0L;
         var userId = 0L;

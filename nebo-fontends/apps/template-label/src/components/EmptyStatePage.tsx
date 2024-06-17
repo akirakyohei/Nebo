@@ -32,7 +32,7 @@ export const EmptyStateImage = ({
       sx={{
         width: "100%",
         height: "70%",
-        position: "absolute",
+        paddingTop: 10,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

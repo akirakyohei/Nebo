@@ -1,36 +1,16 @@
 import { Card, CardContent, CardHeader, TableRow } from "@mui/material";
 import { UsedPaperTypes } from "../../../types";
 import { LineChart } from "@mui/x-charts";
-import { addDays, formatDate } from "date-fns";
+import { addDays, format } from "date-fns";
+import { getFormatPatternsByUnit } from "../../../components/daterange";
 
 interface Props {
   usedPaperTypes: UsedPaperTypes;
+  unit: "hour" | "day" | "month" | "year";
 }
 
-const defaultP: Props["usedPaperTypes"] = {
-  data: [
-    { date: new Date().toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 1).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 2).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 3).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 4).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 5).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 6).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 7).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 8).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 9).toISOString(), total_used: 2 },
-    { date: addDays(new Date(), 10).toISOString(), total_used: 2 },
-  ],
-  aggregate: 9,
-  metadata: {
-    total_element: 0,
-    page: 1,
-    limit: 10,
-  },
-};
-
-export const UsedPaperTypeCard = ({ usedPaperTypes = defaultP }: Props) => {
-  const data = defaultP.data.map((item) => ({
+export const UsedPaperTypeCard = ({ usedPaperTypes, unit }: Props) => {
+  const data = usedPaperTypes.data.map((item) => ({
     date: item.date,
     time: new Date(item.date).getTime(),
     total_used: item.total_used,
@@ -46,9 +26,9 @@ export const UsedPaperTypeCard = ({ usedPaperTypes = defaultP }: Props) => {
             {
               scaleType: "time",
               dataKey: "time",
-              valueFormatter: (value, context) => {
+              valueFormatter: (value, _context) => {
                 const date = new Date(value);
-                return `${formatDate(date, "dd-MM-yyyy")}`;
+                return `${format(date, getFormatPatternsByUnit(unit))}`;
               },
             },
           ]}
@@ -59,6 +39,7 @@ export const UsedPaperTypeCard = ({ usedPaperTypes = defaultP }: Props) => {
                 return `${value}`;
               },
               area: true,
+              color: "#2170ff66",
             },
           ]}
           height={500}

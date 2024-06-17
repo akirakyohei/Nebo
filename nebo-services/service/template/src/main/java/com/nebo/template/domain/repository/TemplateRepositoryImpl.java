@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -53,9 +54,9 @@ public class TemplateRepositoryImpl implements TemplateRepository {
             strQuery.add(" T.name LIKE '%:query%' ");
             parameterSource.addValue("query", request.getQuery());
         }
-        if(!CollectionUtils.isEmpty(request.getCategoryIds())){
+        if (!CollectionUtils.isEmpty(request.getCategoryIds())) {
             strQuery.add(" T.id in (:ids) ");
-            parameterSource.addValue("ids",StringUtils.join(request.getIds(),","));
+            parameterSource.addValue("ids", StringUtils.join(request.getIds(), ","));
         }
 
         if (request.getActive() != null) {
@@ -77,6 +78,7 @@ public class TemplateRepositoryImpl implements TemplateRepository {
         var templateIds = parameterJdbcTemplate.query(sqlSelect, parameterSource, (rs, rowNum) -> rs.getLong(1));
 
         var templates = jpaTemplateRepository.findAllByIdIn(templateIds);
+        templates = templates.stream().sorted(Comparator.comparingInt(a -> templateIds.indexOf(a.getId()))).toList();
 
         /// count
         var sqlCount = "Select count(*) from templates as T  WHERE " +
@@ -98,17 +100,11 @@ public class TemplateRepositoryImpl implements TemplateRepository {
             strQuery.add(" T.name LIKE '%:query%' ");
             parameterSource.addValue("query", request.getQuery());
         }
-        if(!CollectionUtils.isEmpty(request.getCategoryIds())){
+        if (!CollectionUtils.isEmpty(request.getCategoryIds())) {
             strQuery.add(" T.id in (:ids) ");
-            parameterSource.addValue("ids",StringUtils.join(request.getIds(),","));
+            parameterSource.addValue("ids", StringUtils.join(request.getIds(), ","));
         }
-        if (request.getActive() != null) {
-            if (request.getActive()) {
-                strQuery.add(" T.active is true ");
-            } else {
-                strQuery.add(" T.active is false ");
-            }
-        }
+        strQuery.add(" T.active is true ");
 
         var whereBuilder = StringUtils.join(strQuery, " AND ");
         if (StringUtils.isNotBlank(whereBuilder)) {
@@ -124,6 +120,7 @@ public class TemplateRepositoryImpl implements TemplateRepository {
         var templateIds = parameterJdbcTemplate.query(sqlSelect, parameterSource, (rs, rowNum) -> rs.getLong(1));
 
         var templates = jpaTemplateRepository.findAllByIdIn(templateIds);
+        templates = templates.stream().sorted(Comparator.comparingInt(a -> templateIds.indexOf(a.getId()))).toList();
 
         /// count
         var sqlCount = "Select count(*) from (" + buildFromShared() + ") as T " +
@@ -138,7 +135,7 @@ public class TemplateRepositoryImpl implements TemplateRepository {
     private String buildFromShared() {
         return "SELECT T2.* FROM templates T2 WHERE T2.user_id!=:userId AND T2.shared_status='allow_all' " +
                 " UNION " +
-                "SELECT T3.* FROM templates T3 JOIN template_permissions TP1 ON T3.id=TP1.template_id WHERE T3.user_id!=:userId AND TP1.shared_user_id=:userId AND TP1.permissions LIKE '%read%' ";
+                "SELECT T3.* FROM templates T3 JOIN user_permissions TP1 ON T3.id=TP1.template_id WHERE T3.user_id!=:userId AND TP1.shared_user_id=:userId AND TP1.permissions LIKE '%read%' ";
     }
 
     private String buildFindInSetCategoryId(List<Long> categoryIds) {

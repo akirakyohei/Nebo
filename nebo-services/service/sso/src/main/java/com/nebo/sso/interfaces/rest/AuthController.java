@@ -57,10 +57,15 @@ public class AuthController {
         var refreshToken = CookieUtils.getCookie(httpServletRequest, jwtConfigureProperties.getHeaderRefreshToken());
         if (refreshToken == null)
             throw new AuthenticationException();
-        var session = refreshTokenService.verifyExpiration(refreshToken.getValue());
-        var res = userService.refreshJwtToken(session.getUser(), refreshToken.getValue());
-        CookieUtils.addCookie(jwtConfigureProperties.getHeaderToken(), res.getToken(), "/", res.getExpireAt(), httpServletRequest, httpServletResponse);
-        return res;
+        try {
+            var session = refreshTokenService.verifyExpiration(refreshToken.getValue());
+            var res = userService.refreshJwtToken(session.getUser(), refreshToken.getValue());
+            CookieUtils.addCookie(jwtConfigureProperties.getHeaderToken(), res.getToken(), "/", res.getExpireAt(), httpServletRequest, httpServletResponse);
+            return res;
+        } catch (ExpiredTokenRefreshException ex) {
+            CookieUtils.removeCookie(jwtConfigureProperties.getHeaderRefreshToken(), "/", httpServletResponse);
+            throw ex;
+        }
     }
 
     @PostMapping("/logout")
@@ -68,8 +73,9 @@ public class AuthController {
         var token = CookieUtils.getCookie(httpServletRequest, jwtConfigureProperties.getHeaderToken());
         blackListService.blockByUserIdAndToken(userId, token.getValue());
         refreshTokenService.deleteByUserId(userId, token.getValue());
-        CookieUtils.removeCookie(jwtConfigureProperties.getHeaderToken(), "/*", httpServletResponse);
-        CookieUtils.removeCookie(jwtConfigureProperties.getHeaderRefreshToken(), "/*", httpServletResponse);
+        CookieUtils.removeCookie(jwtConfigureProperties.getHeaderToken(), "/", httpServletResponse);
+        CookieUtils.removeCookie(jwtConfigureProperties.getHeaderRefreshToken(), "/", httpServletResponse);
+        CookieUtils.removeCookie(jwtConfigureProperties.getSessionOAuthId(), "/", httpServletResponse);
     }
 
 }

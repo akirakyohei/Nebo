@@ -1,8 +1,15 @@
 import { Box, Grid, Paper } from "@mui/material";
 import backgroundImage from "/src/assets/img/background.jpeg";
 import { SignupCard } from "./components/SignupCard";
+import { useWorkspaceContext } from "../../utils/useWorkspaceContext";
+import { Navigate } from "react-router";
 
 export default function SignupPage() {
+  const { user } = useWorkspaceContext();
+
+  if (user.id !== 0) {
+    return <Navigate to="/documents" replace />;
+  }
   return (
     <Paper
       elevation={0}

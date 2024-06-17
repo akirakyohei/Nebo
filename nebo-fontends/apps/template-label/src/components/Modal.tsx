@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   Modal as ModalMUI,
   ModalTypeMap,
   Typography,
@@ -75,6 +76,7 @@ interface Props extends Pick<ModalTypeMap["props"], "open" | "onClose" | "sx"> {
   secondaryActions?: ComplexAction[];
   hideClose?: boolean;
   children: React.ReactNode | React.ReactNode[];
+  divider?: boolean;
 }
 const ModalSection = ({
   flush,
@@ -110,6 +112,7 @@ const MapSize = {
 export const Modal = ({
   children,
   title,
+  divider = true,
   open,
   size = "md",
   primaryAction,
@@ -165,6 +168,7 @@ export const Modal = ({
       <Fade in={open}>
         <Box sx={{ ...style, width: MapSize[size] }}>
           {headerMarkup}
+          {divider && <Divider />}
           {children}
           {footerMarkup ? (
             <ModalFooter>

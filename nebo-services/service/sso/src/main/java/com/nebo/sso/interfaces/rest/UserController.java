@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/users")
@@ -52,12 +53,14 @@ public class UserController {
         var token = NeboSecurityUtils.getTokenType();
         if (List.of(TokenType.cookie_token, TokenType.app_client).contains(token)) {
             var data = result.getData().stream().map(userResponse -> {
-                var res = new UserResponse();
-                res.setProvider(null);
-                res.setPermissions(null);
-                res.setProviderId(null);
-                res.setEmail(null);
-                return res;
+                userResponse.setProvider(null);
+                userResponse.setPermissions(null);
+                userResponse.setProviderId(null);
+                if (!Objects.equals(request.getQuery(), userResponse.getEmail()) && !Objects.equals(request.getQuery(), userResponse.getPhoneNumber())) {
+                    userResponse.setPhoneNumber(null);
+                    userResponse.setEmail(null);
+                }
+                return userResponse;
             }).toList();
             result = new UsersResponse(new PageImpl<>(data, request.toPageable(), result.getMetadata().getTotalElement()));
         }

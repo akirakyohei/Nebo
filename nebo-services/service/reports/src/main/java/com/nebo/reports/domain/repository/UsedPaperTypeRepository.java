@@ -5,13 +5,14 @@ import com.nebo.reports.domain.dto.TopUsedPaperTypeDto;
 import com.nebo.reports.domain.dto.UsedPaperTypeDto;
 import com.nebo.shared.common.types.PagingFilterRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface UsedPaperTypeRepository {
     List<TopUsedPaperTypeDto> getTopUsedPaperTypeDto(long userKey, long top, TimeRequest timeRequest);
 
-    Page<UsedPaperTypeDto> getUsedPaperTypes(long userKey, List<Integer> paperTypeKeys, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest);
+    Page<UsedPaperTypeDto> getUsedPaperTypes(long userKey, List<Integer> paperTypeKeys, TimeRequest timeRequest, Pageable pageable);
 
     long aggregateUsedPaperTypes(long userKey, List<Integer> paperTypeKeys, TimeRequest timeRequest);
 

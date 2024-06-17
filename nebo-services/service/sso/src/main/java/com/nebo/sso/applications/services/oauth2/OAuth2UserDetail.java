@@ -1,5 +1,6 @@
 package com.nebo.sso.applications.services.oauth2;
 
+import com.nebo.shared.security.tokens.NeboUserDetails;
 import com.nebo.sso.domain.model.User;
 import com.nebo.sso.applications.model.UserDetailsImpl;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class OAuth2UserDetail extends UserDetailsImpl implements OAuth2User {
+public class OAuth2UserDetail extends UserDetailsImpl implements NeboUserDetails, OAuth2User {
 
     private Map<String, Object> attributes;
 
@@ -94,5 +95,10 @@ public class OAuth2UserDetail extends UserDetailsImpl implements OAuth2User {
     @Override
     public String getName() {
         return user.getFirstName();
+    }
+
+    @Override
+    public Long getUserId() {
+        return user.getId();
     }
 }

@@ -27,12 +27,13 @@ import { isBlank } from "../../../utils/base";
 import { isMobilePhone } from "validator";
 import { SignupRequestModel } from "../types";
 import { useNavigate } from "react-router";
+import { storefontApi, useLazyGetCurrentUserQuery } from "../../../data/api";
 
 export const SignupCard = () => {
   const navigate = useNavigate();
   const { show: showToast } = useToast();
   const [signUp] = useSignupMutation();
-
+  const [triggerGetCurrentUser] = useLazyGetCurrentUserQuery();
   const {
     control,
     handleSubmit,
@@ -57,7 +58,8 @@ export const SignupCard = () => {
         password: data.password,
       }).unwrap();
       showToast("Tạo tài khoản thành công");
-      navigate("/documents");
+      storefontApi.util.invalidateTags(["credentials"]);
+      await triggerGetCurrentUser();
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;

@@ -40,7 +40,7 @@ export default function MediaFilePage() {
     page: filter.page,
   });
 
-  if (!isLoading) return <ApiKeySettingSkeleton />;
+  if (isLoading) return <ApiKeySettingSkeleton />;
 
   return (
     <Page

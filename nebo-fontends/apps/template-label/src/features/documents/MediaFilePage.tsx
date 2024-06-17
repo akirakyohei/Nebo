@@ -28,7 +28,6 @@ export default function MediaFilePage() {
     <Page
       title="Ảnh tải lên"
       fullHeight
-      fluid
       paddingHeader={2}
       primaryAction={{
         icon: <ControlPointOutlined />,

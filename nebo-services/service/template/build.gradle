@@ -18,12 +18,19 @@ dependencies {
     implementation 'com.microsoft.sqlserver:mssql-jdbc'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.google.guava:guava'
-    implementation 'io.github.openhtmltopdf:openhtmltopdf-pdfbox:1.1.16'
-    implementation 'io.github.openhtmltopdf:openhtmltopdf-core:1.1.16'
     implementation 'org.jsoup:jsoup:1.17.2'
     implementation 'com.github.jknack:handlebars:4.4.0'
     implementation 'org.apache.pdfbox:pdfbox:3.0.2'
     implementation 'org.apache.pdfbox:pdfbox-tools:3.0.2'
+    implementation 'org.apache.xmlgraphics:batik-codec:1.17'
+    implementation 'com.itextpdf:itext-asian:5.2.0'
+    implementation 'org.docx4j:docx4j-ImportXHTML:11.4.8'
+
+    implementation 'com.itextpdf:kernel:8.0.4'
+    implementation 'com.itextpdf:html2pdf:5.0.4'
+
+
+
 
 
 

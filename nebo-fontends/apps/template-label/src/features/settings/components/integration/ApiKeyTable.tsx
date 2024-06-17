@@ -121,9 +121,9 @@ const ApiKeyRow = ({ apiKey }: ApiKeyRowProps) => {
         <Modal
           open
           onClose={closeConfirmDelete}
-          title="Làm rỗng mẫu"
+          title="Xóa Api Key"
           primaryAction={{
-            content: "Lưu",
+            content: "Xóa",
             loading: isLoadingDelete,
             onAction: submit,
             color: "error",
@@ -139,7 +139,7 @@ const ApiKeyRow = ({ apiKey }: ApiKeyRowProps) => {
         >
           <Modal.Section>
             <Typography>
-              Thao tác này sẽ xóa tất cả các phần tử có trong mẫu
+              Thao tác này sẽ xóa, không thể tiếp tục sử dụng khóa này.
             </Typography>
           </Modal.Section>
         </Modal>

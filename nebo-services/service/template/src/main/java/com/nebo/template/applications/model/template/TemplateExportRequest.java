@@ -10,8 +10,13 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonRootName("template_print")
-public class TemplatePrintRequest {
+@JsonRootName("template_export")
+public class TemplateExportRequest {
 
     private Map<String, Object> variables;
+    private Format format = Format.pdf;
+
+    public enum Format {
+        pdf, html
+    }
 }

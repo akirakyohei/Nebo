@@ -5,6 +5,7 @@ import com.nebo.reports.applications.model.*;
 import com.nebo.reports.applications.service.ReportService;
 import com.nebo.shared.web.applications.bind.UserId;
 import com.nebo.shared.common.types.PagingFilterRequest;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class ReportController {
     }
 
     @GetMapping("/top_used_paper_type")
-    List<TopUsedPaperTypeResponse> getTopUsedPaperTypeResponse(@UserId Long userId, @RequestParam(value = "top", defaultValue = "10") Long top,@Valid TimeRequest timeRequest) {
+    List<TopUsedPaperTypeResponse> getTopUsedPaperTypeResponse(@UserId Long userId, @RequestParam(value = "top", defaultValue = "10") Long top, @Valid TimeRequest timeRequest) {
         var res = reportService.getTopUsedPaperTypeResponse(userId, top, timeRequest);
         return res;
     }
@@ -44,13 +45,13 @@ public class ReportController {
     }
 
     @GetMapping("/used_template")
-    UsedTemplatesResponse getUsedTemplates(@UserId Long userId, List<Long> templateIds,@Valid TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest) {
-        return reportService.getUsedTemplates(userId, templateIds, timeRequest, pagingFilterRequest);
+    UsedTemplatesResponse getUsedTemplates(@UserId Long userId, @RequestParam(value = "template_ids", required = false) List<Long> templateIds, @Valid TimeRequest timeRequest) throws ConstraintViolationException {
+        return reportService.getUsedTemplates(userId, templateIds, timeRequest);
     }
 
     @GetMapping("/used_paper_type")
-    UsedPaperTypesResponse getUsedPaperTypes(@UserId Long userId, List<Integer> paperTypeIds, @Valid TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest) {
-        return reportService.getUsedPaperTypes(userId, paperTypeIds, timeRequest, pagingFilterRequest);
+    UsedPaperTypesResponse getUsedPaperTypes(@UserId Long userId, @RequestParam(value = "paper_type_ids", required = false) List<Integer> paperTypeIds, @Valid TimeRequest timeRequest) throws ConstraintViolationException {
+        return reportService.getUsedPaperTypes(userId, paperTypeIds, timeRequest);
     }
 
 

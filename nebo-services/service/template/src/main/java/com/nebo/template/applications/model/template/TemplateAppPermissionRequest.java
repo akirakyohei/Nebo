@@ -7,10 +7,11 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Setter
 @Getter
-@JsonRootName("template_app_permissions")
+@JsonRootName("template_app_permission")
 public class TemplateAppPermissionRequest {
     private long appId;
 

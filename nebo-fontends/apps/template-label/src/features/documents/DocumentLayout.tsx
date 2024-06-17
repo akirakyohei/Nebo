@@ -12,7 +12,8 @@ import {
   TaskAltOutlined,
   Tune,
 } from "@mui/icons-material";
-import logoImage from "/src/assets/img/logo.png";
+// import logoImage from "/src/assets/img/logo.png";
+import documentImg from "/src/assets/document.svg";
 import {
   AppBar,
   Avatar,
@@ -46,6 +47,7 @@ import { stringAvatar } from "../../utils/stringAvatar";
 import { getFullName } from "../../utils/base";
 import { useLogoutMutation } from "../../data/user.api";
 import { useToast } from "../../components/notification/useToast";
+import { useLazyGetCurrentUserQuery } from "../../data/api";
 
 const navigateItems: NavigateSectionProp[] = [
   {
@@ -97,6 +99,7 @@ export default function DocumentLayout() {
     setTrue: openNavbar,
     setFalse: closeNavbar,
   } = useToggle(false);
+  const [triggerGetCurrentUser] = useLazyGetCurrentUserQuery();
   const { user: currentUser } = useWorkspaceContext();
 
   const navigate = useNavigate();
@@ -110,6 +113,7 @@ export default function DocumentLayout() {
     try {
       await logout().unwrap();
       showToast("Đăng xuất thành công");
+      await triggerGetCurrentUser();
       navigate("/");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
@@ -193,8 +197,8 @@ export default function DocumentLayout() {
               )}
               <Box
                 component={"img"}
-                src={logoImage}
-                sx={{ width: "60px", height: "60px" }}
+                src={documentImg}
+                sx={{ width: "42px", height: "42px" }}
               />
             </Box>
           </Grid>

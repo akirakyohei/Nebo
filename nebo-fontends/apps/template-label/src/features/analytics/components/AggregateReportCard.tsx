@@ -12,27 +12,34 @@ import { AggregateReport } from "../../../types";
 import { ReactNode } from "react";
 import { title } from "process";
 import { LocalPrintshop, Newspaper, PermMedia } from "@mui/icons-material";
+import { formatNumber, humanFileSize } from "../../../utils/base";
 
 interface Props {
   aggregate: AggregateReport;
 }
 export const AggregateReportCard = ({ aggregate }: Props) => {
+  const totalData = humanFileSize(aggregate.total_data);
   const data: ItemCardProps[] = [
     {
       title: "Lưu trữ",
-      content: aggregate.total_data,
+      content: (
+        <>
+          <Box component="span">{totalData.value.toFixed(2)}</Box>{" "}
+          <Box component="span">{totalData.unit}</Box>
+        </>
+      ),
       icon: <PermMedia fontSize="large" />,
       color: "#6200EA",
     },
     {
       title: "Tổng số mẫu",
-      content: aggregate.total_data,
+      content: formatNumber(aggregate.total_template, 0),
       icon: <Newspaper fontSize="large" />,
       color: "#FFB300",
     },
     {
       title: "Số lượt dùng mẫu",
-      content: aggregate.total_data,
+      content: formatNumber(aggregate.total_used_template, 0),
       icon: <LocalPrintshop fontSize="large" />,
       color: "#9C27B0",
     },

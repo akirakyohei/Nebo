@@ -8,13 +8,10 @@ import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import com.nebo.shared.web.applications.exception.NotFoundException;
 import com.nebo.template.applications.model.template.*;
 import com.nebo.template.applications.services.mapper.TemplateMapper;
+import com.nebo.template.domain.model.PrintLog;
 import com.nebo.template.domain.model.Template;
 import com.nebo.shared.common.utils.MediaUtils;
-import com.nebo.template.domain.repository.JpaCategoryRepository;
-import com.nebo.template.domain.repository.JpaFileDataRepository;
-import com.nebo.template.domain.repository.JpaTemplateRepository;
-import com.nebo.template.domain.repository.TemplateRepository;
-import jakarta.transaction.Transactional;
+import com.nebo.template.domain.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -22,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
@@ -30,6 +28,7 @@ import java.nio.file.AccessDeniedException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +43,7 @@ public class TemplateService {
 
     private final JpaCategoryRepository categoryRepository;
     private final JpaFileDataRepository fileDataRepository;
+    private final JpaPrintLogRepository printLogRepository;
 
     private final TemplateMapper templateMapper;
 
@@ -116,40 +116,39 @@ public class TemplateService {
             request.setCategoryIds(null);
             request.setName(null);
         }
-        if (request.getActive() == null && !template.isActive())
-            if (!StringUtils.isBlank(template.getHtml())) {
-                var imageByteArrays = printService.printToImage(userId, TemplatePrintModel.builder()
-                        .fillData(false)
-                        .html(template.getHtml())
-                        .options(templateMapper.fromDomainToResponse(template.getOptions()))
-                        .build());
-                try {
-                    if (template.getThumbnailImageId() == null || template.getThumbnailImageId() == 0) {
-                        var res = neboFeignClient.uploadFile(FileDataUploadRequest.builder()
-                                .file(FileDataUploadRequest.FileDataUpload.builder()
-                                        .contentType("image/png")
-                                        .key(MediaUtils.buildMediaKey(userId, MessageFormat.format("template-{0}.png", template.getId()), "templates"))
-                                        .name(MessageFormat.format("template-{0}.png", template.getId()))
-                                        .data(imageByteArrays)
-                                        .build())
-                                .build(), B.withUserId(userId)).getFile();
-                        template.setThumbnailImageId(res.getId());
-                    } else {
-                        var res = neboFeignClient.updateFile(template.getThumbnailImageId(), FileDataUploadRequest.builder()
-                                .file(FileDataUploadRequest.FileDataUpload.builder()
-                                        .contentType("image/png")
-                                        .key(MediaUtils.buildMediaKey(userId, MessageFormat.format("template-{0}.png", template.getId()), "templates"))
-                                        .name(MessageFormat.format("template-{0}.png", template.getId()))
-                                        .data(imageByteArrays)
-                                        .build())
-                                .build(), B.withUserId(userId)).getFile();
-                        template.setThumbnailImageId(res.getId());
-                    }
-
-                } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException(e);
+        if (!StringUtils.isBlank(template.getHtml())) {
+            var imageByteArrays = printService.printToImage(userId, TemplatePrintModel.builder()
+                    .fillData(false)
+                    .html(template.getHtml())
+                    .options(templateMapper.fromDomainToResponse(template.getOptions()))
+                    .build());
+            try {
+                if (template.getThumbnailImageId() == null || template.getThumbnailImageId() == 0) {
+                    var res = neboFeignClient.uploadFile(FileDataUploadRequest.builder()
+                            .file(FileDataUploadRequest.FileDataUpload.builder()
+                                    .contentType("image/png")
+                                    .key(MediaUtils.buildMediaKey(userId, MessageFormat.format("template-{0}.png", template.getId()), "templates"))
+                                    .name(MessageFormat.format("template-{0}.png", template.getId()))
+                                    .data(imageByteArrays)
+                                    .build())
+                            .build(), B.withUserId(userId)).getFile();
+                    template.setThumbnailImageId(res.getId());
+                } else {
+                    var res = neboFeignClient.updateFile(template.getThumbnailImageId(), FileDataUploadRequest.builder()
+                            .file(FileDataUploadRequest.FileDataUpload.builder()
+                                    .contentType("image/png")
+                                    .key(MediaUtils.buildMediaKey(userId, MessageFormat.format("template-{0}.png", template.getId()), "templates"))
+                                    .name(MessageFormat.format("template-{0}.png", template.getId()))
+                                    .data(imageByteArrays)
+                                    .build())
+                            .build(), B.withUserId(userId)).getFile();
+                    template.setThumbnailImageId(res.getId());
                 }
+
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
             }
+        }
         templateMapper.updateTemplate(request, template);
         jpaTemplateRepository.save(template);
         return getTemplate(userId, templateId);
@@ -196,24 +195,62 @@ public class TemplateService {
         jpaTemplateRepository.delete(template);
     }
 
-    public Pair<byte[], String> print(long userId, long templateId, TemplatePrintRequest request) throws IOException {
+    public Pair<byte[], String> preview(long actorId, TemplatePreviewRequest request) throws IOException {
+        var result = printService.print(actorId, TemplatePrintModel.builder()
+                .fillData(request != null && request.getVariables() != null && !request.getVariables().isEmpty())
+                .html(request.getHtml())
+                .options(request.getOptions())
+                .variables(request != null ? request.getVariables() : null)
+                .build());
+        return Pair.of(result, "preview-" + UUID.randomUUID());
+    }
+
+    public String previewToHtml(long actorId, TemplatePreviewRequest request) throws IOException {
+        var result = printService.printToHtml(actorId, TemplatePrintModel.builder()
+                .fillData(request != null && request.getVariables() != null && !request.getVariables().isEmpty())
+                .html(request.getHtml())
+                .options(request.getOptions())
+                .variables(request != null ? request.getVariables() : null)
+                .build());
+        return result;
+    }
+
+    public Pair<byte[], String> print(long actorId, long templateId, TemplateExportRequest request) throws IOException {
         var template = jpaTemplateRepository.findById(templateId).orElseThrow(NotFoundException::new);
-        var permissions = templatePermissionService.evaluatePermission(userId, template);
-        evaluateAppPermissionByTemplateId(userId, templateId);
+        var permissions = templatePermissionService.evaluatePermission(actorId, template);
+        evaluateAppPermissionByTemplateId(actorId, templateId);
         if (!permissions.contains(UserPermission.read))
             throw new AccessDeniedException("template access denied");
-        var result = printService.print(userId, TemplatePrintModel.builder()
+        var result = printService.print(actorId, TemplatePrintModel.builder()
                 .fillData(request != null && request.getVariables() != null && !request.getVariables().isEmpty())
                 .html(template.getHtml())
                 .options(templateMapper.fromDomainToResponse(template.getOptions()))
                 .variables(request != null ? request.getVariables() : null)
                 .build());
-
+        var printLog = new PrintLog(template.getUserId(), actorId, templateId, template.getPaperTypeId());
+        printLogRepository.save(printLog);
         return Pair.of(result, template.getName());
     }
 
+    public String printToHtml(long actorId, long templateId, TemplateExportRequest request) throws IOException {
+        var template = jpaTemplateRepository.findById(templateId).orElseThrow(NotFoundException::new);
+        var permissions = templatePermissionService.evaluatePermission(actorId, template);
+        evaluateAppPermissionByTemplateId(actorId, templateId);
+        if (!permissions.contains(UserPermission.read))
+            throw new AccessDeniedException("template access denied");
+        var result = printService.printToHtml(actorId, TemplatePrintModel.builder()
+                .fillData(request != null && request.getVariables() != null && !request.getVariables().isEmpty())
+                .html(template.getHtml())
+                .options(templateMapper.fromDomainToResponse(template.getOptions()))
+                .variables(request != null ? request.getVariables() : null)
+                .build());
+        var printLog = new PrintLog(template.getUserId(), actorId, templateId, template.getPaperTypeId());
+        printLogRepository.save(printLog);
+        return result;
+    }
+
     //#region [Permission]
-    @Transactional
+    @Transactional("templateTransactionManager")
     public TemplateResponse shareTemplate(long userId, long templateId, TemplatePermissionRequest request) throws AccessDeniedException {
         var template = jpaTemplateRepository.findTemplateByUserIdAndId(userId, templateId).orElseThrow(NotFoundException::new);
         if (request.getSharedStatus() == null)
@@ -231,8 +268,11 @@ public class TemplateService {
         } catch (Exception ex) {
             throw new NotFoundException();
         }
-        var templates = jpaTemplateRepository.findAllByUserIdAndIdIn(userId, request.getTemplateIds());
-        return templatePermissionService.saveTemplateAppPermission(userId, request.getAppId(), templates.stream().map(Template::getId).toList());
+
+        List<Template> templates = null;
+        if (request.getTemplateIds() != null)
+            templates = jpaTemplateRepository.findAllByUserIdAndIdIn(userId, request.getTemplateIds());
+        return templatePermissionService.saveTemplateAppPermission(userId, request.getAppId(), templates != null ? templates.stream().map(Template::getId).toList() : null);
     }
 
     public TemplateAppPermission getTemplateAppPermission(long userId, long appId) {

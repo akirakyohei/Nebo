@@ -49,6 +49,7 @@ export const VariableItem = ({
         return (
           <VariableItem
             key={index}
+            showToast={showToast}
             schemaKey={key}
             schema={value}
             rootVariable={[rootVariable, schemaKey]
@@ -92,7 +93,11 @@ export const VariableItem = ({
         <TreeItem
           itemId={schemaKey}
           label={
-            <VariableLabel rootVariable={rootVariable} schemaKey={schemaKey} />
+            <VariableLabel
+              showToast={showToast}
+              rootVariable={rootVariable}
+              schemaKey={schemaKey}
+            />
           }
           ContentProps={{
             style: {
@@ -103,6 +108,7 @@ export const VariableItem = ({
           }}
         >
           <VariableItem
+            showToast={showToast}
             rootVariable=""
             schemaKey={"_"}
             schema={schema.items as Schema}
@@ -116,7 +122,11 @@ export const VariableItem = ({
         <TreeItem
           itemId={schemaKey}
           label={
-            <VariableLabel rootVariable={rootVariable} schemaKey={schemaKey} />
+            <VariableLabel
+              showToast={showToast}
+              rootVariable={rootVariable}
+              schemaKey={schemaKey}
+            />
           }
           ContentProps={{
             style: {
@@ -147,7 +157,8 @@ export const VariableLabel = ({
       justifyContent={"space-between"}
       alignItems={"center"}
       minWidth={"100%"}
-      onClick={() => {
+      onClick={(event) => {
+        event.preventDefault();
         navigator.clipboard.writeText(
           `{{${[rootVariable, schemaKey].filter((a) => a !== "").join(".")}}}`
         );

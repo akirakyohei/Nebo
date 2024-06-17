@@ -18,10 +18,9 @@ export type UserPermissionRequest = {
 };
 
 export type TemplateUserPermissionRequest = {
-  template_id: number;
-  shared_status: SharedStatus;
-  putUsers: UserPermissionRequest[];
-  removeUsers: number[];
+  shared_status?: SharedStatus;
+  put_users?: UserPermissionRequest[];
+  remove_users?: number[];
 };
 
 export type TemplateUserPermission = {
@@ -30,8 +29,8 @@ export type TemplateUserPermission = {
   owner_user_id: number;
   shared_user_id: number;
   permissions: string[];
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type TemplateAppPermission = {
@@ -45,5 +44,5 @@ export type TemplateAppPermission = {
 
 export type TemplateAppPermissionRequest = {
   app_id: number;
-  template_ids: number[];
+  template_ids: number[] | null;
 };

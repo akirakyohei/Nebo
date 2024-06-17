@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,20 +64,44 @@ public class TemplateController {
         templateService.deleteTemplate(userId, templateId);
     }
 
-    @PostMapping("/{id}/print")
-    public void print(@UserId long userId, @PathVariable("id") long templateId, @RequestBody(required = false) TemplatePrintRequest request, HttpServletResponse httpServletResponse) throws IOException {
-        var data = templateService.print(userId, templateId, request);
-        String encodedOriginalName = URLEncoder.encode(data.getRight(), String.valueOf(StandardCharsets.UTF_8));
-        httpServletResponse.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedOriginalName + ".pdf");
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try (var input = new ByteArrayInputStream(data.getKey())) {
-            ByteStreams.copy(input, httpServletResponse.getOutputStream());
-            httpServletResponse.flushBuffer();
+    @PostMapping("/preview")
+    public ResponseEntity preview(@UserId long userId, @RequestBody @Valid TemplatePreviewRequest request, HttpServletResponse httpServletResponse) throws IOException {
+        if (TemplatePreviewRequest.Format.pdf.equals(request.getFormat())) {
+            var data = templateService.preview(userId, request);
+            String encodedOriginalName = URLEncoder.encode(data.getRight(), String.valueOf(StandardCharsets.UTF_8));
+            httpServletResponse.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedOriginalName + ".pdf");
+            httpServletResponse.setCharacterEncoding("UTF-8");
+            try (var input = new ByteArrayInputStream(data.getKey())) {
+                ByteStreams.copy(input, httpServletResponse.getOutputStream());
+                httpServletResponse.flushBuffer();
+            }
+            return ResponseEntity.ok().build();
+        } else {
+            var data = templateService.previewToHtml(userId, request);
+            return ResponseEntity.ok(Map.of("html", data));
+        }
+    }
+
+    @PostMapping("/{id}/export")
+    public ResponseEntity print(@UserId long userId, @PathVariable("id") long templateId, @RequestBody(required = false) TemplateExportRequest request, HttpServletResponse httpServletResponse) throws IOException {
+        if (TemplateExportRequest.Format.pdf.equals(request.getFormat())) {
+            var data = templateService.print(userId, templateId, request);
+            String encodedOriginalName = URLEncoder.encode(data.getRight(), String.valueOf(StandardCharsets.UTF_8));
+            httpServletResponse.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedOriginalName + ".pdf");
+            httpServletResponse.setCharacterEncoding("UTF-8");
+            try (var input = new ByteArrayInputStream(data.getKey())) {
+                ByteStreams.copy(input, httpServletResponse.getOutputStream());
+                httpServletResponse.flushBuffer();
+            }
+            return ResponseEntity.ok().build();
+        } else {
+            var data = templateService.printToHtml(userId, templateId, request);
+            return ResponseEntity.ok(Map.of("html", data));
         }
     }
 
     @PostMapping("/{id}/share")
-    public TemplateResponse share(@UserId long userId, @PathVariable("id") long templateId, @RequestBody TemplatePermissionRequest request) throws AccessDeniedException {
+    public TemplateResponse share(@UserId long userId, @PathVariable("id") long templateId, @RequestBody @Valid TemplatePermissionRequest request) throws AccessDeniedException {
         return templateService.shareTemplate(userId, templateId, request);
     }
 
@@ -90,7 +117,7 @@ public class TemplateController {
 
 
     @PostMapping("/app_permissions")
-    public TemplateAppPermission saveTemplateAppPermission(@UserId long userId, TemplateAppPermissionRequest request) {
+    public TemplateAppPermission saveTemplateAppPermission(@UserId long userId, @RequestBody @Valid TemplateAppPermissionRequest request) {
         return templateService.saveTemplateAppPermission(userId, request);
     }
 

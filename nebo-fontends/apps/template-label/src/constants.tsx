@@ -1,14 +1,5 @@
 import { FileDataUpload, Template } from "./types";
 import blankThumbImage from "src/assets/img/new-blank-template.png";
-import {
-  AdjustOutlined,
-  DateRangeOutlined,
-  Inventory2Outlined,
-  NewspaperOutlined,
-  PieChartOutline,
-  PrintOutlined,
-  ThumbUpAltOutlined,
-} from "@mui/icons-material";
 
 export const TOKEN_HEADER = "nebo_authenticated";
 

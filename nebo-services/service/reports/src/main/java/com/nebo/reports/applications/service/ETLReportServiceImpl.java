@@ -17,10 +17,13 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Locale;
 
+import static com.nebo.reports.infrastructures.utils.DateUtils.zoneIdVn;
+import static com.nebo.reports.infrastructures.utils.DateUtils.zoneOffsetVn;
+
 @Service
 @RequiredArgsConstructor
 public class ETLReportServiceImpl implements ETLReportService {
-    private final static ZoneOffset ZONE_VN = ZoneOffset.ofHours(7);
+
     private final JpaDimDateTimeRepository dimDateTimeRepository;
     private final JpaDimUserRepository dimUserRepository;
     private final JpaDimPaperTypeRepository dimPaperTypeRepository;
@@ -34,7 +37,7 @@ public class ETLReportServiceImpl implements ETLReportService {
     private final DimUserMapper dimUserMapper;
 
     @Override
-    @Transactional
+    @Transactional("reportsTransactionManager")
     public void loadUser(User user) {
         var dimUser = getDimUser(user.getId());
         Assert.notNull(dimUser, "dim user not null");
@@ -43,11 +46,11 @@ public class ETLReportServiceImpl implements ETLReportService {
     }
 
     @Override
-    @Transactional
+    @Transactional("reportsTransactionManager")
     public void loadTemplate(Template template, DebeziumOperation op) {
-        var dimTemplate = getDimTemplate(template.getId());
-        var dimPaperType = getDimPaperType(template.getPaperTypeId());
         var dimUser = getDimUser(template.getUserId());
+        var dimTemplate = getDimTemplate(template.getId(), dimUser.getUserKey());
+        var dimPaperType = getDimPaperType(template.getPaperTypeId());
         Assert.notNull(dimUser, "dim user not null");
         Assert.notNull(dimTemplate, "dim template not null");
         Assert.notNull(dimPaperType, "dim paper type not null");
@@ -73,6 +76,7 @@ public class ETLReportServiceImpl implements ETLReportService {
     }
 
     @Override
+    @Transactional("reportsTransactionManager")
     public void aggregateStorageData(StorageModel model) {
         var dimUser = getDimUser(model.getUserId());
         Assert.notNull(dimUser, "dim user not null");
@@ -82,17 +86,20 @@ public class ETLReportServiceImpl implements ETLReportService {
     }
 
     @Override
-    @Transactional
+    @Transactional("reportsTransactionManager")
     public void loadUsedTemplate(PrintLog printLog) {
-        var dimTemplate = getDimTemplate(printLog.getTemplateId());
         var dimUser = getDimUser(printLog.getUserId());
         var dimDate = getDimDateTime(printLog.getCreatedAt());
+        var dimTemplate = getDimTemplate(printLog.getTemplateId(), dimUser.getUserKey());
+        var factAggregate = getFactAggregate(dimUser.getUserKey());
+        Assert.notNull(factAggregate, "fact aggregate not null");
         Assert.notNull(dimDate, "dim date not null");
         Assert.notNull(dimUser, "dim user not null");
         Assert.notNull(dimTemplate, "dim template not null");
         var factUsedTemplate = getFactUsedTemplate(dimDate.getDateKey(), dimUser.getUserKey(), dimTemplate.getTemplateKey());
         Assert.notNull(factUsedTemplate, "fact used template not null");
         factUsedTemplateRepository.updateTotalUsedById(factUsedTemplate.getId(), 1);
+        factAggregateRepository.updateTotalUsedTemplateById(factAggregate.getId(), 1);
     }
 
     @Override
@@ -105,11 +112,11 @@ public class ETLReportServiceImpl implements ETLReportService {
     }
 
     private DimDatetime getDimDateTime(Instant date) {
-        var localDate = LocalDateTime.ofInstant(date, ZoneId.of("Asia/Ho_Chi_Minh"))
+        var localDate = LocalDateTime.ofInstant(date, zoneIdVn)
                 .withMinute(0)
                 .withSecond(0)
                 .withNano(0);
-        var standardDate = localDate.toInstant(ZONE_VN);
+        var standardDate = localDate.toInstant(zoneOffsetVn);
         return dimDateTimeRepository.findDimDateTimeByDate(standardDate).orElseGet(() -> {
             try {
                 var entity = DimDatetime.builder()
@@ -120,10 +127,10 @@ public class ETLReportServiceImpl implements ETLReportService {
                         .dayOfYear(localDate.getDayOfYear())
                         .monthOfYear(localDate.getMonthValue())
                         .year(localDate.getYear())
-                        .firstHourOfDay(localDate.withHour(0).toInstant(ZONE_VN))
-                        .firstDayOfMonth(localDate.with(TemporalAdjusters.firstDayOfMonth()).withHour(0).toInstant(ZONE_VN))
-                        .firstDayOfWeek(localDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).withHour(0).toInstant(ZONE_VN))
-                        .firstDayOfYear(localDate.with(TemporalAdjusters.firstDayOfYear()).withHour(0).toInstant(ZONE_VN))
+                        .firstHourOfDay(localDate.withHour(0).toInstant(zoneOffsetVn))
+                        .firstDayOfMonth(localDate.with(TemporalAdjusters.firstDayOfMonth()).withHour(0).toInstant(zoneOffsetVn))
+                        .firstDayOfWeek(localDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).withHour(0).toInstant(zoneOffsetVn))
+                        .firstDayOfYear(localDate.with(TemporalAdjusters.firstDayOfYear()).withHour(0).toInstant(zoneOffsetVn))
                         .build();
                 return dimDateTimeRepository.save(entity);
             } catch (Exception ex) {
@@ -149,10 +156,11 @@ public class ETLReportServiceImpl implements ETLReportService {
         return dimPaperTypeRepository.findDimPaperTypeByPaperTypeId(paperTypeId).orElse(null);
     }
 
-    private DimTemplate getDimTemplate(long templateId) {
+    private DimTemplate getDimTemplate(long templateId, long userKey) {
         return dimTemplateRepository.findDimTemplateByTemplateId(templateId).orElseGet(() -> {
             try {
                 var entity = DimTemplate.builder()
+                        .userKey(userKey)
                         .templateId(templateId)
                         .build();
                 return dimTemplateRepository.save(entity);

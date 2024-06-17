@@ -1,11 +1,12 @@
 import {
   Add,
   Forward10,
+  Html,
   PlusOneOutlined,
   Remove,
   Replay10,
 } from "@mui/icons-material";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import { ComplexAction } from "../../../../components/types";
 
 interface Props {
@@ -13,21 +14,24 @@ interface Props {
   setZoom: (zoom: number) => void;
   rotate: number;
   setRotate: (route: number) => void;
+  openHtml: () => void;
 }
 
 export const Toolbar = ({
   zoom,
   setZoom,
+  openHtml,
   rotate: rotate,
   setRotate: setRotate,
 }: Props) => {
-  const btnGroups: Omit<ComplexAction, "content">[] = [
+  const btnGroups: ComplexAction[] = [
     {
       disabled: zoom > 3,
       icon: <Add />,
       onAction: () => {
         setZoom(zoom + 0.1);
       },
+      content: "phóng to",
     },
     {
       icon: <Remove />,
@@ -35,24 +39,31 @@ export const Toolbar = ({
       onAction: () => {
         setZoom(zoom - 0.1);
       },
+      content: "thu nhỏ",
+    },
+    {
+      icon: <Html />,
+      onAction: openHtml,
+      content: "xem html",
     },
   ];
   return (
     <Box>
       <Stack gap={2}>
         {btnGroups.map((btn, index) => (
-          <IconButton
-            key={index}
-            disabled={btn.disabled}
-            onClick={btn.onAction}
-            sx={(theme) => ({
-              borderRadius: "5px",
-              background: "#fff",
-              boxShadow: theme.shadows[1],
-            })}
-          >
-            <Box sx={{ display: "flex" }}>{btn.icon}</Box>
-          </IconButton>
+          <Tooltip key={index} title={btn.content} placement="left">
+            <IconButton
+              disabled={btn.disabled}
+              onClick={btn.onAction}
+              sx={(theme) => ({
+                borderRadius: "5px",
+                background: "#fff",
+                boxShadow: theme.shadows[1],
+              })}
+            >
+              <Box sx={{ display: "flex" }}>{btn.icon}</Box>
+            </IconButton>
+          </Tooltip>
         ))}
       </Stack>
     </Box>

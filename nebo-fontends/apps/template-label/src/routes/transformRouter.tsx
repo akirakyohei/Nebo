@@ -1,17 +1,15 @@
 import { Navigate, Outlet, RouteObject } from "react-router";
 import { CustomizeRouteObject } from "./types";
-import { store } from "../store/store";
 import { Component, ReactNode, Suspense } from "react";
-import { RootState } from "../store/store";
-import AccessDeniedPage from "../features/layout/ErrorBoundary/AccessDeniedPage";
+import { AuthService } from "./AuthService";
 
 export const transformRouter = (
   customRoutes: CustomizeRouteObject[]
 ): RouteObject[] => {
   const routes: RouteObject[] = [];
-  const rootState = store.getState();
+
   for (const route of customRoutes) {
-    const element = renderComponent(route, rootState);
+    const element = renderComponent(route);
     routes.push({
       ...route,
       element: element,
@@ -21,29 +19,20 @@ export const transformRouter = (
   return routes;
 };
 
-const renderComponent = (route: CustomizeRouteObject, state: RootState) => {
+const renderComponent = (route: CustomizeRouteObject) => {
   let element = route.element;
-  if (route.canActivate) {
-    if (route.canActivate(route, state)) {
-      const PComponent = route.Component;
-      if (PComponent !== undefined && PComponent !== null) {
-        element = <PComponent />;
-      }
-    } else {
-      if (state.workspace.user.id === 0) {
-        element = <Navigate to={"/users/login"} />;
-      } else {
-        element = <AccessDeniedPage />;
-      }
-    }
-  } else {
-    const PComponent = route.Component;
-    if (PComponent !== undefined && PComponent !== null) {
-      element = <PComponent />;
-    }
+  const PComponent = route.component;
+  if (PComponent !== undefined && PComponent !== null) {
+    element = <PComponent />;
   }
   if (element === null || element === undefined) element = <Outlet />;
-
+  if (route.canActivate) {
+    element = (
+      <AuthService canActivate={route.canActivate} route={route}>
+        {element}
+      </AuthService>
+    );
+  }
   if (route.fallback !== undefined && route.fallback) {
     return <Suspense fallback={route.fallback}>{element}</Suspense>;
   }

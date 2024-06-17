@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
@@ -75,22 +76,22 @@ public class MinioStorageService implements FileStorageService {
     }
 
     @Override
-    public void getFileByName(String key, HttpServletResponse response) {
+    public Pair<byte[], String> getFileByName(String key) throws FileNotFoundException {
         var paths = StringUtils.split(key, "/");
         var defaultName = paths[paths.length - 1];
         try (var result = minioClient.getObject(GetObjectArgs.builder()
                 .bucket(minioConfigurerProperties.getBucket()).object(key).build())) {
             var name = result.headers().get("name");
             String encodedOriginalName = URLEncoder.encode(StringUtils.defaultIfBlank(name, defaultName), String.valueOf(StandardCharsets.UTF_8));
-            response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedOriginalName);
-            response.setCharacterEncoding("UTF-8");
-            ByteStreams.copy(result, response.getOutputStream());
-            response.flushBuffer();
-           result.close();
+            return Pair.of(result.readAllBytes(), encodedOriginalName);
         } catch (Exception e) {
-            throw new FileNotFoundException("File not found in storage.");
+//            throw new FileNotFoundException("File not found in storage.");
+
         }
+        return null;
     }
+
+    ;
 
     @Async
     @Override

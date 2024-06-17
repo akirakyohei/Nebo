@@ -10,8 +10,8 @@ public class TopUsedTemplateRowMapper implements RowMapper<TopUsedTemplateDto> {
     @Override
     public TopUsedTemplateDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         return TopUsedTemplateDto.builder()
-                .templateKey(rs.getLong(0))
-                .totalUsed(rs.getLong(1))
+                .templateKey(rs.getLong(1))
+                .totalUsed(rs.getLong(2))
                 .build();
     }
 }

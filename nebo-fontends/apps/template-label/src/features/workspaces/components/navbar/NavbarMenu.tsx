@@ -13,7 +13,12 @@ import {
 } from "@mui/material";
 import { Template } from "../../../../types";
 import { TemplateInfoBlock } from "./TemplateInfoBlock";
-import { FileDownload, Tune } from "@mui/icons-material";
+import {
+  FileDownload,
+  LocalPrintshop,
+  Tune,
+  ArrowBackIosNew,
+} from "@mui/icons-material";
 import { useToggle } from "../../../../utils/useToggle";
 import { SettingModal } from "./SettingModal";
 import Modal from "../../../../components/Modal";
@@ -24,9 +29,18 @@ import { isClientError } from "../../../../utils/client";
 interface Props {
   isDesigning: boolean;
   template: Template;
+  isloadingUpdateTemplate?: boolean;
+  downloadTemplate?: () => void;
+  printTemplate?: () => void;
 }
 
-export const NavbarMenu = ({ isDesigning, template }: Props) => {
+export const NavbarMenu = ({
+  isDesigning,
+  isloadingUpdateTemplate,
+  template,
+  downloadTemplate,
+  printTemplate,
+}: Props) => {
   const { show: showToast } = useToast();
   const {
     value: isOpenActive,
@@ -81,17 +95,21 @@ export const NavbarMenu = ({ isDesigning, template }: Props) => {
         <Stack direction={"row"} gap={3}>
           <Link href="/" underline="none">
             <Stack direction={"row"} alignItems={"center"} gap={1}>
-              <i
-                className="fa fa-chevron-left text-primary"
-                aria-hidden="true"
-              ></i>
+              <ArrowBackIosNew />
               <img src={documentImg} width={"42"} height={"42"} />
             </Stack>
           </Link>
           <Box sx={{ flex: "1" }}>
             <TemplateInfoBlock template={template} />
           </Box>
-          <Box sx={{ width: "180px" }}></Box>
+          <Box sx={{ width: "180px" }}>
+            {isloadingUpdateTemplate && (
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <Typography component="h6">Đang lưu</Typography>
+                <Loader />
+              </Box>
+            )}
+          </Box>
         </Stack>
       </Grid>
       <Grid xs={2} item display="flex" justifyContent={"center"}>
@@ -100,7 +118,7 @@ export const NavbarMenu = ({ isDesigning, template }: Props) => {
             variant={isDesigning ? "contained" : "outlined"}
             disabled={isDesigning}
             color="primary"
-            href={`/workspaces/${template.id || 2}`}
+            href={`/documents/templates/${template.id || 2}`}
             sx={(theme) => {
               if (isDesigning)
                 return {
@@ -116,7 +134,7 @@ export const NavbarMenu = ({ isDesigning, template }: Props) => {
             variant={!isDesigning ? "contained" : "outlined"}
             disabled={!isDesigning}
             color="primary"
-            href={`/workspaces/${template.id || 2}/preview`}
+            href={`/documents/templates/${template.id || 2}/preview`}
             sx={(theme) => {
               if (!isDesigning)
                 return {
@@ -134,14 +152,34 @@ export const NavbarMenu = ({ isDesigning, template }: Props) => {
       <Grid xs={5} item display="flex" justifyContent={"end"}>
         <Stack direction="row" gap={3} height={"41px"}>
           {!isDesigning && (
-            <Button variant="outlined" startIcon={<FileDownload />}>
-              Tải về
+            <>
+              <Button
+                variant="outlined"
+                onClick={downloadTemplate}
+                startIcon={<FileDownload />}
+              >
+                Tải về
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={printTemplate}
+                startIcon={<LocalPrintshop />}
+              >
+                In
+              </Button>
+            </>
+          )}
+
+          {isDesigning && (
+            <Button
+              variant="outlined"
+              startIcon={<Tune />}
+              onClick={openSetting}
+            >
+              Cấu hình
             </Button>
           )}
 
-          <Button variant="outlined" startIcon={<Tune />} onClick={openSetting}>
-            Cấu hình
-          </Button>
           <Button
             variant="outlined"
             startIcon={
@@ -192,5 +230,51 @@ export const NavbarMenu = ({ isDesigning, template }: Props) => {
         </Modal>
       )}
     </Grid>
+  );
+};
+
+const Loader = () => {
+  return (
+    <Box
+      className="loader"
+      sx={{
+        "@keyframes 143": {
+          "0%": {
+            backgroundPosition:
+              "calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50%",
+          },
+          "16.67%": {
+            backgroundPosition:
+              "calc(0*100%/3) 0   ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50%",
+          },
+          "33.33%": {
+            backgroundPosition:
+              "calc(0*100%/3) 100%,calc(1*100%/3) 0   ,calc(2*100%/3) 50% ,calc(3*100%/3) 50%",
+          },
+          "50%": {
+            backgroundPosition:
+              "calc(0*100%/3) 50% ,calc(1*100%/3) 100%,calc(2*100%/3) 0   ,calc(3*100%/3) 50%",
+          },
+          "66.67%": {
+            backgroundPosition:
+              "calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 100%,calc(3*100%/3) 0  ",
+          },
+          "83.33%": {
+            backgroundPosition:
+              "calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 100%",
+          },
+          "100%": {
+            backgroundPosition:
+              "calc(0*100%/3) 50% ,calc(1*100%/3) 50% ,calc(2*100%/3) 50% ,calc(3*100%/3) 50%",
+          },
+        },
+        height: "10px",
+        aspectRatio: 2.5,
+        "--_g": "no-repeat radial-gradient(farthest-side,#575757 90%,#0000)",
+        background: "var(--_g), var(--_g), var(--_g), var(--_g)",
+        backgroundSize: "20% 50%",
+        animation: "l43 1s infinite linear",
+      }}
+    />
   );
 };

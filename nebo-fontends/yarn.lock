@@ -1470,6 +1470,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@documint/grapesjs-grid-system@npm:^0.0.57":
+  version: 0.0.57
+  resolution: "@documint/grapesjs-grid-system@npm:0.0.57"
+  peerDependencies:
+    grapesjs: 0.18.x
+  checksum: 10c0/55922de90a1757d34a2f74298740f0f12ae113513baf2d29045cc7c5321ab7613acb07bffccdfc57d4c023341307eb82c00b10ca5ef00363ede8ade8bed0fee9
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.11.0":
   version: 11.11.0
   resolution: "@emotion/babel-plugin@npm:11.11.0"
@@ -3044,6 +3053,7 @@ __metadata:
   resolution: "@repo/web-builder@workspace:packages/web-builder"
   dependencies:
     "@documint/custom-handlebars-helpers": "npm:^1.22.0"
+    "@documint/grapesjs-grid-system": "npm:^0.0.57"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
     "@grapesjs/react": "npm:^1.0.0"
@@ -3795,6 +3805,16 @@ __metadata:
   version: 15.7.12
   resolution: "@types/prop-types@npm:15.7.12"
   checksum: 10c0/1babcc7db6a1177779f8fde0ccc78d64d459906e6ef69a4ed4dd6339c920c2e05b074ee5a92120fe4e9d9f1a01c952f843ebd550bee2332fc2ef81d1706878f8
+  languageName: node
+  linkType: hard
+
+"@types/react-date-range@npm:^1.4.9":
+  version: 1.4.9
+  resolution: "@types/react-date-range@npm:1.4.9"
+  dependencies:
+    "@types/react": "npm:*"
+    date-fns: "npm:^2.16.1"
+  checksum: 10c0/f4d90855dd91f84c0dfa5eda30a501851a987035af9a5dd89903f2cc38720e3aea1e10ecaa4c4324f6516d0b5581fe40ac5218e85f5ad50aabee3b4e92e84478
   languageName: node
   linkType: hard
 
@@ -6175,6 +6195,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^2.16.1":
+  version: 2.30.0
+  resolution: "date-fns@npm:2.30.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.21.0"
+  checksum: 10c0/e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^3.6.0":
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
@@ -8462,6 +8491,13 @@ __metadata:
   dependencies:
     void-elements: "npm:3.1.0"
   checksum: 10c0/159292753d48b84d216d61121054ae5a33466b3db5b446e2ffc093ac077a411a99ce6cbe0d18e55b87cf25fa3c5a86c4d8b130b9719ec9b66623259000c72c15
+  languageName: node
+  linkType: hard
+
+"html-prettify@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "html-prettify@npm:1.0.7"
+  checksum: 10c0/df92342e090a03d6f0385824d9e097b129bafd36de70f6a7125eeb6ab4549bf63ba5b56bdfa7d943b70a92bc2d529b2decda1b62d302ab77877b67a571bd00ae
   languageName: node
   linkType: hard
 
@@ -11689,6 +11725,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"print-js@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "print-js@npm:1.6.0"
+  checksum: 10c0/1e27c42fec8bc2c71892c3f7ef27c50a6371e7a0e766899fef3b71cd92b180206fa41bbd17e3491ae5a64e75175374345bca2c0d781994a1c596f99edf92faa8
+  languageName: node
+  linkType: hard
+
 "proc-log@npm:^3.0.0":
   version: 3.0.0
   resolution: "proc-log@npm:3.0.0"
@@ -11753,7 +11796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:15, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -11858,6 +11901,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-date-range@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "react-date-range@npm:2.0.1"
+  dependencies:
+    classnames: "npm:^2.2.6"
+    prop-types: "npm:^15.7.2"
+    react-list: "npm:^0.8.13"
+    shallow-equal: "npm:^1.2.1"
+  peerDependencies:
+    date-fns: 3.0.6 || >=3.0.0
+    react: ^0.14 || ^15.0.0-rc || >=15.0
+  checksum: 10c0/be419f377b86cd9eafbe1e4fb60ba20b81b173e64dbe6cab8649edbe2a9afbc97f23701ab1e382caf4d82f65aaf4746e89d3df8cbbeb127df9ea4b7a3d11a8ab
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^18.2.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
@@ -11910,6 +11968,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-infinite-scroll-component@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "react-infinite-scroll-component@npm:6.1.0"
+  dependencies:
+    throttle-debounce: "npm:^2.1.0"
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: 10c0/8de02f178ae861880dddbd0c882dc70b55e21737b87fe428140d81a2c5d13c5eeba8a4fc260b1e86e4c556fdea333d6babaed55a9e5987a42b181b2d92f69cd8
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.3.2, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -11935,6 +12004,17 @@ __metadata:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: 10c0/1d0df3c85af79df720524780f00c064d53a9dd1899d785eddb7264b378026979acbddb58a4b7e06e7d0d12aa1494fd5754562ee55d32907b15601068dae82c27
+  languageName: node
+  linkType: hard
+
+"react-list@npm:^0.8.13":
+  version: 0.8.17
+  resolution: "react-list@npm:0.8.17"
+  dependencies:
+    prop-types: "npm:15"
+  peerDependencies:
+    react: 0.14 || 15 - 18
+  checksum: 10c0/85b2324b9fb410fcb3c6811578d8de51ec84eb308c320a865664c7f161fa3f70510fcc15ec7786e2725cac981355a937683b37d91a66ccfdffacf92c9e40326c
   languageName: node
   linkType: hard
 
@@ -13008,6 +13088,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shallow-equal@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "shallow-equal@npm:1.2.1"
+  checksum: 10c0/51e03abadd97c9ebe590547d92db9148446962a3f23a3a0fb1ba2fccab80af881eef0ff1f8ccefd3f066c0bc5a4c8ca53706194813b95c8835fa66448a843a26
+  languageName: node
+  linkType: hard
+
 "shallowequal@npm:1.1.0":
   version: 1.1.0
   resolution: "shallowequal@npm:1.1.0"
@@ -13689,6 +13776,7 @@ __metadata:
     "@types/lodash-es": "npm:^4.17.12"
     "@types/node": "npm:^20.11.30"
     "@types/react": "npm:^18.2.66"
+    "@types/react-date-range": "npm:^1.4.9"
     "@types/react-dom": "npm:^18.2.22"
     "@types/react-window": "npm:^1.8.8"
     "@types/react-window-infinite-loader": "npm:^1.0.9"
@@ -13703,16 +13791,20 @@ __metadata:
     eslint: "npm:^8.57.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.6"
+    html-prettify: "npm:^1.0.7"
     i18next: "npm:^23.11.4"
     isbot: "npm:^4.1.0"
     lodash-es: "npm:^4.17.21"
     material-ui-popup-state: "npm:^5.1.2"
     notistack: "npm:^3.0.1"
+    print-js: "npm:^1.6.0"
     react: "npm:^18.2.0"
+    react-date-range: "npm:^2.0.1"
     react-dom: "npm:^18.2.0"
     react-dropzone: "npm:^14.2.3"
     react-hook-form: "npm:^7.51.4"
     react-i18next: "npm:^14.1.1"
+    react-infinite-scroll-component: "npm:^6.1.0"
     react-pdf: "npm:^9.0.0"
     react-redux: "npm:^9.1.0"
     react-router: "npm:^6.23.1"
@@ -13780,6 +13872,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: 10c0/02805740c12851ea5982686810702e2f14369a5f4c5c40a836821e3eefc65ffeec3131ba324692a37608294b0fd8c1e55a2dd571ffed4909822787668ddbee5c
+  languageName: node
+  linkType: hard
+
+"throttle-debounce@npm:^2.1.0":
+  version: 2.3.0
+  resolution: "throttle-debounce@npm:2.3.0"
+  checksum: 10c0/41648e4cf46f935818af32ecac34f9876c618f24e300551cbe3a0ca2c5828cb8d2f9b73e6e1e2f8c64237f70fbc8c541f9b5c9114da70b33b1ed10ba4cc6b15f
   languageName: node
   linkType: hard
 

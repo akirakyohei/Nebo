@@ -17,6 +17,9 @@ public class NeboJwtConfigureProperties {
     private String headerRefreshToken;
     @JsonProperty("secret_key")
     private String secretKey;
+
+    @JsonProperty("session_oauth_id")
+    private String sessionOAuthId;
     private long expiration;
     @JsonProperty("refresh_expiration")
     private long refreshExpiration;

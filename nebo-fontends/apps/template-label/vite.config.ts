@@ -37,9 +37,21 @@ export default defineConfig({
   },
   resolve: {
     mainFields: [],
-    alias: {
-      src: path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      {
+        find: "src",
+        replacement: path.resolve(__dirname, "./src"),
+      },
+      {
+        find: "axios",
+        replacement: path.resolve(
+          __dirname,
+          "../../",
+          "node_modules",
+          "axios/dist/esm/axios.js"
+        ),
+      },
+    ],
   },
   server: {
     port: 5173,

@@ -48,7 +48,9 @@ export type UsedPaperType = {
   date: string;
 };
 
-export type UsedPaperTypes = ListResponse<UsedPaperType> & {
+export type UsedPaperTypes = {
+  data: UsedPaperType[];
+  total_element: number;
   aggregate: number;
 };
 
@@ -57,7 +59,9 @@ export type UsedTemplate = {
   date: string;
 };
 
-export type UsedTemplates = ListResponse<UsedTemplate> & {
+export type UsedTemplates = {
+  data: UsedTemplate[];
+  total_element: number;
   aggregate: number;
 };
 
@@ -71,4 +75,4 @@ export type TopTimeRequest = TimeRequest & {
   top?: number;
 };
 
-export type TimeFileRequest = TimeRequest & PageFilterRequest & {};
+export type TimeFilterRequest = TimeRequest & {};

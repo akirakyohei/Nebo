@@ -30,7 +30,7 @@ function SnackbarCloseButton({ snackbarKey }: { snackbarKey: SnackbarKey }) {
 }
 
 export const NotificationContext = createContext<Context>({
-  show: (message: string, options?: Options) => {},
+  show: (_message: string, options?: Options) => {},
 });
 const Provider = NotificationContext.Provider;
 

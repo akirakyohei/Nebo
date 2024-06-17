@@ -1,22 +1,20 @@
 package com.nebo.reports.applications.model;
 
-import com.nebo.shared.common.types.PageResponse;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 
 @Setter
 @Getter
-public class UsedPaperTypesResponse extends PageResponse<UsedPaperTypeResponse> {
+@Builder
+@JsonRootName("used_paper_types")
+public class UsedPaperTypesResponse {
+    List<UsedPaperTypeResponse> data;
+    private long totalElement;
     private long aggregates;
 
-    public UsedPaperTypesResponse aggregates(long aggregates) {
-        this.aggregates = aggregates;
-        return this;
-    }
-
-    public UsedPaperTypesResponse(Page<UsedPaperTypeResponse> page) {
-        super(page);
-    }
 }

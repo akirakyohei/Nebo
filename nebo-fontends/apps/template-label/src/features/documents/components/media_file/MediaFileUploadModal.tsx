@@ -99,7 +99,7 @@ export const MediaFileUploadModal = ({ open, onClose }: Props) => {
 
   const fileMarkup = watch("file") ? (
     <Box
-      sx={(theme) => ({
+      sx={(_theme) => ({
         border: "1px solid #BDBDBD",
         borderRadius: "5px",
         padding: 1,

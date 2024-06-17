@@ -17,14 +17,19 @@ export function useSimpleFilters(limit = 10) {
 
   const changeDebounceQuery = (_query: string) => {
     setQuery(_query);
-    handleDebounceQuery.cancel();
-    handleDebounceQuery(query);
   };
 
   const handleDebounceQuery = useDebouncedCallback((_query: string) => {
     setDebounceQuery(_query);
     setPage(1);
   }, 500);
+
+  useEffect(() => {
+    if (query !== debounceQuery) {
+      handleDebounceQuery.cancel();
+      handleDebounceQuery(query);
+    }
+  }, [debounceQuery, handleDebounceQuery, query]);
 
   const loadMore = () => {
     setPage((_page) => _page + 1);

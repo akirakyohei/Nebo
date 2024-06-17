@@ -16,6 +16,7 @@ import com.nebo.mediafile.applications.model.*;
 import io.minio.errors.MinioException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -88,8 +89,8 @@ public class MediaServiceImpl implements MediaService {
         return mediaMapper.fromDomainToResponse(fileData);
     }
 
-    public void getFile(String key, HttpServletResponse response) {
-        storageService.getFileByName(key, response);
+    public Pair<byte[], String> getFile(String key) {
+        return storageService.getFileByName(key);
     }
 
     @Override

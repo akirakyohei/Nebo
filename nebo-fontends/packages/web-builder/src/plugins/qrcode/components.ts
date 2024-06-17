@@ -15,36 +15,26 @@ export default (editor: Editor, opts: QrcodePluginOptions) => {
   const { keys } = Object;
 
   const qrcodeProps: ComponentDefinition = {
-    dataValue: true,
+    variables: true,
     code: "https://nebo.com/",
     foreground: "#000000",
   };
 
   const getTraitType = (value: any, name: any) => {
-    if (name === "dataValue") return "switch";
+    if (name === "variables") return "switch";
     if (typeof value == "number") return "number";
     if (typeof value == "boolean") return "checkbox";
     if (typeof value == "object") return "select";
     if (value.startsWith("#")) return "color";
     return "text";
   };
-  const getName = (name: string) => {
-    let _name = name;
-    switch (name) {
-      case "dataValue":
-        _name = "Variables";
-        break;
-    }
-    return _name;
-  };
-
   const traits: Partial<TraitProperties>[] = keys(qrcodeProps).map((name) => ({
     changeProp: true,
     type: getTraitType(qrcodeProps[name], name),
     options: qrcodeProps[name] as TraitOption[],
     min: 0,
     placeholder: "placeholder",
-    name: getName(name),
+    name,
   }));
 
   DomComponents.addType(TYPES.qrcode, {
@@ -87,13 +77,13 @@ export default (editor: Editor, opts: QrcodePluginOptions) => {
       },
       afterInit() {
         const tr = this.get("traits");
-        const dataValue = tr?.models?.find((t: Trait) => t.id === "dataValue");
+        const variables = tr?.models?.find((t: Trait) => t.id === "variables");
 
-        if (dataValue?.getValue() === "static") {
+        if (variables?.getValue() === "static") {
           traits.push({
-            id: "dataValue",
-            name: "Variable",
-            value: dataValue.getValue(),
+            id: "variables",
+            name: "variable",
+            value: variables.getValue(),
             changeProp: true,
             type: "checkbox",
             min: 0,
@@ -141,9 +131,12 @@ export default (editor: Editor, opts: QrcodePluginOptions) => {
         const params = new URLSearchParams({
           dark: this.get("foreground"),
         });
-        const code = !this.get("dataValue")
-          ? `{{$encodeURIComp ${this.get("code")}}}`
-          : encodeURIComponent(this.get("code"));
+        let code = encodeURIComponent(this.get("code"));
+        if (!!this.get("variables")) {
+          var variable = this.get("code").replace("{{", "").replace("}}", "");
+          code = `{{$encodeURIComp ${variable}}}`;
+        }
+
         this.set({
           src: `${opts.api}?code=${code}&${params.toString()}`,
         });

@@ -18,18 +18,47 @@ import { DeleteOutlineOutlined, InfoOutlined } from "@mui/icons-material";
 import { useToggle } from "../../../../utils/useToggle";
 import { useNavigate } from "react-router";
 import { MediaFileDetailModal } from "./MediaFileDetailModal";
+import { useDeleteFileMutation } from "../../../../data/mediafile.api";
+import { useToast } from "../../../../components/notification/useToast";
+import { isClientError } from "../../../../utils/client";
+import Modal from "../../../../components/Modal";
 
 interface Props {
   asset: FileDataUpload;
 }
 
 export const MediaFileCard = ({ asset }: Props) => {
+  const { show: showToast } = useToast();
   const navigate = useNavigate();
   const {
     value: isOpenDetail,
     setTrue: openDetail,
     setFalse: closeDetail,
   } = useToggle(false);
+
+  const {
+    value: isOpenConfirmDelete,
+    setTrue: openConfirmDelete,
+    setFalse: closeConfirmDelete,
+  } = useToggle(false);
+
+  const [deleteFile, { isLoading: isLoadingDelete }] = useDeleteFileMutation();
+
+  const handleDeleteFile = async () => {
+    try {
+      const result = await deleteFile(asset.id).unwrap();
+      showToast("Xóa tệp ảnh thành công");
+      closeConfirmDelete();
+    } catch (ex) {
+      if (isClientError(ex)) {
+        let error = ex.data.message;
+        if (/Email already existed/.test(error)) error = "Email đã tồn tại";
+        if (/Phone number already existed/.test(error))
+          error = "Số điện thoại đã tồn tại";
+        showToast(error, { variant: "error" });
+      }
+    }
+  };
 
   return (
     <Card
@@ -66,7 +95,7 @@ export const MediaFileCard = ({ asset }: Props) => {
           <Divider orientation="vertical" flexItem />
           <Box>
             <Tooltip title={"Xóa"}>
-              <IconButton aria-label="trash">
+              <IconButton aria-label="trash" onClick={openConfirmDelete}>
                 <DeleteOutlineOutlined />
               </IconButton>
             </Tooltip>
@@ -75,6 +104,31 @@ export const MediaFileCard = ({ asset }: Props) => {
       </CardActions>
       {isOpenDetail && (
         <MediaFileDetailModal open asset={asset} onClose={closeDetail} />
+      )}
+      {isOpenConfirmDelete && (
+        <Modal
+          open
+          onClose={closeConfirmDelete}
+          title="Xóa ảnh tải lên"
+          primaryAction={{
+            content: "Xóa",
+            loading: isLoadingDelete,
+            onAction: handleDeleteFile,
+            color: "error",
+          }}
+          secondaryActions={[
+            {
+              content: "Hủy",
+              disabled: isLoadingDelete,
+              onAction: closeConfirmDelete,
+              color: "error",
+            },
+          ]}
+        >
+          <Modal.Section>
+            <Typography>Thao tác này sẽ xóa vĩnh vĩnh viễn ảnh</Typography>
+          </Modal.Section>
+        </Modal>
       )}
     </Card>
   );

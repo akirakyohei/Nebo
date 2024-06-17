@@ -22,7 +22,7 @@ const templatePermissionApi = storefontApi.injectEndpoints({
     >({
       query: (q) => {
         return {
-          url: `/api/templates/${q.id}`,
+          url: `/api/templates/${q.id}/share`,
           body: { template_user_permission: q.request },
           method: "POST",
         };
@@ -38,7 +38,8 @@ const templatePermissionApi = storefontApi.injectEndpoints({
         filter: TemplateUserPermissionFilterRequest;
       }
     >({
-      query: (q) => `/api/templates/${q.id}/${toQueryString(q.filter)}`,
+      query: (q) =>
+        `/api/templates/${q.id}/permissions${toQueryString(q.filter)}`,
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: {
         template_user_permissions: ListResponse<TemplateUserPermission>;
@@ -74,7 +75,7 @@ const templatePermissionApi = storefontApi.injectEndpoints({
         result ? ["template", "api_key"] : [],
     }),
     getTemplateAppPermission: builder.query<TemplateAppPermission, number>({
-      query: (q) => `/api/templates/app_permisioss/app_id/${q}`,
+      query: (q) => `/api/templates/app_permissions/app_id/${q}`,
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: {
         template_app_permission: TemplateAppPermission;

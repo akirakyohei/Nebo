@@ -73,6 +73,8 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
           >
             <Box
               component={"img"}
+              maxWidth={"90%"}
+              maxHeight={"90%"}
               src={`/api/files/data/${asset.key}`}
               onError={(event) => {
                 event.currentTarget.src = blankThumbImage;
@@ -108,13 +110,19 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
                         <TableRow>
                           <TableCell>Cập nhật lần cuối</TableCell>
                           <TableCell>
-                            {format(asset.updated_at, "dd/MM/yyyy HHL:mm:ss")}
+                            {format(
+                              new Date(asset.updated_at),
+                              "dd/MM/yyyy HHL:mm:ss"
+                            )}
                           </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Ngày tạo</TableCell>
                           <TableCell>
-                            {format(asset.created_at, "dd/MM/yyyy HHL:mm:ss")}
+                            {format(
+                              new Date(asset.created_at),
+                              "dd/MM/yyyy HHL:mm:ss"
+                            )}
                           </TableCell>
                         </TableRow>
                       </TableBody>

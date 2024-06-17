@@ -9,14 +9,20 @@ interface Props {
   action?: boolean;
   contentSpacing?: number;
 }
-export const PageSkeleton = ({ children, fluid, contentSpacing }: Props) => {
+export const PageSkeleton = ({
+  children,
+  fluid,
+  contentSpacing,
+  title = true,
+  action = true,
+}: Props) => {
   return (
     <Page
       fluid={fluid}
       fullHeight
       contentSpacing={contentSpacing}
-      title={<Skeleton width={100} height={45} />}
-      primaryAction={<Skeleton width={100} height={45} />}
+      title={title && <Skeleton width={100} height={45} />}
+      primaryAction={action && <Skeleton width={100} height={45} />}
     >
       {children}
     </Page>

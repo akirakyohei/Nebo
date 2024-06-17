@@ -43,3 +43,27 @@ export const getFullName = ({
 }) => {
   return [last_name, first_name].filter((a) => !!a).join(" ");
 };
+
+export const getUrlAsset = (path: string) => {
+  return `${import.meta.env.VITE_BASE_URL}${path}`;
+};
+
+export function humanFileSize(size: number): { value: number; unit: string } {
+  let i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+  return {
+    value: size / Math.pow(1024, i),
+    unit: ["B", "kB", "MB", "GB", "TB"][i],
+  };
+}
+
+export function formatNumber(num: number, fixed = 0) {
+  const numStr = num.toFixed(fixed) + "";
+  const x = numStr.split(".");
+  let x1 = x[0];
+  const x2 = x.length > 1 ? "." + x[1] : "";
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+    x1 = x1.replace(rgx, "$1" + "," + "$2");
+  }
+  return x1 + x2;
+}

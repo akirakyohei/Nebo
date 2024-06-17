@@ -29,10 +29,19 @@ export function validateTemplate(template: string) {
   }
 }
 
+const isUrl = (value: string) => {
+  try {
+    return Boolean(new URL(value));
+  } catch (e) {
+    return false;
+  }
+};
+
 export * from "./json";
 
 const Utils = {
   split_unit,
+  isUrl,
   validateTemplate,
   ...JsonUtils,
 };

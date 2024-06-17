@@ -16,7 +16,9 @@ import React, {
   CSSProperties,
   FocusEventHandler,
   ReactNode,
+  useCallback,
   useMemo,
+  useState,
 } from "react";
 import { ListboxComponent } from "./ListBox";
 
@@ -62,6 +64,7 @@ export default function AutocompleteSelect<T extends Value>({
   minWidth,
   height,
   disableClearable,
+  query,
   onChangeQuery,
   onLoadMore,
   willLoadMoreResults,
@@ -87,31 +90,35 @@ export default function AutocompleteSelect<T extends Value>({
         isOptionEqualToValue={(option, value) => {
           return option.value === value.value;
         }}
-        getOptionKey={(option) => option.value}
-        getOptionLabel={(option) => option.label}
+        getOptionKey={(option) => (option as any).value}
+        getOptionLabel={(option) => (option as any).label}
         getOptionDisabled={(option) => option.disabled || false}
         ListboxComponent={(props) => (
           <ListboxComponent {...props} onLoadMore={() => {}} />
         )}
         onChange={(_event, _value) => {
           if (_event.type === "click")
-            onChange(isArray(_value) ? _value.map((item) => item.value) : []);
+            onChange(
+              isArray(_value) ? _value.map((item) => (item as any).value) : []
+            );
         }}
-        renderTags={(value, getTagProps) => {
+        renderTags={(value, _getTagProps) => {
           return `Đã chọn ${value.length}`;
         }}
-        filterOptions={(preOptions, state) => {
-          onChangeQuery?.(state.inputValue);
+        filterOptions={(preOptions, _state) => {
+          // onChangeQuery?.(state.inputValue);
+
           return preOptions;
         }}
+        freeSolo
         renderOption={(props, option) =>
           renderOption ? (
             renderOption(props, option)
           ) : (
             <Box
               component={"li"}
-              key={option.value}
               {...props}
+              key={option.value}
               sx={{ paddingLeft: "0 !important" }}
             >
               <Checkbox
@@ -133,14 +140,11 @@ export default function AutocompleteSelect<T extends Value>({
           <TextField
             {...params}
             {...props}
-            value={props.query}
-            onBlur={(e) => {
-              debugger;
-            }}
+            value={query}
             error={!!error}
             helperText={error ? error : undefined}
             label={props.label}
-            // onChange={(e) => onChangeQuery?.(e.target.value)}
+            onChange={(e) => onChangeQuery?.(e.target.value)}
             InputLabelProps={{ sx: { top: "-6px" }, ...params.InputLabelProps }}
             InputProps={{
               sx: {
@@ -179,6 +183,11 @@ export default function AutocompleteSelect<T extends Value>({
           );
         }}
         limitTags={4}
+        filterOptions={(preOptions, _state) => {
+          // onChangeQuery?.(state.inputValue);
+
+          return preOptions;
+        }}
         renderOption={(props, option) => (
           <div
             key={option.value}
@@ -188,20 +197,23 @@ export default function AutocompleteSelect<T extends Value>({
               paddingLeft: "0 !important",
             }}
           >
-            <Tooltip title={option.label} placement="right">
-              <Typography>{option.label}</Typography>
-            </Tooltip>
+            {option.renderInput ? (
+              option.renderInput
+            ) : (
+              <Tooltip title={option.label} placement="right">
+                <Typography>{option.label}</Typography>
+              </Tooltip>
+            )}
           </div>
         )}
         disableClearable={disableClearable}
-        filterSelectedOptions
         noOptionsText={noOptionText}
         onBlur={onBlur}
         renderInput={(params) => (
           <TextField
             {...params}
             {...props}
-            value={props.query}
+            value={query}
             error={!!error}
             helperText={error ? error : undefined}
             label={props.label}

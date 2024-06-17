@@ -16,7 +16,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
   },
   "exclude": ["node_modules"]
 }

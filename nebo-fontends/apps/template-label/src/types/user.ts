@@ -65,4 +65,5 @@ export type UserWithUserPermission = User & {
 
 export type UserFilterRequest = PageFilterRequest & {
   query?: string;
+  ids?: number[];
 };

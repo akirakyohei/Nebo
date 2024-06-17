@@ -14,9 +14,9 @@ public class DimPaperType {
     private int paperTypeKey;
     private long paperTypeId;
     private String name;
-    private long width;
+    private Long width;
     private String unitOfWidth;
     private String unitOfHeight;
-    private long height;
+    private Long height;
     private String description;
 }

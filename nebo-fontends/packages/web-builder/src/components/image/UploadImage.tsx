@@ -3,11 +3,11 @@ import Icon from "@mdi/react";
 import { Box, Stack, Typography, styled } from "@mui/material";
 import { useCallback, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
-import { FileUploadData } from "../types/template";
-
+import { FileUploadData } from "../../types/template";
+import { Buffer } from "buffer";
 interface Props {
   showToast: (value: string, option?: { isError?: boolean }) => void;
-  uploadFile: (file: FileUploadData) => void;
+  uploadFile: (file: FileUploadData) => Promise<void>;
 }
 
 export const UploadImage = ({ showToast, uploadFile }: Props) => {
@@ -43,8 +43,10 @@ export const UploadImage = ({ showToast, uploadFile }: Props) => {
         };
         setFileInput(_file);
         setIsUploadFile(true);
-        uploadFile(_file);
-        setIsUploadFile(false);
+        uploadFile(_file).finally(() => {
+          setFileInput(null);
+          setIsUploadFile(false);
+        });
       };
       reader.readAsArrayBuffer(file);
     },
@@ -64,7 +66,16 @@ export const UploadImage = ({ showToast, uploadFile }: Props) => {
     <Container
       {...getRootProps({ isFocused, isDragAccept, isDragReject })}
       disabled={!!fileInput}
-      sx={{ height: "100%" }}
+      sx={{
+        height: "100%",
+        justifyContent: "center",
+        backgroundColor: "#f5f5f5",
+        ":hover": {
+          borderColor: "#2196f366",
+          backgroundColor: "#f8f8f8",
+          cursor: "pointer",
+        },
+      }}
     >
       <div {...getRootProps()}>
         <input {...getInputProps()} />
@@ -110,7 +121,7 @@ const Container = styled("div")<{
   alignItems: "center",
   padding: "20px",
   borderWidth: "2px",
-  borderRadius: "2px",
+  borderRadius: "5px",
   borderColor: `${getColor(p)}`,
   borderStyle: "dashed",
   backgroundColor: "#fafafa",

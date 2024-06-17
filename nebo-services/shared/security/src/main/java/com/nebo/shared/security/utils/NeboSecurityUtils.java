@@ -1,12 +1,16 @@
 package com.nebo.shared.security.utils;
 
+import com.nebo.shared.security.client.UserDetail;
 import com.nebo.shared.security.constant.TokenType;
 import com.nebo.shared.security.tokens.NeboAuthenticationToken;
+import com.nebo.shared.security.tokens.NeboUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 public class NeboSecurityUtils {
 
@@ -27,8 +31,11 @@ public class NeboSecurityUtils {
         if (context == null || context.getAuthentication() == null)
             return null;
         var authentication = context.getAuthentication();
-        if (authentication.getPrincipal()!=null && authentication instanceof NeboAuthenticationToken token) {
+        if (authentication.getPrincipal() != null && authentication instanceof NeboAuthenticationToken token) {
             return token.getUserId();
+        }
+        if (authentication.getPrincipal() instanceof NeboUserDetails userDetail) {
+            return userDetail.getUserId();
         }
         return null;
     }
@@ -38,7 +45,7 @@ public class NeboSecurityUtils {
         if (context == null || context.getAuthentication() == null)
             return null;
         var authentication = context.getAuthentication();
-        if ( authentication.getPrincipal()!=null && authentication instanceof NeboAuthenticationToken token) {
+        if (authentication.getPrincipal() != null && authentication instanceof NeboAuthenticationToken token) {
             return token.getAppId();
         }
         return null;
@@ -49,7 +56,10 @@ public class NeboSecurityUtils {
         if (context == null || context.getAuthentication() == null)
             return null;
         var authentication = context.getAuthentication();
-        if (authentication.getPrincipal()!=null && authentication instanceof NeboAuthenticationToken token) {
+        if (authentication.getPrincipal() != null && authentication instanceof OAuth2AuthenticationToken) {
+            return TokenType.cookie_token;
+        }
+        if (authentication.getPrincipal() != null && authentication instanceof NeboAuthenticationToken token) {
             return token.getTokenType();
         }
         return null;

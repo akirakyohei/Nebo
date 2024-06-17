@@ -27,13 +27,24 @@ const globalReducer = createReducer<Workspace>(initialWorkspace, (builder) => {
       storefontApi.endpoints.getCurrentUser.matchRejected,
       (state) => {
         state.isLoading = false;
+        state.user = {
+          id: 0,
+          first_name: "",
+          last_name: "",
+          email: "",
+          phone_number: "",
+          avatar_url: "",
+          permissions: [],
+          provider: "local",
+          provider_id: "",
+        };
       }
     ),
     builder.addMatcher(
       storefontApi.endpoints.getCurrentUser.matchFulfilled,
       (state, { payload }) => {
+        state.user = Object.assign({ ...payload });
         state.isLoading = false;
-        state.user = payload;
       }
     );
 });

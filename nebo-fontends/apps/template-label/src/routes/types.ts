@@ -7,6 +7,7 @@ export type CustomizeRouteObject = RouteObject & {
   canActivate?: CanActivateFn;
   children?: CustomizeRouteObject[];
   permissions?: string[];
+  component?: React.ComponentType | null;
 };
 
 export type CanActivateFn = (

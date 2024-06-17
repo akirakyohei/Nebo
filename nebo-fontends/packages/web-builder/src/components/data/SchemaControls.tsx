@@ -47,81 +47,87 @@ export const SchemaControls = ({
   const [schemaKeyIn, setSchemaKeyIn] = useState(schemaKey);
   return (
     <Stack direction={"row"} gap={2}>
-      <Box>
-        <TextField
-          label={"Tên"}
-          placeholder="Nhập tên"
-          disabled={schemaKey === "__root__"}
-          value={HelperUtils.getSchemaTitle(schema)}
-          onChange={(event) => {
-            onChange(HelperUtils.setSchemaTitle(event.target.value, schema));
-          }}
-          InputLabelProps={{ sx: { top: "-6px" } }}
-          InputProps={{
-            sx: {
-              height: "38px",
-              "> input": {
-                padding: "0 16px !important",
-                height: "100% !important",
-              },
-              "> input:disabled": {
-                background: "#ededed",
-              },
-            },
-          }}
-        />
-      </Box>
-      <Box>
-        <Select
-          value={HelperUtils.getSchemaType(schema)}
-          disabled={schemaKey === "__root__"}
-          onChange={(event) => {
-            onChange(
-              HelperUtils.setSchemaTypeAndRemoveWrongFields(
-                event.target.value,
-                schema
-              )
-            );
-          }}
-          sx={{
-            height: "38px",
-            "> input": {
-              padding: "0 16px !important",
-              height: "100% !important",
-            },
-            "> input:disabled": {
-              background: "#ededed",
-            },
-          }}
-        >
-          <MenuItem value={"string"}>Chuỗi</MenuItem>
-          <MenuItem value={"number"}>Số</MenuItem>
-          <MenuItem value={"object"}>Đối tượng</MenuItem>
-        </Select>
-      </Box>
-      {_.isFunction(onChangeKey) ? (
-        <TextField
-          label="Biến"
-          value={schemaKeyIn}
-          onChange={(event) => {
-            if (/^[A-Za-z0-9_]+$/.test(event.target.value))
-              setSchemaKeyIn(event.target.value);
-          }}
-          onBlur={() => {
-            onChangeKey?.(schemaKeyIn);
-          }}
-          InputLabelProps={{ sx: { top: "-6px" } }}
-          InputProps={{
-            sx: {
-              height: "38px",
-              "> input": {
-                padding: "0 16px !important",
-                height: "100% !important",
-              },
-            },
-          }}
-        />
-      ) : null}
+      {schemaKey !== "__root__" && (
+        <>
+          <Box>
+            <TextField
+              label={"Tên"}
+              placeholder="Nhập tên"
+              disabled={schemaKey === "__root__"}
+              value={HelperUtils.getSchemaTitle(schema)}
+              onChange={(event) => {
+                onChange(
+                  HelperUtils.setSchemaTitle(event.target.value, schema)
+                );
+              }}
+              InputLabelProps={{ sx: { top: "-6px" } }}
+              InputProps={{
+                sx: {
+                  height: "38px",
+                  "> input": {
+                    padding: "0 16px !important",
+                    height: "100% !important",
+                  },
+                  "> input:disabled": {
+                    background: "#ededed",
+                  },
+                },
+              }}
+            />
+          </Box>
+          <Box>
+            <Select
+              value={HelperUtils.getSchemaType(schema)}
+              disabled={schemaKey === "__root__"}
+              onChange={(event) => {
+                onChange(
+                  HelperUtils.setSchemaTypeAndRemoveWrongFields(
+                    event.target.value,
+                    schema
+                  )
+                );
+              }}
+              sx={{
+                height: "38px",
+                "> input": {
+                  padding: "0 16px !important",
+                  height: "100% !important",
+                },
+                "> input:disabled": {
+                  background: "#ededed",
+                },
+              }}
+            >
+              <MenuItem value={"string"}>Chuỗi</MenuItem>
+              <MenuItem value={"number"}>Số</MenuItem>
+              <MenuItem value={"object"}>Đối tượng</MenuItem>
+            </Select>
+          </Box>
+          {_.isFunction(onChangeKey) ? (
+            <TextField
+              label="Biến"
+              value={schemaKeyIn}
+              onChange={(event) => {
+                if (/^[A-Za-z0-9_]+$/.test(event.target.value))
+                  setSchemaKeyIn(event.target.value);
+              }}
+              onBlur={() => {
+                onChangeKey?.(schemaKeyIn);
+              }}
+              InputLabelProps={{ sx: { top: "-6px" } }}
+              InputProps={{
+                sx: {
+                  height: "38px",
+                  "> input": {
+                    padding: "0 16px !important",
+                    height: "100% !important",
+                  },
+                },
+              }}
+            />
+          ) : null}
+        </>
+      )}
       <Stack direction={"row"}>
         {_.isFunction(onCollapse) ? (
           <IconButton onClick={onCollapse}>

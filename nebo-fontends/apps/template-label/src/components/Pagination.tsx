@@ -24,7 +24,7 @@ export const Pagination = ({
 }: Props) => {
   const totalPage = useMemo(() => Math.ceil(total / limit), [limit, total]);
 
-  const handleChangePage = (event: ChangeEvent<unknown>, newPage: number) => {
+  const handleChangePage = (_event: ChangeEvent<unknown>, newPage: number) => {
     onChangePage(newPage);
   };
 

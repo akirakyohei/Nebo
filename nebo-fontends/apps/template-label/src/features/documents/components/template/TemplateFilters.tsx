@@ -13,7 +13,6 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { getCategory } from "../../utils/templates";
 import { TagFilterList, TagOption } from "../../../../components/TagFilterList";
 import { TabOption, Tabs } from "../../../../components/Tabs";
 import {

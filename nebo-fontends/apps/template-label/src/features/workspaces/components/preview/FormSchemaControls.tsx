@@ -32,7 +32,8 @@ export const FormSchemaControls = ({
     return (
       <TextField
         value={HelperUtils.getSchemaField("value", schema)}
-        label={HelperUtils.getSchemaTitle(schema)}
+        label={HelperUtils.getSchemaTitle(schema) || schemaKey}
+        placeholder={schemaKey}
         onChange={(event) => {
           onChange(HelperUtils.setSchemaValue(event.target.value, schema));
         }}
@@ -43,7 +44,8 @@ export const FormSchemaControls = ({
     return (
       <TextField
         value={HelperUtils.getSchemaField("value", schema)}
-        label={HelperUtils.getSchemaTitle(schema)}
+        label={HelperUtils.getSchemaTitle(schema) || schemaKey}
+        placeholder={schemaKey}
         onChange={(event) => {
           const _value = Number(event.target.value) || 0;
           if (
@@ -102,38 +104,40 @@ export const FormSchemaControls = ({
         }}
       />
     );
-
-  return (
-    <Box sx={{ display: "flex" }}>
-      <Stack
-        gap={2}
-        direction={"row"}
-        justifyContent={"start"}
-        alignItems={"center"}
-        sx={{
-          border: "1px solid #000",
-          padding: 0.5,
-          borderRadius: "5px",
-          background: "#f5f5f5",
-        }}
-      >
-        <Typography>{HelperUtils.getSchemaTitle(schema)}</Typography>{" "}
-        {_.isFunction(onCollapse) && (
-          <IconButton
-            onClick={onCollapse}
-            size="small"
-            sx={{
-              width: "16px",
-              height: "16px",
-              border: "1px solid #000",
-              borderRadius: "3px",
-            }}
-          >
-            {isCollapsed ? <ExpandLessOutlined /> : <ExpandMoreOutlined />}
-          </IconButton>
-        )}
-      </Stack>
-    </Box>
-  );
+  if (schemaKey !== "__root__")
+    return (
+      <Box sx={{ display: "flex", paddingBottom: 0.5 }}>
+        <Stack
+          gap={2}
+          direction={"row"}
+          justifyContent={"start"}
+          alignItems={"center"}
+          sx={{
+            border: "1px solid #000",
+            padding: 0.5,
+            borderRadius: "5px",
+            background: "#f5f5f5",
+          }}
+        >
+          <Typography>
+            {HelperUtils.getSchemaTitle(schema) || schemaKey}
+          </Typography>{" "}
+          {_.isFunction(onCollapse) && (
+            <IconButton
+              onClick={onCollapse}
+              size="small"
+              sx={{
+                width: "16px",
+                height: "16px",
+                border: "1px solid #000",
+                borderRadius: "3px",
+              }}
+            >
+              {isCollapsed ? <ExpandLessOutlined /> : <ExpandMoreOutlined />}
+            </IconButton>
+          )}
+        </Stack>
+      </Box>
+    );
   return null;
 };

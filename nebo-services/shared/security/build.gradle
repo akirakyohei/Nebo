@@ -18,6 +18,7 @@ dependencies {
     implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     api project(':shared:grpc')
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.3.0'
 
     testImplementation 'junit:junit:4.11'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'

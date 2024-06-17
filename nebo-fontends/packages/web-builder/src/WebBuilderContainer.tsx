@@ -44,8 +44,8 @@ import draggableDocumentPlugin from "./plugins/draggable-document";
 import barcodePlugin from "./plugins/barcode";
 import qrcodePlugin from "./plugins/qrcode";
 import customFormsPlugin from "./plugins/forms";
-import gridSystemPlugin from "./plugins/grid-system";
-import { FileUploadData, Template } from "./types/template";
+// import gridSystemPlugin from "./plugins/grid-system";
+import { Data, FileUploadData, Template } from "./types/template";
 import BlockManager from "./components/BlockManager";
 import Modal from "./components/Modal";
 import AssetManager from "./components/AssetManager";
@@ -59,6 +59,8 @@ import { split_unit } from "./utils";
 import { defaultGridStyle } from "./plugins/grid-system/styles";
 import blockComponentPlugin, { protectedCss } from "./plugins/block-component";
 import { DataManager } from "./components/DataManager";
+import { AssetListProps } from "./components/image/AssetList";
+import vi from "./locale/vi";
 
 export const ckeConfig = {
   toolbar: [
@@ -116,20 +118,12 @@ export const ckeConfig = {
   ],
 };
 
-export type Data = {
-  assets: string[];
-  components: any;
-  css?: string;
-  styles: any;
-  html: string;
-};
-
-interface Props {
-  designingMode?: boolean;
+export interface WebBuilderContainerProps {
   template: Template;
   onUpdate?: (id: number, _value: Data) => void;
   showToast?: (value: string, option?: { isError?: boolean }) => void;
-  uploadFile?: (value: FileUploadData) => void;
+  uploadFile?: (value: FileUploadData) => Promise<string | null>;
+  moreAssets?: AssetListProps["moreAssets"];
 }
 
 const theme = createTheme({
@@ -141,24 +135,39 @@ const theme = createTheme({
 });
 
 export const WebBuilderContainer = ({
-  designingMode = true,
   template,
   onUpdate,
   showToast,
   uploadFile,
-}: Props) => {
+  moreAssets,
+}: WebBuilderContainerProps) => {
   const [labPanelLeft, setLabPanelLeft] = useState<string>("block");
 
   const options: EditorConfig = useMemo(() => {
-    const widthPx = convertUnits(template.options.width as any, "px");
+    const widthPx = convertUnits(
+      (!template.options.landscape
+        ? template.options.width
+        : template.options.height) as any,
+      "px"
+    );
     const width = split_unit(widthPx);
-    const heightPx = convertUnits(template.options.height as any, "px");
+    const heightPx = convertUnits(
+      (template.options.landscape
+        ? template.options.width
+        : template.options.height) as any,
+      "px"
+    );
     const height = split_unit(heightPx);
-    return {
+    const opt: EditorConfig = {
       container: "nebo-editor",
+      mediaCondition: "min-width",
+      i18n: {
+        locale: "vi",
+        messages: { vi },
+      },
       storageManager: {
-        // type: "remote-local",
-        type: "local",
+        type: "remote-local",
+        // type: "local",
         autosave: true,
         autoload: true,
         stepsBeforeSave: 1,
@@ -177,17 +186,19 @@ export const WebBuilderContainer = ({
             name: "Desktop",
             width: `${Math.round(Number(width.value || 100))}`,
             height: `${Math.round(Number(height.value || 100))}`,
+            widthMedia: `${Math.round(Number(width.value || 100) + 10)}`,
           },
         ],
       },
-      // assetManager: {},
-      protectedCss: `body { margin: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};}  ${defaultGridStyle} `,
+      styleManager: {},
+      protectedCss: `body { padding: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};}  ${defaultGridStyle} `,
       // pageManager: {},
       // showDevices: false,
       // panels: {
       //   defaults: [{}],
       // },
     };
+    return opt;
   }, [template]);
 
   const onEditor = (editor: Editor) => {
@@ -203,15 +214,19 @@ export const WebBuilderContainer = ({
     const { Storage } = editor;
 
     Storage.add("remote-local", {
-      async store(data, options) {
+      async store(data, _options) {
         const page = editor.Pages.getMain();
         const component = page.getMainComponent();
         try {
+          const html = editor.getHtml({ component });
+          const css = editor.getCss({ component });
           await onUpdate?.(template.id, {
             assets: data.assets,
             components: editor.getComponents(),
-            html: editor.getHtml({ component }),
-            css: editor.getCss({ component }),
+            html: `<html><head>    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${css}</style></head> ${html}</html>`,
+            css: css,
             styles: editor.getStyle(),
           });
         } catch (e) {
@@ -219,7 +234,7 @@ export const WebBuilderContainer = ({
           await localStorage?.store(data, Storage.getStorageOptions("local"));
         }
       },
-      async load(options) {
+      async load(_options) {
         return template;
       },
     });
@@ -345,7 +360,11 @@ export const WebBuilderContainer = ({
                 >
                   <Tab eventKey="data" title="Dữ liệu">
                     <div id="nebo-data">
-                      <DataManager />
+                      <DataManager
+                        showToast={showToast}
+                        template={template}
+                        onUpdate={onUpdate}
+                      />
                     </div>
                   </Tab>
                   <Tab eventKey="layer" title="Cấu trúc">
@@ -377,6 +396,7 @@ export const WebBuilderContainer = ({
                   close={close}
                   showToast={showToast as any}
                   uploadFile={uploadFile as any}
+                  moreAssets={moreAssets}
                 />
               </Container>
             )}

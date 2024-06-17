@@ -2,6 +2,7 @@ package com.nebo.reports.jobs.kafka;
 
 import com.nebo.reports.applications.model.Template;
 import com.nebo.reports.applications.service.ETLReportService;
+import com.nebo.shared.common.types.DebeziumOperation;
 import com.nebo.shared.common.utils.KafkaConnectUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -23,6 +24,6 @@ public class TemplateConsumer {
     )
     public void process(ConsumerRecord<String, String> record) throws IOException {
         var templateKafka = KafkaConnectUtils.marshallRaw(record.value(), Template.class);
-        etlReportService.loadTemplate(templateKafka.getAfter(), templateKafka.getOp());
+        etlReportService.loadTemplate(DebeziumOperation.d.equals(templateKafka.getOp()) ? templateKafka.getBefore() : templateKafka.getAfter(), templateKafka.getOp());
     }
 }

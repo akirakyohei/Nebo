@@ -13,6 +13,8 @@ public class ListIntegerConverter implements AttributeConverter<List<Integer>, S
 
     @Override
     public String convertToDatabaseColumn(List<Integer> attribute) {
+        if (attribute == null)
+            return null;
         return StringUtils.join(attribute.stream().map(String::valueOf).toList(), ",");
     }
 

@@ -25,12 +25,17 @@ import { isBlank } from "../../../utils/base";
 import { isEmail, isMobilePhone } from "validator";
 import { useNavigate } from "react-router-dom";
 import { store } from "../../../store/store";
-import { storefontApi } from "../../../data/api";
+import {
+  storefontApi,
+  useGetCurrentUserQuery,
+  useLazyGetCurrentUserQuery,
+} from "../../../data/api";
 
 export const LoginCard = () => {
   const navigate = useNavigate();
   const { show: showToast } = useToast();
   const [signIn] = useSigninMutation();
+  const [triggerGetCurrentUser] = useLazyGetCurrentUserQuery();
   const {
     control,
     handleSubmit,
@@ -49,13 +54,13 @@ export const LoginCard = () => {
       }).unwrap();
       showToast("Đăng nhập tài khoản thành công");
       storefontApi.util.invalidateTags(["credentials"]);
-      navigate("/documents");
+      await triggerGetCurrentUser();
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
         if (/Authenticated/.test(error)) {
           showToast("Đăng nhập tài khoản thành công trước đó");
-          navigate("/documents");
+          await triggerGetCurrentUser();
           return;
         }
 

@@ -9,17 +9,19 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { range } from "lodash";
 import { TopUsedPaperType } from "../../../types";
+
 interface Props {
   topUsedPaperTypes: TopUsedPaperType[];
 }
 
 export const TopUsedPaperTypeCard = ({ topUsedPaperTypes }: Props) => {
   return (
-    <Card>
+    <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <CardHeader title={"Top loại giấy sử dụng"} sx={{ paddingBottom: 0 }} />
-      <CardContent>
-        <Table>
+      <CardContent sx={{ flex: "1 1 auto" }}>
+        <Table sx={{ height: "100%" }}>
           <TableHead>
             <TableRow sx={{ background: "#fafafb" }}>
               <TableCell>Loại giấy</TableCell>
@@ -33,6 +35,12 @@ export const TopUsedPaperTypeCard = ({ topUsedPaperTypes }: Props) => {
                 <TableCell align="right">
                   {topUsedPaperType.total_used}
                 </TableCell>
+              </TableRow>
+            ))}
+            {range(0, 10 - topUsedPaperTypes.length).map((i) => (
+              <TableRow key={i}>
+                <TableCell> ---</TableCell>
+                <TableCell align="right">---</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -1,60 +1,38 @@
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Typography,
-} from "@mui/material";
-
-import blankThumbImage from "src/assets/img/new-blank-template.png";
-import { useNavigate } from "react-router";
+import { Box, Grid, Button } from "@mui/material";
 import { Template } from "../../../types";
+import { TemplateItemCard } from "./TemplateItemCard";
+import {
+  KeyboardDoubleArrowLeft,
+  KeyboardDoubleArrowRight,
+} from "@mui/icons-material";
 
-interface Props {
-  template: Template;
-}
-
-export const TemplateCard = ({ template }: Props) => {
-  const navigate = useNavigate();
-
+export const TemplateCard = ({ templates }: { templates: Template[] }) => {
   return (
-    <Card
-      sx={(theme) => ({
-        background: "#F2F4FB99",
-        "&:hover": { background: "#F2F4FBFF", boxShadow: theme.shadows[4] },
-      })}
-    >
-      <CardHeader
-      // avatar={
-      //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-      //     R
-      //   </Avatar>
-      // }
-      // title="Shrimp and Chorizo Paella"
-      // subheader="September 14, 2016"
-      />
-      <CardActionArea
-        onClick={() => {
-          navigate(`/workspaces/${template.id}/preview`);
+    <Box maxWidth={"100%"}>
+      <Grid
+        container
+        display={"grid"}
+        width={"100%"}
+        gridTemplateColumns={{
+          xs: "1fr",
+          sm: "1fr 1fr",
+          md: "1fr 1fr 1fr",
+          lg: "1fr 1fr 1fr 1fr 1fr",
         }}
+        justifyContent={"center"}
+        columnGap={3}
+        rowGap={3}
+        padding={3}
       >
-        <CardMedia
-          component="img"
-          height="194"
-          image={
-            template?.thumbnail?.url
-              ? `/api/files/data/${template?.thumbnail?.url}`
-              : blankThumbImage
-          }
-          alt={template?.thumbnail?.name}
-        />
-        <CardContent>
-          <Typography variant="body1" color="text.secondary">
-            {template.name}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+        {templates.map((template, index) => {
+          return <TemplateItemCard key={index} template={template} />;
+        })}
+      </Grid>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <Button endIcon={<KeyboardDoubleArrowRight />} href="/users/signup">
+          Xem thêm
+        </Button>
+      </Box>
+    </Box>
   );
 };

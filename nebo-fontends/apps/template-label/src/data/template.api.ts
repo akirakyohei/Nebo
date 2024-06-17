@@ -1,12 +1,15 @@
 import {
   ListResponse,
   Template,
+  TemplateExportRequest,
   TemplateFilterRequest,
+  TemplatePreviewRequest,
   TemplateRequest,
   TemplateResponse,
 } from "../types";
 import { storefontApi, transformAxiosErrorResponse } from "./api";
 import { toQueryString } from "../utils/url";
+import { client } from "../utils/client";
 
 const templateApi = storefontApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -61,7 +64,7 @@ const templateApi = storefontApi.injectEndpoints({
       },
       transformErrorResponse: transformAxiosErrorResponse,
       transformResponse: (res: TemplateResponse) => res.template,
-      invalidatesTags: (result, _error) => (result ? ["template"] : []),
+      invalidatesTags: (_result, _error) => (!_error ? ["template"] : []),
     }),
     updateTemplate: builder.mutation<
       Template,
@@ -86,7 +89,77 @@ const templateApi = storefontApi.injectEndpoints({
         };
       },
       transformErrorResponse: transformAxiosErrorResponse,
-      invalidatesTags: (result, _error) => (result ? ["template"] : []),
+      invalidatesTags: (_result, _error) => (!_error ? ["template"] : []),
+    }),
+    previewTemplate: builder.query<Blob, TemplatePreviewRequest>({
+      queryFn: async (_da, _queryApi, _extraOptions, fetchWithBQ) => {
+        const {
+          data: { data },
+        } = await client.request<{ data: Blob }>({
+          url: "/api/templates/preview",
+          method: "POST",
+          data: {
+            template_preview: { ..._da, format: "pdf" },
+          },
+          responseType: "blob",
+          transformResponse: (data) => {
+            return { data };
+          },
+        });
+        return { data };
+      },
+    }),
+    previewTemplateToHtml: builder.query<string, TemplatePreviewRequest>({
+      queryFn: async (_da, _queryApi, _extraOptions, _fetchWithBQ) => {
+        const {
+          data: { html },
+        } = await client.request<{ html: string }>({
+          url: "/api/templates/preview",
+          method: "POST",
+          data: {
+            template_preview: { ..._da, format: "html" },
+          },
+        });
+        return { data: html };
+      },
+    }),
+    exportTemplate: builder.mutation<
+      Blob,
+      { id: number; request: TemplateExportRequest }
+    >({
+      queryFn: async (_da, _queryApi, _extraOptions, _fetchWithBQ) => {
+        const {
+          data: { data },
+        } = await client.request<{ data: Blob }>({
+          url: `/api/templates/${_da.id}/export`,
+          method: "POST",
+          data: {
+            template_export: { ..._da.request, format: "pdf" },
+          },
+          responseType: "blob",
+          transformResponse: (data) => {
+            return { data };
+          },
+        });
+        return { data };
+      },
+    }),
+    exportTemplateToHtml: builder.mutation<
+      string,
+      { id: number; request: TemplateExportRequest }
+    >({
+      queryFn: async (_da, _queryApi, _extraOptions, fetchWithBQ) => {
+        const {
+          data: { html },
+        } = await client.request<{ html: string }>({
+          url: `/api/templates/${_da.id}/export`,
+          method: "POST",
+          data: {
+            template_export: { ..._da.request, format: "html" },
+          },
+        });
+        return { data: html };
+      },
     }),
   }),
 });
@@ -98,4 +171,9 @@ export const {
   useCreateTemplateMutation,
   useUpdateTemplateMutation,
   useDeleteTemplateMutation,
+  usePreviewTemplateQuery,
+  usePreviewTemplateToHtmlQuery,
+  useLazyPreviewTemplateQuery,
+  useExportTemplateMutation,
+  useExportTemplateToHtmlMutation,
 } = templateApi;

@@ -48,10 +48,11 @@ export const TemplateAddModal = ({ onClose }: Props) => {
   });
   const submit = handleSubmit(async (data: { template: Template }) => {
     try {
-      const res = createTemplate({
+      const res = await createTemplate({
         ...data.template,
-      });
+      }).unwrap();
       showToast("Tạo mẫu thành công");
+      onClose();
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;

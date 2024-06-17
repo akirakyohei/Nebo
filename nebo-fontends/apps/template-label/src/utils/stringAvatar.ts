@@ -19,16 +19,16 @@ export function stringToColor(string: string) {
 }
 
 export function stringAvatar(
-  first_name: string,
+  first_name?: string,
   last_name?: string,
   size?: number
 ) {
   return {
     sx: {
-      bgcolor: stringToColor(first_name),
+      bgcolor: stringToColor(first_name || ""),
       height: size ? size : undefined,
       width: size ? size : undefined,
     },
-    children: `${last_name?.[0] || ""}${first_name[0] || ""}`,
+    children: `${last_name?.[0] || ""}${first_name?.[0] || ""}`,
   };
 }

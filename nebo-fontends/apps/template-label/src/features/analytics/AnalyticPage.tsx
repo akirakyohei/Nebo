@@ -8,70 +8,34 @@ import { UsedPaperTypeCard } from "./components/UsedPaperTypeCard";
 import { UsedTemplateCard } from "./components/UsedTemplateCard";
 import { Loading } from "../../components/loading";
 import { AnalyticsReportSkeleton } from "./components/AnalyticsReportSkeleton";
+import { DateTimeSelect } from "../../components/daterange/DateTimeSelect";
+import { endOfDay, isBefore, startOfDay } from "date-fns";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { transformDateRange } from "../../components/daterange";
 
 export default function AnalyticPage() {
+  const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
+  const startDate =
+    params.get("from_date") !== null
+      ? new Date(params.get("from_date") || "")
+      : startOfDay(new Date());
+  const endDate =
+    params.get("to_date") !== null
+      ? new Date(params.get("to_date") || "")
+      : endOfDay(new Date());
+  const daterange = transformDateRange(startDate, endDate);
   const {
-    aggregateReport = {
-      total_data: 0,
-      total_template: 0,
-      total_used_template: 0,
-    },
-    topUsedPaperTypes = [
-      {
-        paper_type: {
-          paper_type_id: 0,
-          name: "Tùy chỉnh",
-          width: null,
-          height: null,
-          unit_of_width: null,
-          unit_of_height: null,
-          description: null,
-        },
-        total_used: 0,
-      },
-    ],
-    topUsedTemplates = [
-      {
-        total_used: 0,
-        template: {
-          template_id: 1,
-          name: "Trống",
-          created_at: "",
-          updated_at: "",
-        },
-      },
-    ],
-    usedPaperTypes = {
-      data: [
-        {
-          total_used: 1,
-          date: "",
-        },
-      ],
-      metadata: {
-        total_element: 0,
-        page: 1,
-        limit: 10,
-      },
-      aggregate: 0,
-    },
-    usedTemplates = {
-      data: [
-        {
-          total_used: 1,
-          date: "",
-        },
-      ],
-      metadata: {
-        total_element: 0,
-        page: 1,
-        limit: 10,
-      },
-      aggregate: 0,
-    },
+    aggregateReport,
+    topUsedPaperTypes,
+    topUsedTemplates,
+    usedPaperTypes,
+    usedTemplates,
     isLoading,
     isFetching,
-  }: Data = useGetReportData();
+  }: Data = useGetReportData({
+    dateRange: daterange,
+  });
 
   if (isLoading) return <AnalyticsReportSkeleton />;
 
@@ -81,6 +45,18 @@ export default function AnalyticPage() {
       <Stack gap={4}>
         <Grid>
           <AggregateReportCard aggregate={aggregateReport} />
+        </Grid>
+        <Grid>
+          <DateTimeSelect
+            startDate={startDate}
+            endDate={endDate}
+            onChange={(value) => {
+              const copyParams = params;
+              params.set("from_date", value.startDate.toISOString());
+              params.set("to_date", value.endDate.toISOString());
+              setParams(copyParams);
+            }}
+          />
         </Grid>
         <Grid
           flex={"1 1 auto"}
@@ -92,8 +68,14 @@ export default function AnalyticPage() {
         >
           <TopUsedPaperTypeCard topUsedPaperTypes={topUsedPaperTypes} />
           <TopUsedTemplateCard topUsedTemplates={topUsedTemplates} />
-          <UsedPaperTypeCard usedPaperTypes={usedPaperTypes} />
-          <UsedTemplateCard usedTemplates={usedTemplates} />
+          <UsedPaperTypeCard
+            usedPaperTypes={usedPaperTypes}
+            unit={daterange.unit}
+          />
+          <UsedTemplateCard
+            usedTemplates={usedTemplates}
+            unit={daterange.unit}
+          />
         </Grid>
       </Stack>
     </Page>

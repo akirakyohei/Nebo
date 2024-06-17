@@ -1,6 +1,6 @@
 package com.nebo.sso;
 
-import autoconfigure.NeboAutoConfiguration;
+import com.nebo.shared.autoconfigure.NeboAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

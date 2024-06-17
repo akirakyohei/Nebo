@@ -15,7 +15,7 @@ public class TemplateUpdateRequest {
     private String name;
     private List<Integer> categoryIds;
     private Integer paperTypeId;
-    private List<String> assets;
+    private List<Object> assets;
     private List<Object> components;
     private String css;
     private List<Object> styles;

@@ -1,4 +1,4 @@
-package autoconfigure;
+package com.nebo.shared.autoconfigure;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.springframework.core.annotation.AnnotationUtils;

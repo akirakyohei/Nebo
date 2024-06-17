@@ -19,12 +19,12 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.MariaDBDialect
     properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MariaDBDialect
-        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-        id:
-          new_generator_mappings: false
-        type.preferred_instant_jdbc_type: TIMESTAMP
+      #      hibernate:
+      #        dialect: org.hibernate.dialect.MariaDBDialect
+      current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+      id:
+        new_generator_mappings: false
+      type.preferred_instant_jdbc_type: TIMESTAMP
     hibernate:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
@@ -51,6 +51,7 @@ nebo:
       secret_key: 5jhbfdjhbvdhjvdfous9586jgfn9854ongjk4354589t5bsddsuj4jbsj43jf3jsj4jnbjsk4tp4k08897h6fgo5
       expiration: 300000
       refresh_expiration: 86400000
+      session_oauth_id: JSESSIONID
     basic-auth:
       secret-key: c0xdfsv0j98c599c85c95438c59
   feign:

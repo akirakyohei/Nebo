@@ -18,7 +18,7 @@ export default function TraitManager({
             boxShadow: `rgba(33, 35, 38, 0.3) 0px 10px 10px -10px;`,
           }}
         >
-          Trait
+          Thuộc tính riêng
         </AccordionSummary>
         <AccordionDetails
           className={` flex flex-wrap`}

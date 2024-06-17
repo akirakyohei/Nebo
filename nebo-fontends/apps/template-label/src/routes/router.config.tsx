@@ -7,15 +7,16 @@ import { AccountSettingSkeleton } from "../features/settings/components/account/
 import { CategoryTemplateSelect } from "../features/workspaces/components/CategoryTemplateSelect";
 import { CategorySkeleton } from "../features/documents/components/category/CategorySkeleton";
 import { MediaFileSkeleton } from "../features/documents/components/media_file/MediaFileSkeleton";
+import { AuthCanActivate } from "./AuthCanActivate";
 
 export const routes: CustomizeRouteObject[] = [
   {
     path: "/",
-    Component: lazy(() => import("../features/layout/Layout")),
+    component: lazy(() => import("../features/layout/Layout")),
     children: [
       {
         path: "",
-        Component: lazy(() => import("../features/home/HomePage")),
+        component: lazy(() => import("../features/home/HomePage")),
         index: true,
       },
       {
@@ -23,21 +24,22 @@ export const routes: CustomizeRouteObject[] = [
         children: [
           {
             path: "login",
-            Component: lazy(() => import("../features/users/LoginPage")),
+            component: lazy(() => import("../features/users/LoginPage")),
           },
           {
             path: "signup",
-            Component: lazy(() => import("../features/users/SignupPage")),
+            component: lazy(() => import("../features/users/SignupPage")),
           },
         ],
       },
       {
         path: "documents",
-        Component: lazy(() => import("../features/documents/DocumentLayout")),
+        component: lazy(() => import("../features/documents/DocumentLayout")),
+        canActivate: AuthCanActivate(),
         children: [
           {
             path: "",
-            Component: lazy(
+            component: lazy(
               () => import("../features/documents/DashboardPage")
             ),
             index: true,
@@ -45,80 +47,71 @@ export const routes: CustomizeRouteObject[] = [
           {
             path: "assets",
             fallback: <MediaFileSkeleton />,
-            Component: lazy(
+            component: lazy(
               () => import("../features/documents/MediaFilePage")
             ),
           },
           {
             path: "categories",
             fallback: <CategorySkeleton />,
-            Component: lazy(() => import("../features/documents/CategoryPage")),
+            component: lazy(() => import("../features/documents/CategoryPage")),
           },
           {
             path: "templates",
             fallback: <WorkspacePageSkeleton />,
-            Component: lazy(() => import("../features/documents/TemplatePage")),
+            component: lazy(() => import("../features/documents/TemplatePage")),
           },
         ],
       },
       {
-        path: "analytics",
-        Component: lazy(() => import("../features/documents/DocumentLayout")),
-        children: [
-          {
-            path: "",
-            fallback: <AnalyticsReportSkeleton />,
-            Component: lazy(() => import("../features/analytics/AnalyticPage")),
-          },
-        ],
-      },
-      {
-        path: "settings",
-        Component: lazy(() => import("../features/documents/DocumentLayout")),
-        children: [
-          {
-            path: "account",
-            fallback: <AccountSettingSkeleton />,
-            Component: lazy(
-              () => import("../features/settings/AccountSettingPage")
-            ),
-          },
-          {
-            path: "integration",
-            fallback: <ApiKeySettingSkeleton />,
-            Component: lazy(
-              () => import("../features/settings/IntegrationSettingPage")
-            ),
-          },
-        ],
-      },
-      {
-        path: "workspaces",
+        path: "documents/templates",
+        canActivate: AuthCanActivate(),
         children: [
           {
             path: ":id",
             fallback: <WorkspacePageSkeleton />,
-            Component: lazy(
+            component: lazy(
               () => import("../features/workspaces/EditorManagePage")
             ),
           },
           {
             path: ":id/preview",
             fallback: <WorkspacePageSkeleton />,
-            Component: lazy(
+            component: lazy(
               () => import("../features/workspaces/EditorManagePage")
             ),
           },
+        ],
+      },
+      {
+        path: "analytics",
+        component: lazy(() => import("../features/documents/DocumentLayout")),
+        canActivate: AuthCanActivate(),
+        children: [
           {
             path: "",
-            Component: lazy(
-              () => import("../features/layout/ErrorBoundary/NotFoundPage")
+            fallback: <AnalyticsReportSkeleton />,
+            component: lazy(() => import("../features/analytics/AnalyticPage")),
+          },
+        ],
+      },
+      {
+        path: "settings",
+        component: lazy(() => import("../features/documents/DocumentLayout")),
+        canActivate: AuthCanActivate(),
+        children: [
+          {
+            path: "account",
+            fallback: <AccountSettingSkeleton />,
+            component: lazy(
+              () => import("../features/settings/AccountSettingPage")
             ),
           },
           {
-            path: "*",
-            Component: lazy(
-              () => import("../features/layout/ErrorBoundary/NotFoundPage")
+            path: "integration",
+            fallback: <ApiKeySettingSkeleton />,
+            component: lazy(
+              () => import("../features/settings/IntegrationSettingPage")
             ),
           },
         ],
@@ -127,7 +120,7 @@ export const routes: CustomizeRouteObject[] = [
   },
   {
     path: "*",
-    Component: lazy(
+    component: lazy(
       () => import("../features/layout/ErrorBoundary/NotFoundPage")
     ),
   },

@@ -32,7 +32,6 @@ export default function TraitPropertyField({
 }: StylePropertyFieldProps) {
   const editor = useEditor();
   const handleChange = (value: string) => {
-    debugger;
     trait.setValue(value);
   };
 

@@ -5,16 +5,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
+import java.io.Serializable;
+
 @Entity
 @Setter
 @Getter
-@Table(name="template_options")
+@Table(name = "template_options")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemplateOption {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TemplateOption implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
 
@@ -31,7 +34,8 @@ public class TemplateOption {
 
     @Setter
     @Getter
-    public static class TemplateMarginOption {
+    public static class TemplateMarginOption implements Serializable {
+        private static final long serialVersionUID = 1L;
         private String top;
         private String left;
         private String bottom;

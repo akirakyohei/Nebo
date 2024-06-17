@@ -15,7 +15,7 @@ public class TemplatePermissionSpecification {
     public static Specification<UserPermission> toFilter(long userId, long templateId, TemplateUserPermissionFilterRequest request) {
         return (root, cq, cb) -> {
             var predicates = new ArrayList<Predicate>();
-            predicates.add(cb.equal(root.get(Category_.USER_ID), userId));
+            predicates.add(cb.equal(root.get(UserPermission_.OWNER_USER_ID), userId));
             if (!CollectionUtils.isEmpty(request.getSharedUserIds())) {
                 predicates.add(root.get(UserPermission_.SHARED_USER_ID).in(request.getSharedUserIds()));
             }

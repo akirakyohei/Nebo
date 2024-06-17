@@ -4,13 +4,13 @@ import com.nebo.reports.applications.model.TimeRequest;
 import com.nebo.reports.domain.dto.TopUsedTemplateDto;
 import com.nebo.reports.domain.dto.UsedTemplateDto;
 import com.nebo.reports.domain.rowmapper.TopUsedTemplateRowMapper;
-import com.nebo.reports.domain.rowmapper.UsedPaperTypeRowMapper;
-import com.nebo.shared.common.types.PagingFilterRequest;
+import com.nebo.reports.domain.rowmapper.UsedTemplateRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,24 +45,24 @@ public class UsedTemplateRepositoryImpl implements UsedTemplateRepository {
     }
 
     @Override
-    public Page<UsedTemplateDto> getUsedTemplates(long userKey, List<Long> templateKeys, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest) {
+    public Page<UsedTemplateDto> getUsedTemplates(long userKey, List<Long> templateKeys, TimeRequest timeRequest, Pageable pageable) {
         var parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("userKey", userKey);
         parameterSource.addValue("startDate", timeRequest.getFromDate().toString());
         parameterSource.addValue("endDate", timeRequest.getToDate().toString());
-        parameterSource.addValue("offset", pagingFilterRequest.toPageable().getOffset());
-        parameterSource.addValue("limit", pagingFilterRequest.getLimit());
+        parameterSource.addValue("offset", pageable.getOffset());
+        parameterSource.addValue("limit", pageable.getPageSize());
         if (!CollectionUtils.isEmpty(templateKeys)) {
             parameterSource.addValue("templateKeys", StringUtils.join(templateKeys, ","));
         }
-        var list = namedParameterJdbcTemplate.query(buildSqlUsedTemplate(templateKeys, timeRequest.getUnit(), false), parameterSource, new UsedPaperTypeRowMapper());
-        var total = namedParameterJdbcTemplate.queryForObject(buildSqlUsedTemplate(templateKeys, timeRequest.getUnit(), true), parameterSource, (rs, rowNum) -> rs.getLong(0));
-        return new PageImpl(list, pagingFilterRequest.toPageable(), total);
+        var list = namedParameterJdbcTemplate.query(buildSqlUsedTemplate(templateKeys, timeRequest.getUnit(), false), parameterSource, new UsedTemplateRowMapper());
+        var total = namedParameterJdbcTemplate.queryForObject(buildSqlUsedTemplate(templateKeys, timeRequest.getUnit(), true), parameterSource, Long.class);
+        return new PageImpl(list, pageable, total);
     }
 
     @Override
     public long aggregateUsedTemplates(long userKey, List<Long> templateKeys, TimeRequest timeRequest) {
-        var builder = new StringBuilder("SELECT sum(FT.totalUsed) as totalUsed FROM fact_used_templates FT " +
+        var builder = new StringBuilder("SELECT COALESCE(sum(FT.total_used),0) as totalUsed FROM fact_used_templates FT " +
                 "INNER JOIN dim_datetimes DD ON FT.date_key=DD.date_key " +
                 "WHERE FT.user_key=:userKey AND " +
                 "DD.date>=:startDate AND " +
@@ -75,7 +75,7 @@ public class UsedTemplateRepositoryImpl implements UsedTemplateRepository {
             builder.append(" AND FT.template_key in (:templateKeys) ");
             parameterSource.addValue("templateKeys", StringUtils.join(templateKeys, ","));
         }
-        return namedParameterJdbcTemplate.queryForObject(builder.toString(), parameterSource, (rs, rowNum) -> rs.getLong(0));
+        return namedParameterJdbcTemplate.queryForObject(builder.toString(), parameterSource, Long.class);
 
     }
 
@@ -92,13 +92,13 @@ public class UsedTemplateRepositoryImpl implements UsedTemplateRepository {
         }
         builder.append("GROUP BY {1} ");
         if (count) {
-            params.add("count(*)");
+            builder = new StringBuilder("SELECT COUNT(*) from (" + builder + ") AS A");
             params.add("DD." + buildUnit(unit));
-
+            params.add("DD." + buildUnit(unit));
         } else {
             builder.append("ORDER BY {2} " +
                     "limit :offset,:limit");
-            params.add("sum(FT.totalUsed) as totalUsed, DD." + buildUnit(unit));
+            params.add("sum(FT.total_used) as totalUsed, DD." + buildUnit(unit));
             params.add("DD." + buildUnit(unit));
             params.add("DD." + buildUnit(unit) + " ASC");
         }

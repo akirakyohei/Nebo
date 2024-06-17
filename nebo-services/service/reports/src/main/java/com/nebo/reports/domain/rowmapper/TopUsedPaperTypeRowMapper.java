@@ -10,8 +10,8 @@ public class TopUsedPaperTypeRowMapper implements RowMapper<TopUsedPaperTypeDto>
     @Override
     public TopUsedPaperTypeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         return TopUsedPaperTypeDto.builder()
-                .paperTypeKey(rs.getInt(0))
-                .totalUsed(rs.getLong(1))
+                .paperTypeKey(rs.getInt(1))
+                .totalUsed(rs.getLong(2))
                 .build();
     }
 }

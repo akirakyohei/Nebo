@@ -3,7 +3,7 @@ import {
   HistorySession,
   HistorySessionFilterRequest,
   ListResponse,
-  TimeFileRequest,
+  TimeFilterRequest,
   TopTimeRequest,
   TopUsedPaperType,
   TopUsedTemplate,
@@ -32,24 +32,24 @@ const reportApi = storefontApi.injectEndpoints({
     getTopUsedPaperType: builder.query<TopUsedPaperType[], TopTimeRequest>({
       query: (q) => `/api/reports/top_used_paper_type${toQueryString(q)}`,
       transformErrorResponse: transformAxiosErrorResponse,
-      transformResponse: (res: { top_used_paper_types: TopUsedPaperType[] }) =>
-        res.top_used_paper_types,
+      transformResponse: (res: TopUsedPaperType[]) => res,
     }),
     getTopUsedTemplate: builder.query<TopUsedTemplate[], TopTimeRequest>({
       query: (q) => `/api/reports/top_used_template${toQueryString(q)}`,
       transformErrorResponse: transformAxiosErrorResponse,
-      transformResponse: (res: { top_used_templates: TopUsedTemplate[] }) =>
-        res.top_used_templates,
+      transformResponse: (res: TopUsedTemplate[]) => res,
     }),
-    getUsedTemplate: builder.query<UsedTemplates, TimeFileRequest>({
+    getUsedTemplate: builder.query<UsedTemplates, TimeFilterRequest>({
       query: (q) => `/api/reports/used_template${toQueryString(q)}`,
       transformErrorResponse: transformAxiosErrorResponse,
-      transformResponse: (res: UsedTemplates) => res,
+      transformResponse: (res: { used_templates: UsedTemplates }) =>
+        res.used_templates,
     }),
-    getUsedPaperType: builder.query<UsedPaperTypes, TimeFileRequest>({
+    getUsedPaperType: builder.query<UsedPaperTypes, TimeFilterRequest>({
       query: (q) => `/api/reports/used_paper_type${toQueryString(q)}`,
       transformErrorResponse: transformAxiosErrorResponse,
-      transformResponse: (res: UsedPaperTypes) => res,
+      transformResponse: (res: { used_paper_types: UsedPaperTypes }) =>
+        res.used_paper_types,
     }),
   }),
 });

@@ -13,6 +13,8 @@ public class ListLongConverter implements AttributeConverter<List<Long>, String>
 
     @Override
     public String convertToDatabaseColumn(List<Long> attribute) {
+        if (attribute == null)
+            return null;
         return StringUtils.join(attribute.stream().map(String::valueOf).toList(), ",");
     }
 

@@ -1,10 +1,12 @@
 package com.nebo.template.applications.model.template;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.nebo.template.domain.model.Template;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +26,13 @@ public class TemplateResponse {
     private String html;
     private Map<String, Object> fieldSchema;
     private Map<String, Object> testData;
+    private Template.SharedStatus sharedStatus;
 
     private TemplateOptionResponse options;
     private boolean active;
     private boolean trashed;
     private ImageResponse thumbnail;
     private long size;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

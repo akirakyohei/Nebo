@@ -1,22 +1,20 @@
 package com.nebo.reports.applications.model;
 
-import com.nebo.shared.common.types.PageResponse;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 
 @Setter
 @Getter
-public class UsedTemplatesResponse extends PageResponse<UsedTemplateResponse> {
+@Builder
+@JsonRootName("used_templates")
+public class UsedTemplatesResponse {
+
+    private List<UsedTemplateResponse> data;
+    private long totalElement;
     private long aggregates;
-
-    public UsedTemplatesResponse aggregates(long aggregates) {
-        this.aggregates = aggregates;
-        return this;
-    }
-
-    public UsedTemplatesResponse(Page<UsedTemplateResponse> page) {
-        super(page);
-    }
 }

@@ -12,12 +12,14 @@ public class ListStringConverter implements AttributeConverter<List<String>, Str
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
+        if (attribute == null)
+            return null;
         return StringUtils.join(attribute.stream().map(String::valueOf).toList(), ",");
     }
 
     @Override
     public List<String> convertToEntityAttribute(String dbData) {
-        if(dbData==null)
+        if (dbData == null)
             return null;
         return new ArrayList<String>(Arrays.stream(StringUtils.split(dbData, ","))
                 .toList());

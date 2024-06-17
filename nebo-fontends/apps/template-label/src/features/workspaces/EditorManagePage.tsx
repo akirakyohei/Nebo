@@ -4,43 +4,52 @@ import {
   useUpdateTemplateMutation,
 } from "../../data/template.api";
 import { Navigate, useParams } from "react-router-dom";
-// import { WebBuilderContainer } from "@repo/web-builder";
-import {
-  Data,
-  WebBuilderContainer,
-} from "../../../../../packages/web-builder/src/WebBuilderContainer";
+import { WebBuilderContainer } from "@repo/web-builder";
+// import { WebBuilderContainer } from "../../../../../packages/web-builder/src/WebBuilderContainer";
 import { NavbarMenu } from "./components/navbar/NavbarMenu";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Page } from "../../components/Page";
 import { Box, Grid } from "@mui/material";
-import { Template } from "../../types";
+import { FileDataUploadRequest, Template } from "../../types";
 import { useToast } from "../../components/notification/useToast";
 import { isClientError } from "../../utils/client";
 import { WorkspacePageSkeleton } from "./components/WorkspacePageSkeleton";
-import { PreviewContainer } from "./components/preview/PreviewContainer";
-
+import {
+  PreviewContainer,
+  PreviewRef,
+} from "./components/preview/PreviewContainer";
+import { defaultBlankTemplate } from "../../constants";
+import { AssetUploadList } from "./components/AssetUploadList";
+import { useUploadFileMutation } from "../../data/mediafile.api";
+import { getUrlAsset } from "../../utils/base";
+import { Data } from "@repo/web-builder";
+import { useEvaluateTemplateUserPermissionsQuery } from "../../data/template_permission.api";
 export default function EditorManagePage() {
   const { show: showToast } = useToast();
   const params = useParams();
   const idStr = params["id"];
   const id = toNumber(idStr);
-  const [designing, setDesigning] = useState(true);
+  const previewRef = useRef<PreviewRef>(null);
   const isPreviewing = location.pathname.endsWith("/preview");
 
   const {
-    data: template = {
-      options: {
-        width: "210mm",
-        height: "297mm",
-        margin: { top: "0px", bottom: "0px", left: "0px", right: "0px" },
-        landscape: false,
-      },
-    },
-    isLoading: isLoading,
-    isFetching: isFetching,
+    data: template = defaultBlankTemplate,
+    isLoading: isLoadingTemplate,
+    isFetching: isFetchingTemplate,
   } = useGetTemplateQuery(id, { skip: !id });
 
-  const [updateTemplate] = useUpdateTemplateMutation();
+  const {
+    data: userPermissions = [],
+    isLoading: isLoadingUserPermission,
+    isFetching: isFetchingUserPermission,
+  } = useEvaluateTemplateUserPermissionsQuery([template.id], {
+    skip: !template.id || !template.active,
+  });
+
+  const [updateTemplate, { isLoading: isloadingUpdateTemplate }] =
+    useUpdateTemplateMutation();
+
+  const [uploadFile] = useUploadFileMutation();
 
   const handleUpdateTemplate = (id: number, _value: Data) => {
     try {
@@ -67,9 +76,51 @@ export default function EditorManagePage() {
     }
   };
 
+  const handleUploadFile = async (data: FileDataUploadRequest) => {
+    try {
+      const res = await uploadFile({
+        name: data.name,
+        content_type: data.content_type,
+        data: data.data,
+      }).unwrap();
+      showToast("tải file thành công");
+      return getUrlAsset(`/api/files/data/${res.key}`);
+    } catch (ex) {
+      if (isClientError(ex)) {
+        let error = ex.data.message;
+        if (/Authenticated/.test(error)) {
+          showToast("Lưu mẫu thất bại thành công trước đó");
+          return null;
+        }
+
+        if (/Email or password incorrect/.test(error))
+          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
+        if (/Phone number or password incorrect/.test(error))
+          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
+        showToast(error, { variant: "error" });
+      }
+    }
+    return null;
+  };
+
+  const isLoading = isLoadingTemplate || isLoadingUserPermission;
+  const isFetching = isFetchingTemplate || isFetchingUserPermission;
+
   if (isLoading) return <WorkspacePageSkeleton />;
 
-  // if (!template) return <Navigate to={"/"} />;
+  if (!template) return <Navigate to={"/"} />;
+
+  if (!template.active) {
+    showToast("Mẫu đang ở trạng thái ko hoạt động chỉ có thể xem");
+    return <Navigate to={`/documents/templates`} />;
+  }
+  if (
+    userPermissions.length === 0 ||
+    !userPermissions[0].permissions.includes("write")
+  ) {
+    showToast("Bạn không có quyền chỉnh sửa mẫu");
+    return <Navigate to={`/documents/templates`} />;
+  }
 
   return (
     <>
@@ -84,7 +135,13 @@ export default function EditorManagePage() {
           direction={"column"}
         >
           <Grid item width={"100%"}>
-            <NavbarMenu template={template} isDesigning={!isPreviewing} />
+            <NavbarMenu
+              template={template}
+              isloadingUpdateTemplate={isloadingUpdateTemplate}
+              isDesigning={!isPreviewing}
+              downloadTemplate={() => previewRef.current?.downloadTemplate()}
+              printTemplate={() => previewRef.current?.printTemplate()}
+            />
           </Grid>
           <Grid
             item
@@ -96,12 +153,33 @@ export default function EditorManagePage() {
           >
             {!isPreviewing ? (
               <WebBuilderContainer
-                designingMode={designing}
-                template={template}
+                template={{
+                  ...template,
+                  thumbnail:
+                    template.thumbnail === null
+                      ? null
+                      : { ...template.thumbnail },
+                }}
                 onUpdate={handleUpdateTemplate}
+                showToast={(msg, options) =>
+                  showToast(
+                    msg,
+                    options !== undefined
+                      ? { variant: options.isError ? "error" : undefined }
+                      : undefined
+                  )
+                }
+                uploadFile={async (data) => handleUploadFile({ ...data })}
+                moreAssets={({ select }) => (
+                  <AssetUploadList onSelect={select} />
+                )}
               />
             ) : (
-              <PreviewContainer template={template} />
+              <PreviewContainer
+                ref={previewRef}
+                loadingTemplate={isFetching}
+                template={template}
+              />
             )}
           </Grid>
         </Grid>

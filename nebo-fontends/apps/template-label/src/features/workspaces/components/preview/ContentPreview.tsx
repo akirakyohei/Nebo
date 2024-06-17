@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { PageSkeleton } from "./PageSkeleton";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -11,7 +11,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-export const ContentPreview = () => {
+interface Props {
+  file: File;
+  loading?: boolean;
+  openHtml: () => void;
+}
+
+export const ContentPreview = ({ file, loading, openHtml }: Props) => {
+  const contentFile = useMemo(() => file, [file]);
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [zoom, setZoom] = useState<number>(1);
@@ -19,6 +26,7 @@ export const ContentPreview = () => {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
+
   return (
     <Box
       sx={{
@@ -37,12 +45,14 @@ export const ContentPreview = () => {
           setZoom={setZoom}
           rotate={rotate}
           setRotate={setRotate}
+          openHtml={openHtml}
         />
       </Box>
       <Document
-        file={"https://pdfobject.com/pdf/sample.pdf"}
+        file={contentFile}
         onLoadSuccess={onDocumentLoadSuccess}
         loading={<PageSkeleton />}
+        error={"Không thể hiển thị"}
       >
         <Page pageNumber={pageNumber} scale={zoom} rotate={rotate}></Page>
       </Document>

@@ -22,13 +22,13 @@ export type Template = {
   name: string;
   category_ids: number[];
   paper_type_id: number;
-  assets: string[];
+  assets: object[];
   components: any;
   css: string;
   styles: any;
   field_schema?: object;
   html: string;
-  testData?: { [key: string]: string };
+  test_data?: Record<string, any>;
   shared_status?: SharedStatus;
   active: boolean;
   trashed: boolean;
@@ -58,7 +58,7 @@ export type TemplateRequest = {
   name: string;
   category_ids: number[];
   paper_type_id: number;
-  assets: string[];
+  assets: object[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   components: any;
   css: string;
@@ -70,4 +70,14 @@ export type TemplateRequest = {
   active: boolean;
   trashed: boolean;
   options: TemplateOptions;
+};
+
+export type TemplatePreviewRequest = {
+  html: string;
+  variables?: Record<any, any>;
+  options?: TemplateOptions;
+};
+
+export type TemplateExportRequest = {
+  variables?: Record<any, any>;
 };

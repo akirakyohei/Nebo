@@ -25,7 +25,7 @@ export type Template = {
   name: string;
   category_ids: number[];
   paper_type_id: number;
-  assets: string[];
+  assets: object[];
   components: any;
   css: string;
   styles: any;
@@ -35,7 +35,7 @@ export type Template = {
   active: boolean;
   trashed: boolean;
   options: TemplateOptions;
-  thumbnail: FileDataUploadResponse;
+  thumbnail: FileDataUploadResponse | null;
   size: number;
   created_at: string;
   updated_at: string;
@@ -49,4 +49,19 @@ export type FileUploadData = {
   name: string;
   content_type: string;
   data: string;
+};
+
+export type AssetFile = {
+  src: string;
+  type?: string;
+  name?: string;
+};
+
+export type Data = {
+  assets?: object[];
+  components?: any;
+  css?: string;
+  styles?: any;
+  html?: string;
+  field_schema?: object;
 };

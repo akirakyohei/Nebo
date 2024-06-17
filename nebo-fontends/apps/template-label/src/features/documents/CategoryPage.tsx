@@ -12,12 +12,14 @@ import { CategorySkeleton } from "./components/category/CategorySkeleton";
 import { Loading } from "../../components/loading";
 import { CategoryFilters } from "./components/category/CatgoryFilters";
 import { EmptyStateImage } from "../../components/EmptyStatePage";
+import { useSearchParams } from "react-router-dom";
 export default function CategoryPage() {
+  const [params] = useSearchParams();
   const {
     value: isOpenCreateCategory,
     setTrue: openCreateCategory,
     setFalse: closeCreateCategory,
-  } = useToggle(false);
+  } = useToggle(params.get("action") === "create");
 
   const { filter, isFilter, onChangeSearchParams, onChangeSearchParamsAll } =
     useBaseFilter<CategoryFilterRequest>();
@@ -29,7 +31,6 @@ export default function CategoryPage() {
     <Page
       title="Danh mục"
       fullHeight
-      fluid
       paddingHeader={2}
       primaryAction={{
         icon: <ControlPointOutlined />,

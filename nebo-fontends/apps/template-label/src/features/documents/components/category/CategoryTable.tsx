@@ -8,6 +8,7 @@ import {
 import { CategoryCard } from "./CategoryCard";
 import { Pagination } from "../../../../components/Pagination";
 import { FilterQueryResult } from "../../../../utils/useBaseFilterQuery";
+import { EmptyStateImage } from "../../../../components/EmptyStatePage";
 
 interface Props {
   categories: ListResponse<Category>;
@@ -21,6 +22,20 @@ export const CategoryTable = ({
   onChangeSearchParams,
   onChangeSearchParamsAll,
 }: Props) => {
+  if (categories.metadata.total_element === 0)
+    return (
+      <EmptyStateImage
+        title="Không tim thấy kết quả nào"
+        description="Hãy thử với tìm kiếm khác"
+        secondaryActions={[
+          {
+            content: "Tìm kiếm tất cả",
+            url: "/documents/categories",
+          },
+        ]}
+      />
+    );
+
   return (
     <Box maxWidth={"100%"}>
       <Grid
@@ -31,8 +46,7 @@ export const CategoryTable = ({
           xs: "1fr",
           sm: "1fr 1fr",
           md: "1fr 1fr 1fr",
-          lg: "1fr 1fr 1fr 1fr 1fr",
-          xl: "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+          lg: "1fr 1fr 1fr 1fr",
         }}
         justifyContent={"center"}
         columnGap={3}

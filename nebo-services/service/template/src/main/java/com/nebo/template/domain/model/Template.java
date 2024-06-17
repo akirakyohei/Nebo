@@ -5,9 +5,17 @@ import com.nebo.shared.common.persistences.ListIntegerConverter;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.SerializationUtils;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +26,9 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Template {
+public class Template implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -54,12 +64,21 @@ public class Template {
     @Enumerated(EnumType.STRING)
     private SharedStatus sharedStatus = SharedStatus.only_you;
     private long size;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    @CreationTimestamp
+    private Instant createdAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
 
-    public void setHtml(String html) {
-        this.html = html;
-        this.size = html.getBytes().length;
+
+    @PrePersist
+    @PreUpdate
+    public void sumData() {
+        countTotalData();
+    }
+
+    private void countTotalData() {
+        var data = SerializationUtils.serialize(this);
+        this.size = data.length;
     }
 
     public void setUserId(long userId) {

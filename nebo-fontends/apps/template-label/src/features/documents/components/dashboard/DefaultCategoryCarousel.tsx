@@ -1,12 +1,12 @@
 import { ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
-import { Template } from "../../../../types";
-import { Box, IconButton } from "@mui/material";
+import { Category, Template } from "../../../../types";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { stringToColor } from "../../../../utils/stringAvatar";
 
 interface Props {
   active?: number;
-  data: Template[];
+  data: Category[];
 }
 
 export const DefaultCarouselCarousel = ({ active = 0, data }: Props) => {
@@ -79,7 +79,7 @@ export const DefaultCarouselCarousel = ({ active = 0, data }: Props) => {
           <React.Fragment key={item.id}>
             <Box
               sx={{
-                background: stringToColor(item.name),
+                background: "#fafafa",
                 width: "362px",
                 height: "272px",
                 transition:
@@ -90,11 +90,12 @@ export const DefaultCarouselCarousel = ({ active = 0, data }: Props) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                boxShadow: `0 5px 20px ${stringToColor(item.name)}30`,
+                border: "1px solid #f5f5f5",
+                boxShadow: `0 5px 20px ${"#fafafa"}30`,
                 ...getStyles(i),
               }}
             >
-              <SliderContent template={item} />
+              <SliderContent category={item} />
             </Box>
             <Box
               sx={{
@@ -114,27 +115,47 @@ export const DefaultCarouselCarousel = ({ active = 0, data }: Props) => {
       </Box>
       {/* carousel */}
 
-      <IconButton onClick={prev}>
-        <ChevronLeftOutlined />
-      </IconButton>
-      <IconButton onClick={next}>
-        <ChevronRightOutlined />
-      </IconButton>
+      <Stack direction={"row"} justifyContent={"center"} alignItems={"center"}>
+        <IconButton onClick={prev}>
+          <ChevronLeftOutlined />
+        </IconButton>
+        <Box
+          sx={(theme) => ({
+            paddingX: 2,
+            paddingY: 1,
+            border: "1px solid #fafafa",
+            background: "#babacbaa",
+            borderRadius: "10px",
+            boxShadow: theme.shadows[1],
+          })}
+        >
+          <Typography>Thư mục</Typography>
+        </Box>
+        <IconButton onClick={next}>
+          <ChevronRightOutlined />
+        </IconButton>
+      </Stack>
     </>
   );
 };
 
-const SliderContent = ({ template }: { template: Template }) => {
+const SliderContent = ({ category }: { category: Category }) => {
   return (
-    <Box
+    <Button
       sx={{
         display: "flex",
         flexDirection: "column",
         padding: 1,
         alignItems: "flex-start",
+        ":hover": {
+          cursor: "pointer",
+        },
       }}
+      href={`/documents/templates?category_ids=${category.id}`}
     >
-      <Box>{template.name}</Box>
-    </Box>
+      <Typography variant="h5" color="#060101" textAlign={"center"}>
+        {category.name}
+      </Typography>
+    </Button>
   );
 };

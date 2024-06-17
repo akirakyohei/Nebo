@@ -1,6 +1,7 @@
 package com.nebo.template.applications.model.template;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Map;
@@ -10,11 +11,18 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonRootName("template_print")
+@JsonRootName("template_preview")
 public class TemplatePreviewRequest {
+
+    @NotNull
     private String html;
     private Map<String, Object> variables;
-    private boolean fillData;
 
     private TemplateOptionResponse options;
+
+    private Format format = Format.pdf;
+
+    public enum Format {
+        pdf, html
+    }
 }

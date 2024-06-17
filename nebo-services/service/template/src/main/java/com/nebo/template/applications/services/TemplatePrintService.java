@@ -2,12 +2,15 @@ package com.nebo.template.applications.services;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
+
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.attach.ITagWorkerFactory;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
+import com.nebo.template.applications.services.handlebars.EncodeURICompHelper;
 import com.nebo.template.infrastructures.util.SizeUtils;
 import com.nebo.template.applications.model.template.TemplatePrintModel;
-import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -29,7 +32,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TemplatePrintService {
 
-    private NeboFeignClient neboFeignClient;
+    private final NeboFeignClient neboFeignClient;
 
     public byte[] print(long userId, TemplatePrintModel request) throws IOException {
         var html = request.getHtml();
@@ -45,6 +48,16 @@ public class TemplatePrintService {
         }
     }
 
+    public String printToHtml(long userId, TemplatePrintModel request) throws IOException {
+        var html = request.getHtml();
+        if (request.isFillData()) {
+            html = fillData(html, userId, request);
+        }
+        var document = parseDocument(html, request);
+        return document.html();
+    }
+
+
     public byte[] printToImage(long userId, TemplatePrintModel request) throws IOException {
         var pdfByteArrays = print(userId, request);
         var pdfDocument = Loader.loadPDF(pdfByteArrays);
@@ -58,6 +71,7 @@ public class TemplatePrintService {
 
     private String fillData(String html, long userId, TemplatePrintModel request) throws IOException {
         var handlebars = new Handlebars();
+        handlebars.registerHelper("$encodeURIComp", new EncodeURICompHelper());
         var template = handlebars.compileInline(html);
         var context = buildContextVariables(userId, request.getVariables());
         return template.apply(context);
@@ -75,7 +89,7 @@ public class TemplatePrintService {
     private Document parseDocument(String html, TemplatePrintModel request) {
         var document = Jsoup.parse(html, "UTF-8");
         document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        document.body().attr("margin", MessageFormat.format("{0} {1} {2} {3}", request.getOptions().getMargin().getTop(),
+        document.body().attr("padding", MessageFormat.format("{0} {1} {2} {3}", request.getOptions().getMargin().getTop(),
                 request.getOptions().getMargin().getRight(),
                 request.getOptions().getMargin().getBottom(),
                 request.getOptions().getMargin().getLeft()));
@@ -83,14 +97,10 @@ public class TemplatePrintService {
     }
 
     private void parseToPdf(Document document, OutputStream outputStream, TemplatePrintModel request) throws IOException, IllegalAccessException {
-        var width = SizeUtils.splitSize(request.getOptions().getWidth());
-        var height = SizeUtils.splitSize(request.getOptions().getHeight());
+        var convertProperties = new ConverterProperties();
+        convertProperties.setBaseUri("");
+        HtmlConverter.convertToPdf(document.html(), outputStream, convertProperties);
 
-        var builder = new PdfRendererBuilder();
-        builder.toStream(outputStream);
-        builder.useDefaultPageSize(SizeUtils.convertSize(width.getKey(), width.getValue()), SizeUtils.convertSize(height.getKey(), height.getValue()), BaseRendererBuilder.PageSizeUnits.MM);
-        builder.withW3cDocument(new W3CDom().fromJsoup(document), "/");
-        builder.run();
     }
 
     private void parseToImage(PDDocument document, OutputStream outputStream) throws IOException, IllegalAccessException {

@@ -1,20 +1,28 @@
 package com.nebo.mediafile.interfaces.rest;
 
+import com.google.common.io.ByteStreams;
 import com.nebo.mediafile.applications.model.*;
 import com.nebo.mediafile.applications.services.MediaService;
 import com.nebo.shared.web.applications.bind.UserId;
 import com.nebo.shared.web.applications.exception.ConstraintViolationException;
+import com.nebo.shared.web.applications.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -37,8 +45,16 @@ public class FileController {
 
     @GetMapping(path = "/data/**")
     public void fileDownload(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var key = request.getRequestURI().substring("/api/files/data/".length());
-        mediaService.getFile(key, response);
+        var key = request.getRequestURI().replaceAll("/api/files/data/", "");
+        var result = mediaService.getFile(key);
+        if (result == null)
+            throw new NotFoundException();
+
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + result.getValue());
+        response.setCharacterEncoding("UTF-8");
+        ByteArrayResource resource = new ByteArrayResource(result.getKey());
+        ByteStreams.copy(resource.getInputStream(), response.getOutputStream());
+        response.flushBuffer();
     }
 
     @GetMapping(path = "/metadata/by_ids")

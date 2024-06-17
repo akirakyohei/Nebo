@@ -16,7 +16,6 @@ import java.util.Set;
 @Validated
 @JsonRootName("template_user_permission")
 public class TemplatePermissionRequest {
-    private Long templateId;
     private Template.SharedStatus sharedStatus;
 
     @Size(max = 250)

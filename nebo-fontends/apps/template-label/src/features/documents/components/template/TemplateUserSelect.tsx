@@ -5,23 +5,30 @@ import { Option } from "../../../../components/types";
 import { useSimpleFilters } from "../../../../utils/useSimpleFilters";
 import AutocompleteSelect from "../../../../components/AutocompleteSelect2";
 import { toString } from "lodash-es";
-import { Box } from "@mui/material";
+import { Avatar, Box, Stack } from "@mui/material";
 import { useGetUsersWithUserPermissionWithInfiniteQuery } from "../../../../data/user.api";
-import { ListResponse, UserWithUserPermission } from "../../../../types";
+import {
+  ListResponse,
+  Template,
+  UserWithUserPermission,
+} from "../../../../types";
 import { getFullName } from "../../../../utils/base";
+import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
+import { stringAvatar } from "../../../../utils/stringAvatar";
+import { useWorkspaceContext } from "../../../../utils/useWorkspaceContext";
 
 interface Props {
   label?: string;
-  values: UserWithUserPermission[];
+  template?: Template;
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
-  onChange: (_value: number[]) => void;
+  onChange: (_value: UserWithUserPermission) => void;
   error?: string;
 }
 
 export const TemplateUserSelect = ({
   label,
-  values,
+  template,
   onChange,
   error,
   width,
@@ -35,49 +42,77 @@ export const TemplateUserSelect = ({
     debounceQuery,
     changeDebounceQuery,
   } = useSimpleFilters(20);
-
+  const { user: currentUser } = useWorkspaceContext();
   const {
-    data: categories = {
+    data: templateUsers = {
       data: [],
       metadata: { page: 0, limit: limit, total_element: 0 },
     } as ListResponse<UserWithUserPermission>,
-    isLoading: isLoadingCategories,
-    isFetching: isFetchingCategories,
-  } = useGetUsersWithUserPermissionWithInfiniteQuery({
-    templateId: 1,
-    query: debounceQuery,
-    limit: limit,
-    page: page,
-  });
+    isLoading: isLoadingTemplateUsers,
+    isFetching: isFetchingTemplateUsers,
+  } = useGetUsersWithUserPermissionWithInfiniteQuery(
+    {
+      templateId: template?.id || 0,
+      query: debounceQuery,
+      limit: limit,
+      page: page,
+    },
+    { skip: !template?.id }
+  );
 
-  const options: Option[] = categories.data.map((item) => ({
+  const options: Option[] = templateUsers.data.map((item) => ({
     value: item.id,
     label: getFullName({ ...item }),
+    renderInput: (
+      <Box
+        onClick={(event) => {
+          if (item.id === currentUser.id) return;
+          event.preventDefault();
+          onChange(item);
+        }}
+      >
+        <Stack direction="row" gap={1} alignItems={"center"}>
+          <Avatar
+            sizes="small"
+            src={
+              item.avatar_url
+                ? item.avatar_url.startsWith("http")
+                  ? item.avatar_url
+                  : `/api/files/data/${item.avatar_url}`
+                : undefined
+            }
+            {...stringAvatar(item.first_name, item.last_name, 40)}
+          />
+          <Box>
+            <Box>{getFullName({ ...item })}</Box>
+            <Box>{item.email}</Box>
+          </Box>
+        </Stack>
+      </Box>
+    ),
   }));
 
-  const selectedOptions: Option<number>[] = useMemo(
-    () =>
-      values.map((a) => ({
-        value: a.id,
-        label: getFullName({ ...a }),
-      })),
-    [values]
-  );
   return (
     <AutocompleteSelect
-      values={selectedOptions}
+      values={[]}
       label={label}
       options={options}
-      multiple
-      placeholder="Chọn danh mục"
+      placeholder="Chia sẻ cho email hoặc số điện thoại"
       query={query}
       height={height}
       minWidth={width}
       onChangeQuery={changeDebounceQuery}
-      loading={isFetchingCategories}
-      onChange={onChange}
+      onBlur={() => changeQuery("")}
+      loading={isFetchingTemplateUsers}
+      onChange={(value) => {
+        const v = templateUsers.data.find((c) => c.id == value[0]);
+        if (v) {
+          if (v.id === currentUser.id) return;
+          onChange(v);
+        }
+      }}
       error={error}
-      noOptionText={<Box>Không tìm thấy danh mục nào</Box>}
+      noOptionText={<Box>Không tìm thấy tài khoản</Box>}
     />
   );
 };

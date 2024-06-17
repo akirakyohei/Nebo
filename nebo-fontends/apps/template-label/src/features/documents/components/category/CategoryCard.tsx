@@ -40,7 +40,6 @@ export const CategoryCard = ({ category }: Props) => {
     toggle: toggleConfirmDelete,
     setFalse: closeConfirmDelete,
   } = useToggle(false);
-  const color = stringToColor(category.name);
   const [deleteCategory, { isLoading: isLoadingDelete }] =
     useDeleteCategoryMutation();
 
@@ -69,17 +68,16 @@ export const CategoryCard = ({ category }: Props) => {
   return (
     <Card
       sx={(theme) => ({
-        background: color,
+        background: "#fafafa",
         "&:hover": { opacity: 0.8, boxShadow: theme.shadows[4] },
         height: "200px",
         display: "flex",
         flexDirection: "column",
-        color: "#fff",
       })}
     >
       <CardActionArea
         href={`/documents/templates?category_ids=${category.id}`}
-        sx={{ flex: 1, color: "#fff" }}
+        sx={{ flex: 1 }}
       >
         <Tooltip
           title={category.name}
@@ -108,7 +106,6 @@ export const CategoryCard = ({ category }: Props) => {
                 whiteSpace: "nowrap",
                 width: "100%",
                 textOverflow: "ellipsis",
-                color: "#fff",
                 textAlign: "center",
                 justifyContent: "center",
                 lineClamp: 2,

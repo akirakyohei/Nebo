@@ -19,57 +19,57 @@ export const PageSkeleton = () => {
           </Box>
         </Stack>
 
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
         <Skeleton />
         <Skeleton />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
         <Skeleton />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
-        <Skeleton height={16} />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton height={16} />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton height={16} />
-        <Skeleton />
-        <Skeleton height={16} />
-        <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
         <Skeleton />
         <Skeleton />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
         <Skeleton />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
-        <Skeleton height={16} />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
         <Skeleton />
         <Skeleton />
         <Skeleton />
-        <Skeleton height={16} />
         <Skeleton />
-        <Skeleton height={16} />
+        <Skeleton height={42} />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton height={42} />
+        <Skeleton />
+        <Skeleton height={42} />
+        <Skeleton />
+        <Skeleton height={42} />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton height={42} />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton height={42} />
+        <Skeleton />
+        <Skeleton height={42} />
         <Skeleton />
       </CardContent>
     </Card>

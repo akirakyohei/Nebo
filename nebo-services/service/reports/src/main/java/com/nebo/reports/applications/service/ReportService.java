@@ -1,7 +1,7 @@
 package com.nebo.reports.applications.service;
 
 import com.nebo.reports.applications.model.*;
-import com.nebo.shared.common.types.PagingFilterRequest;
+import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface ReportService {
 
     List<TopUsedTemplateResponse> getTopUsedTemplateResponse(long userId, long top, TimeRequest timeRequest);
 
-    UsedTemplatesResponse getUsedTemplates(long userId, List<Long> templateId, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest);
+    UsedTemplatesResponse getUsedTemplates(long userId, List<Long> templateId, TimeRequest timeRequest) throws ConstraintViolationException;
 
-    UsedPaperTypesResponse getUsedPaperTypes(long userId, List<Integer> paperTypeId, TimeRequest timeRequest, PagingFilterRequest pagingFilterRequest);
+    UsedPaperTypesResponse getUsedPaperTypes(long userId, List<Integer> paperTypeId, TimeRequest timeRequest) throws ConstraintViolationException;
 }

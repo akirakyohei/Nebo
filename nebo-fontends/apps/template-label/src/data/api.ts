@@ -3,7 +3,7 @@ import {
   authenticatedFetch,
   parseErrorBody,
 } from "../utils/client";
-import { User } from "../types";
+import { User, UserToken } from "../types";
 import {
   BaseQueryFn,
   FetchArgs,
@@ -116,7 +116,23 @@ export const storefontApi = createApi({
       transformResponse: (response: { user: User }) => response.user,
       providesTags: ["credentials"],
     }),
+    refreshToken: builder.query<UserToken, void>({
+      query: () => {
+        return {
+          url: `/api/auth/refresh_token`,
+          method: "POST",
+        };
+      },
+      transformErrorResponse: transformAxiosErrorResponse,
+      transformResponse: (response: { user_token: UserToken }) =>
+        response.user_token,
+      providesTags: ["credentials"],
+    }),
   }),
 });
 
-export const { useGetCurrentUserQuery } = storefontApi;
+export const {
+  useGetCurrentUserQuery,
+  useLazyGetCurrentUserQuery,
+  useRefreshTokenQuery,
+} = storefontApi;

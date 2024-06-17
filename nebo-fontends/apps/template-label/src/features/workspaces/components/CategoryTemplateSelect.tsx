@@ -92,9 +92,7 @@ export const CategoryTemplateSelect = ({
       loadMore();
     }
   }, [loadMore, hasMore]);
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
+  
   return (
     <AutocompleteSelect
       values={selectedOptions}
@@ -102,7 +100,7 @@ export const CategoryTemplateSelect = ({
       options={options}
       multiple
       placeholder="Chọn danh mục"
-      query={query}
+      // query={query}
       height={height}
       minWidth={width}
       onBlur={() => {
