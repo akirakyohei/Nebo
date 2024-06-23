@@ -75,6 +75,10 @@ public class TemplateService {
                                 .build())
                         .build(), B.withUserId(userId)).getFile();
                 template.setThumbnailImageId(res.getId());
+                try {
+                    jpaTemplateRepository.save(template);
+                } catch (Exception ex) {
+                }
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
@@ -332,7 +336,7 @@ public class TemplateService {
         }
     }
 
-    List<TemplateResponse> fromDomainToResponse(long userId, List<Template> templates) {
+    private List<TemplateResponse> fromDomainToResponse(long userId, List<Template> templates) {
         var fileDataIds = templates.stream().map(Template::getThumbnailImageId).filter(Objects::nonNull).toList();
         var fileDatas = fileDataRepository.findFileDataByUserIdAndIdIn(userId, fileDataIds);
         return templates.stream().map(template -> {

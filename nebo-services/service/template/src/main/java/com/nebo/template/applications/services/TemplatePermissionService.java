@@ -12,7 +12,7 @@ import com.nebo.template.domain.model.UserPermission_;
 import com.nebo.template.domain.repository.JpaAppPermissionRepository;
 import com.nebo.template.domain.repository.JpaUserPermissionRepository;
 import com.nebo.template.applications.model.template.*;
-import com.nebo.template.domain.Specifiaction.TemplatePermissionSpecification;
+import com.nebo.template.domain.specifiaction.TemplatePermissionSpecification;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
@@ -27,26 +27,26 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class TemplatePermissionService {
 
-    private final JpaUserPermissionRepository templatePermissionRepository;
+    private final JpaUserPermissionRepository userPermissionRepository;
     private final JpaAppPermissionRepository appPermissionRepository;
     private final NeboFeignClient neboFeignClient;
 
     private final TemplateMapper templateMapper;
 
-    public TemplateUserPermissionsResponse getTemplatePermissions(long userId, Template template, TemplateUserPermissionFilterRequest request) {
+    TemplateUserPermissionsResponse getTemplatePermissions(long userId, Template template, TemplateUserPermissionFilterRequest request) {
         var pageable = request.toPageable(Sort.by(Sort.Direction.DESC, UserPermission_.UPDATED_AT));
         if (StringUtils.isNotBlank(request.getQuery())) {
             var users = neboFeignClient.getUsers(UserFilterRequest.builder().query(request.getQuery()).limit(250).page(1).build(), B.withUserId(userId)).getUsers().getData();
             request.setSharedUserIds(users.stream().map(User::getId).toList());
         }
         var spec = TemplatePermissionSpecification.toFilter(userId, template.getId(), request);
-        var page = templatePermissionRepository.findAll(spec, pageable);
+        var page = userPermissionRepository.findAll(spec, pageable);
         return new TemplateUserPermissionsResponse(page.map(templateMapper::fromDomainToResponse));
     }
 
-    public List<EvaluateTemplatePermissionResponse> evaluateTemplatePermissions(long sharedUserId, List<Template> templates) {
+    List<EvaluateTemplatePermissionResponse> evaluateTemplatePermissions(long sharedUserId, List<Template> templates) {
         var templateIds = templates.stream().map(Template::getId).toList();
-        var templatePermissions = templatePermissionRepository.findAllBySharedUserIdAndTemplateIdIn(sharedUserId, templateIds);
+        var templatePermissions = userPermissionRepository.findAllBySharedUserIdAndTemplateIdIn(sharedUserId, templateIds);
         return templates.stream().map(template -> {
             var evaluateTemplatePermission = new EvaluateTemplatePermissionResponse(template.getId(), template.getUserId());
             var templatePermission = templatePermissions.stream().filter(a -> Objects.equals(a.getTemplateId(), template.getId()))
@@ -56,7 +56,7 @@ public class TemplatePermissionService {
         }).toList();
     }
 
-    public List<UserPermission> evaluatePermission(long userId, Template template, com.nebo.template.domain.model.UserPermission userPermission) {
+    List<UserPermission> evaluatePermission(long userId, Template template, com.nebo.template.domain.model.UserPermission userPermission) {
         if (userId == template.getUserId()) {
             return List.of(UserPermission.write, UserPermission.read);
         }
@@ -67,22 +67,22 @@ public class TemplatePermissionService {
         return Template.SharedStatus.allow_all.equals(template.getSharedStatus()) ? List.of(UserPermission.read) : List.of();
     }
 
-    public List<UserPermission> evaluatePermission(long userId, Template template) {
+    List<UserPermission> evaluatePermission(long userId, Template template) {
         if (userId == template.getUserId()) {
             return List.of(UserPermission.write, UserPermission.read);
         }
         if (Template.SharedStatus.only_you.equals(template.getSharedStatus()))
             return List.of();
-        var templatePermission = templatePermissionRepository.findFirstByOwnerUserIdAndTemplateId(template.getUserId(), template.getId()).orElse(null);
+        var templatePermission = userPermissionRepository.findFirstByOwnerUserIdAndTemplateId(template.getUserId(), template.getId()).orElse(null);
         if (templatePermission != null)
             return templatePermission.getPermissions().stream().map(UserPermission::valueOf).toList();
         return Template.SharedStatus.allow_all.equals(template.getSharedStatus()) ? List.of(UserPermission.read) : List.of();
     }
 
-    public void shareTemplate(long userId, Template template, TemplatePermissionRequest request) {
+    void shareTemplate(long userId, Template template, TemplatePermissionRequest request) {
         if (!Objects.equals(template.getSharedStatus(), request.getSharedStatus())) {
             if (Template.SharedStatus.only_you.equals(request.getSharedStatus())) {
-                templatePermissionRepository.deleteAllByOwnerUserIdAndTemplateId(userId, template.getId());
+                userPermissionRepository.deleteAllByOwnerUserIdAndTemplateId(userId, template.getId());
             }
             return;
         }
@@ -98,18 +98,18 @@ public class TemplatePermissionService {
                 if (existUser)
                     throw new NotFoundException();
             });
-            var existTemplatePermissions = templatePermissionRepository.findAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(userId, template.getId(), putUserIds);
+            var existTemplatePermissions = userPermissionRepository.findAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(userId, template.getId(), putUserIds);
             List<com.nebo.template.domain.model.UserPermission> userPermissions = request.getPutUsers().stream().map(a -> {
                 var existTemplatePermission = existTemplatePermissions.stream().filter(b -> b.getSharedUserId() == a.getUserId()).findFirst().orElse(new com.nebo.template.domain.model.UserPermission(template.getId(), userId, a.getUserId()));
                 existTemplatePermission.setPermissions(a.getPermissions().stream().map(Enum::name).toList());
                 return existTemplatePermission;
             }).toList();
-            templatePermissionRepository.saveAll(userPermissions);
+            userPermissionRepository.saveAll(userPermissions);
         }
 
         if (CollectionUtils.isEmpty(request.getRemoveUsers())) {
             var removeUseIds = request.getRemoveUsers();
-            templatePermissionRepository.findAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(userId, template.getId(), removeUseIds);
+            userPermissionRepository.findAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(userId, template.getId(), removeUseIds);
         }
     }
 

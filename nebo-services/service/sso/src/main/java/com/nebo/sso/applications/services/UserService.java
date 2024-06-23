@@ -4,6 +4,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
 import com.nebo.lib.feignclient.client.model.FileDataUploadRequest;
+import com.nebo.sso.applications.services.mapper.UserMapper;
 import com.nebo.sso.domain.model.User;
 import com.nebo.sso.domain.model.User_;
 import com.nebo.sso.domain.repository.JpaUserRepository;

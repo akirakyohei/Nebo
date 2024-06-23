@@ -1,4 +1,4 @@
-package com.nebo.shared.web.applications.handleException;
+package com.nebo.shared.web.applications.handleexception;
 
 import com.nebo.shared.web.applications.exception.AuthenticationException;
 import com.nebo.shared.web.applications.exception.ExpiredTokenRefreshException;

@@ -1470,15 +1470,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@documint/grapesjs-grid-system@npm:^0.0.57":
-  version: 0.0.57
-  resolution: "@documint/grapesjs-grid-system@npm:0.0.57"
-  peerDependencies:
-    grapesjs: 0.18.x
-  checksum: 10c0/55922de90a1757d34a2f74298740f0f12ae113513baf2d29045cc7c5321ab7613acb07bffccdfc57d4c023341307eb82c00b10ca5ef00363ede8ade8bed0fee9
-  languageName: node
-  linkType: hard
-
 "@emotion/babel-plugin@npm:^11.11.0":
   version: 11.11.0
   resolution: "@emotion/babel-plugin@npm:11.11.0"
@@ -3053,7 +3044,6 @@ __metadata:
   resolution: "@repo/web-builder@workspace:packages/web-builder"
   dependencies:
     "@documint/custom-handlebars-helpers": "npm:^1.22.0"
-    "@documint/grapesjs-grid-system": "npm:^0.0.57"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
     "@grapesjs/react": "npm:^1.0.0"

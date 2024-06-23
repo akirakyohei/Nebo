@@ -1,4 +1,4 @@
-package com.nebo.template.domain.Specifiaction;
+package com.nebo.template.domain.specifiaction;
 
 import com.nebo.template.applications.model.category.CategoryFilterRequest;
 import com.nebo.template.domain.model.Category;

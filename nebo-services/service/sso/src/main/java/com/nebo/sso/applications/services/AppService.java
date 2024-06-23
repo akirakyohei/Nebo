@@ -3,6 +3,7 @@ package com.nebo.sso.applications.services;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
 import com.nebo.shared.web.applications.exception.NotFoundException;
+import com.nebo.sso.applications.services.mapper.AppClientMapper;
 import com.nebo.sso.domain.model.AppClient;
 import com.nebo.sso.domain.model.AppClient_;
 import com.nebo.sso.domain.repository.JpaAppClientRepository;

@@ -14,6 +14,9 @@
  Date: 17/06/2024 15:02:22
 */
 
+-- create Database  tenantdb;
+use `tenantdb`;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

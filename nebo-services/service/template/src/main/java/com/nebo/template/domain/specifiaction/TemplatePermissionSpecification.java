@@ -1,7 +1,6 @@
-package com.nebo.template.domain.Specifiaction;
+package com.nebo.template.domain.specifiaction;
 
 import com.nebo.template.applications.model.template.TemplateUserPermissionFilterRequest;
-import com.nebo.template.domain.model.Category_;
 import com.nebo.template.domain.model.UserPermission;
 import com.nebo.template.domain.model.UserPermission_;
 import jakarta.persistence.criteria.Predicate;

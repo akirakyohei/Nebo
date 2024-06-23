@@ -1,9 +1,7 @@
-package com.nebo.template.infrastructures.util;
+package com.nebo.template.infrastructures.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.w3c.dom.css.CSSStyleRule;
-import org.w3c.dom.css.CSSValue;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.nebo.sso.job.scheduler;
+package com.nebo.sso.jobs.scheduler;
 
 import com.nebo.sso.applications.services.RefreshTokenService;
 import lombok.RequiredArgsConstructor;

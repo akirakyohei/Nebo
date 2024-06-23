@@ -1,4 +1,4 @@
-package com.nebo.sso.applications.services;
+package com.nebo.sso.applications.services.mapper;
 
 import com.nebo.sso.domain.model.AppClient;
 import com.nebo.sso.applications.model.ApiKeyDetailResponse;

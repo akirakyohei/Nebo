@@ -3,7 +3,7 @@ package com.nebo.template.applications.services;
 import com.nebo.shared.web.applications.exception.ConstraintViolationException;
 import com.nebo.shared.web.applications.exception.NotFoundException;
 import com.nebo.template.applications.services.mapper.CategoryMapper;
-import com.nebo.template.domain.Specifiaction.CategorySpecification;
+import com.nebo.template.domain.specifiaction.CategorySpecification;
 import com.nebo.template.domain.model.Category_;
 import com.nebo.template.applications.model.category.*;
 import com.nebo.template.domain.repository.JpaCategoryRepository;

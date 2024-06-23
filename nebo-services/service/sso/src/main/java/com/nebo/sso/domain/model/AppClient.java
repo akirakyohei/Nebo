@@ -1,6 +1,6 @@
 package com.nebo.sso.domain.model;
 
-import com.nebo.sso.domain.converter.ListStringConverter;
+import com.nebo.shared.common.persistences.ListStringConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

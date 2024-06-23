@@ -5,11 +5,9 @@ import com.github.jknack.handlebars.Handlebars;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.attach.ITagWorkerFactory;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
 import com.nebo.template.applications.services.handlebars.EncodeURICompHelper;
-import com.nebo.template.infrastructures.util.SizeUtils;
 import com.nebo.template.applications.model.template.TemplatePrintModel;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.Loader;
@@ -18,7 +16,6 @@ import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
