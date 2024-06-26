@@ -57,7 +57,7 @@ const sorts: { value: string; label: string; icon: React.ReactNode }[] = [
     icon: <ArrowDownward />,
   },
   {
-    value: "updated_at,desc",
+    value: "updated_at,asc",
     label: "Ngày cập nhật",
     icon: <ArrowUpward />,
   },

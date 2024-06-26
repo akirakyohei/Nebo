@@ -1,10 +1,12 @@
-import { Box } from "@mui/material";
+import { Box, IconButton, Stack } from "@mui/material";
 import { useMemo, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { PageSkeleton } from "./PageSkeleton";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { Toolbar } from "./Toolbar";
+import { ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
+import { range } from "lodash-es";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -54,7 +56,16 @@ export const ContentPreview = ({ file, loading, openHtml }: Props) => {
         loading={<PageSkeleton />}
         error={"Không thể hiển thị"}
       >
-        <Page pageNumber={pageNumber} scale={zoom} rotate={rotate}></Page>
+        <Stack gap={2}>
+          {range(0, numPages).map((item) => (
+            <Page
+              key={item}
+              pageNumber={item + 1}
+              scale={zoom}
+              rotate={rotate}
+            ></Page>
+          ))}
+        </Stack>
       </Document>
     </Box>
   );

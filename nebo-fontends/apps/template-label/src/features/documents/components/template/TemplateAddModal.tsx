@@ -42,6 +42,7 @@ export const TemplateAddModal = ({ onClose }: Props) => {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitting },
   } = useForm<{ template: Template }>({
     defaultValues: { template: { ...defaultBlankTemplate, id: -1 } },
@@ -127,7 +128,13 @@ export const TemplateAddModal = ({ onClose }: Props) => {
                 isLoading={isFetchingTemplates}
                 templates={templates.data}
                 copyTemplateId={otherProps.value.id}
-                onChange={(_value) => otherProps.onChange(_value)}
+                onChange={(_value) =>
+                  otherProps.onChange({
+                    ..._value,
+                    name: watch("template.name"),
+                    category_ids: watch("template.category_ids"),
+                  })
+                }
               />
             )}
           />

@@ -5,3 +5,5 @@ declare module "grapesjs-style-border";
 declare module "grapesjs-icons";
 declare module "barhandles";
 declare module "@documint/custom-handlebars-helpers";
+declare module "@documint/grapesjs-grid-system";
+declare module "grapesjs-plugin-toolbox";

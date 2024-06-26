@@ -123,7 +123,7 @@ const templateApi = storefontApi.injectEndpoints({
         return { data: html };
       },
     }),
-    exportTemplate: builder.mutation<
+    exportTemplate: builder.query<
       Blob,
       { id: number; request: TemplateExportRequest }
     >({
@@ -144,7 +144,7 @@ const templateApi = storefontApi.injectEndpoints({
         return { data };
       },
     }),
-    exportTemplateToHtml: builder.mutation<
+    exportTemplateToHtml: builder.query<
       string,
       { id: number; request: TemplateExportRequest }
     >({
@@ -174,6 +174,6 @@ export const {
   usePreviewTemplateQuery,
   usePreviewTemplateToHtmlQuery,
   useLazyPreviewTemplateQuery,
-  useExportTemplateMutation,
-  useExportTemplateToHtmlMutation,
+  useLazyExportTemplateQuery,
+  useLazyExportTemplateToHtmlQuery,
 } = templateApi;

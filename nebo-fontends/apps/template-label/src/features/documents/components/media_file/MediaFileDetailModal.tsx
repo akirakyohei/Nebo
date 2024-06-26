@@ -40,6 +40,7 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
     try {
       const res = await deleteFileData(asset.id).unwrap();
       showToast("Xóa ảnh thành công");
+      onClose();
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
@@ -58,7 +59,7 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={asset.file_name} size="xl">
+    <Modal open={open} onClose={onClose} title={asset.name} size="xl">
       <Modal.Section>
         <Grid
           display={"grid"}
@@ -79,7 +80,7 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
               onError={(event) => {
                 event.currentTarget.src = blankThumbImage;
               }}
-              alt={asset.file_name}
+              alt={asset.name}
             ></Box>
           </Box>
           <Box
@@ -101,7 +102,7 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
                       <TableBody>
                         <TableRow>
                           <TableCell>Tên</TableCell>
-                          <TableCell>{asset.file_name}</TableCell>
+                          <TableCell>{asset.name}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Loại</TableCell>
@@ -174,7 +175,7 @@ export const MediaFileDetailModal = ({ open, onClose, asset }: Props) => {
           ]}
         >
           <Modal.Section>
-            <Typography>Thao tác này sẽ xóa vĩnh vĩnh viễn ảnh</Typography>
+            <Typography>Thao tác này sẽ xóa vĩnh viễn ảnh</Typography>
           </Modal.Section>
         </Modal>
       )}

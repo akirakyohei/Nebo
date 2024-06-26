@@ -5,12 +5,17 @@ import {
   CardContent,
   Divider,
   Grid,
+  IconButton,
   InputAdornment,
   Link,
   Stack,
   Typography,
 } from "@mui/material";
-import { AccountCircleOutlined, KeyOffOutlined } from "@mui/icons-material";
+import {
+  AccountCircleOutlined,
+  ArrowBackIosNewOutlined,
+  KeyOffOutlined,
+} from "@mui/icons-material";
 import { LoginRequestModel } from "../types";
 import { Controller, useForm } from "react-hook-form";
 import { TextField } from "../../../components/TextField";
@@ -41,7 +46,7 @@ export const LoginCard = () => {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<LoginRequestModel>({
-    defaultValues: { emailOrPhone: "test@gmail.com", password: "Abc123@" },
+    defaultValues: { emailOrPhone: "", password: "" },
     reValidateMode: "onSubmit",
   });
   const submit = handleSubmit(async (data: LoginRequestModel) => {
@@ -77,7 +82,19 @@ export const LoginCard = () => {
     <Card sx={{ width: "100%" }}>
       <CardContent>
         <Stack spacing={4}>
-          <Typography variant="h6">Đăng nhập</Typography>
+          <Stack direction={"row"} gap={2} alignContent={"center"}>
+            <IconButton
+              sx={{
+                borderRadius: "5px",
+              }}
+              href="/"
+            >
+              <ArrowBackIosNewOutlined />
+            </IconButton>
+            <Typography variant="h6" alignSelf={"center"}>
+              Đăng nhập
+            </Typography>
+          </Stack>
           <Stack spacing={3}>
             <Controller
               control={control}

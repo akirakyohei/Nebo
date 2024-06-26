@@ -45,6 +45,7 @@ export const NotificationProvider = ({
     // variant could be success, error, warning, info, or default
     providerRef?.current?.enqueueSnackbar(message, {
       ...options,
+      variant: options?.variant || "success",
     });
   };
 

@@ -2,7 +2,7 @@ import { PageFilterRequest } from "./common";
 
 export type FileDataUpload = {
   id: number;
-  file_name: string;
+  name: string;
   key: string;
   extension: string;
   size: number;

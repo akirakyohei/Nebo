@@ -134,7 +134,7 @@ export const getDateRangeName = (startDate: Date, endDate: Date): string => {
   if (isSameDay(startOfDay(startDate), startOfDay(endDate)))
     return `Ngày ${format(startDate, "dd/MM/yyyy")}`;
 
-  return `${format(startDate, "dd/MM/yyyy")} - ${format(startDate, "dd/MM/yyyy")}`;
+  return `${format(startDate, "dd/MM/yyyy")} - ${format(endDate, "dd/MM/yyyy")}`;
 };
 
 export const getFormatPatternsByUnit = (unit: DateRange["unit"]): string => {

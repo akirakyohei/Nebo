@@ -58,7 +58,7 @@ public class AuthenticationService {
             var res = neboGrpc.authenticationService.authenticateAppClient(AppClientAuthenticationRequest.newBuilder()
                     .setApiKey(apiKey)
                     .build());
-            return new AppClient(res.getId(), res.getName(), res.getUserId(), res.getAccessToken(), res.getScopesList().stream().toList());
+            return new AppClient(res.getId(), res.getName(), res.getUserId(), res.getAccessToken());
         } catch (Exception ex) {
 
         }

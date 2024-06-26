@@ -146,16 +146,11 @@ export const TemplateShareModal = ({ onClose, template }: Props) => {
       showToast("Cập nhật thành công");
     } catch (ex) {
       if (isClientError(ex)) {
-        let error = ex.data.message;
+        const error = ex.data.message;
         if (/Authenticated/.test(error)) {
           showToast("Lưu mẫu thất bại thành công trước đó");
           return;
         }
-
-        if (/Email or password incorrect/.test(error))
-          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-        if (/Phone number or password incorrect/.test(error))
-          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
         showToast(error, { variant: "error" });
       }
     }
@@ -264,7 +259,7 @@ export const TemplateShareModal = ({ onClose, template }: Props) => {
                   <Box marginTop={2} bgcolor={"#f5f5f5"}>
                     {watch("user_permissions").map((a, index) => (
                       <Box
-                        key={a.id}
+                        key={index}
                         sx={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -304,7 +299,9 @@ export const TemplateShareModal = ({ onClose, template }: Props) => {
                             name={`user_permissions.${index}.user_permission.permissions`}
                             render={({ field }) => (
                               <Select
-                                value={field?.value?.join(",") || "read"}
+                                value={
+                                  field?.value?.sort()?.join(",") || "read"
+                                }
                                 onChange={(value) => {
                                   field.onChange(value.target.value.split(","));
                                 }}
@@ -316,7 +313,7 @@ export const TemplateShareModal = ({ onClose, template }: Props) => {
                                 }}
                               >
                                 <MenuItem value={"read"}>Chỉ xem</MenuItem>
-                                <MenuItem value={"write,read"}>
+                                <MenuItem value={"read,write"}>
                                   Có quyền sửa
                                 </MenuItem>
                               </Select>

@@ -18,13 +18,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.AccessDeniedException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
@@ -53,11 +53,12 @@ public class TemplateService {
 
     private final TemplatePermissionService templatePermissionService;
 
-    @Transactional
+    @Transactional("templateTransactionManager")
     public TemplateResponse createTemplate(long userId, TemplateCreateRequest request) throws ConstraintViolationException, IOException {
         validateTemplateRequest(userId, request);
         var template = templateMapper.fromRequestToDomain(request);
         template.setUserId(userId);
+        template.setActive(true);
         template = jpaTemplateRepository.save(template);
         if (!StringUtils.isBlank(template.getHtml())) {
             var imageByteArrays = printService.printToImage(userId, TemplatePrintModel.builder()
@@ -86,7 +87,7 @@ public class TemplateService {
         return getTemplate(userId, template.getId());
     }
 
-    @Transactional
+    @Transactional("templateTransactionManager")
     public TemplateResponse updateTemplate(long userId, long templateId, TemplateUpdateRequest request) throws ConstraintViolationException, IOException {
         validateTemplateRequest(userId, request);
         var template = jpaTemplateRepository.findById(templateId)
@@ -94,15 +95,6 @@ public class TemplateService {
         var permissions = templatePermissionService.evaluatePermission(userId, template);
         if (!permissions.contains(UserPermission.write))
             throw new AccessDeniedException("template access denied");
-        if (template.isTrashed()) {
-            if (!Objects.equals(template.getUserId(), userId))
-                throw new NotFoundException();
-            else {
-                var isTrash = request.getTrashed();
-                request = new TemplateUpdateRequest();
-                request.setTrashed(isTrash);
-            }
-        }
         if (!template.isActive()) {
             request.setHtml(null);
             request.setComponents(null);
@@ -113,13 +105,12 @@ public class TemplateService {
             request.setCss(null);
         }
         if (!Objects.equals(template.getUserId(), userId)) {
-
-            request.setTrashed(null);
             request.setActive(null);
             request.setOptions(null);
             request.setCategoryIds(null);
             request.setName(null);
         }
+        templateMapper.updateTemplate(request, template);
         if (!StringUtils.isBlank(template.getHtml())) {
             var imageByteArrays = printService.printToImage(userId, TemplatePrintModel.builder()
                     .fillData(false)
@@ -153,7 +144,6 @@ public class TemplateService {
                 throw new RuntimeException(e);
             }
         }
-        templateMapper.updateTemplate(request, template);
         jpaTemplateRepository.save(template);
         return getTemplate(userId, templateId);
     }
@@ -193,9 +183,11 @@ public class TemplateService {
     }
 
 
-    @Transactional
+    @Transactional("templateTransactionManager")
     public void deleteTemplate(long userId, int templateId) {
         var template = jpaTemplateRepository.findTemplateByUserIdAndId(userId, templateId).orElseThrow(NotFoundException::new);
+        templatePermissionService.updateAppPermissionWhenDeleteTemplate(userId, templateId);
+        templatePermissionService.deleteUserPermissionByOwnerIdAndTemplateId(userId, templateId);
         jpaTemplateRepository.delete(template);
     }
 
@@ -265,7 +257,7 @@ public class TemplateService {
         return getTemplate(userId, templateId);
     }
 
-    @Transactional
+    @Transactional("templateTransactionManager")
     public TemplateAppPermission saveTemplateAppPermission(long userId, TemplateAppPermissionRequest request) {
         try {
             neboFeignClient.getApiAppById(request.getAppId(), B.withUserId(userId));
@@ -293,7 +285,7 @@ public class TemplateService {
         return templatePermissionService.getTemplatePermissions(userId, template, request);
     }
 
-    public void evaluateAppPermissionByTemplateId(long userId, long templateId) throws AccessDeniedException {
+    public void evaluateAppPermissionByTemplateId(long userId, long templateId) {
         var appId = NeboSecurityUtils.detectAppId();
         if (appId == null)
             return;
@@ -338,7 +330,7 @@ public class TemplateService {
 
     private List<TemplateResponse> fromDomainToResponse(long userId, List<Template> templates) {
         var fileDataIds = templates.stream().map(Template::getThumbnailImageId).filter(Objects::nonNull).toList();
-        var fileDatas = fileDataRepository.findFileDataByUserIdAndIdIn(userId, fileDataIds);
+        var fileDatas = fileDataRepository.findFileDataByIdIn(fileDataIds);
         return templates.stream().map(template -> {
                     var result = templateMapper.fromDomainToResponse(template);
                     if (StringUtils.isBlank(result.getHtml())) {

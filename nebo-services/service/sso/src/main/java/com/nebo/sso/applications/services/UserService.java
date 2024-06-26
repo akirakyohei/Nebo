@@ -159,7 +159,6 @@ public class UserService {
     @Transactional
     public UserResponse changeStatus(long userId, boolean status) {
         var user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
-        user.setStatus(status);
         userRepository.save(user);
         return getUser(userId);
     }

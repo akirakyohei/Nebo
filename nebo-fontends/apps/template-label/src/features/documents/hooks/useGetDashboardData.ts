@@ -63,6 +63,7 @@ export const useGetDashboardData = (): Data => {
     isFetching: isFetchingSharedTemplates,
   } = useGetTemplatesQuery({
     limit: 10,
+    owner: true,
     shared: true,
   });
 

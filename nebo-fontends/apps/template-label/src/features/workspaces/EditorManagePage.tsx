@@ -4,8 +4,8 @@ import {
   useUpdateTemplateMutation,
 } from "../../data/template.api";
 import { Navigate, useParams } from "react-router-dom";
-import { WebBuilderContainer } from "@repo/web-builder";
-// import { WebBuilderContainer } from "../../../../../packages/web-builder/src/WebBuilderContainer";
+// import { WebBuilderContainer } from "@repo/web-builder";
+import { WebBuilderContainer } from "../../../../../packages/web-builder/src/WebBuilderContainer";
 import { NavbarMenu } from "./components/navbar/NavbarMenu";
 import { useRef, useState } from "react";
 import { Page } from "../../components/Page";
@@ -44,6 +44,7 @@ export default function EditorManagePage() {
     isFetching: isFetchingUserPermission,
   } = useEvaluateTemplateUserPermissionsQuery([template.id], {
     skip: !template.id || !template.active,
+    refetchOnMountOrArgChange: false,
   });
 
   const [updateTemplate, { isLoading: isloadingUpdateTemplate }] =
@@ -62,16 +63,7 @@ export default function EditorManagePage() {
     } catch (ex) {
       if (isClientError(ex)) {
         let error = ex.data.message;
-        if (/Authenticated/.test(error)) {
-          showToast("Lưu mẫu thất bại thành công trước đó");
-          return;
-        }
-
-        if (/Email or password incorrect/.test(error))
-          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-        if (/Phone number or password incorrect/.test(error))
-          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-        showToast(error, { variant: "error" });
+        showToast(error || "Có lỗi xảy ra", { variant: "error" });
       }
     }
   };
@@ -110,13 +102,16 @@ export default function EditorManagePage() {
 
   if (!template) return <Navigate to={"/"} />;
 
-  if (!template.active) {
-    showToast("Mẫu đang ở trạng thái ko hoạt động chỉ có thể xem");
+  if (!template.active && !isPreviewing) {
+    showToast("Mẫu đang ở trạng thái ko hoạt động chỉ có thể xem", {
+      variant: "error",
+    });
     return <Navigate to={`/documents/templates`} />;
   }
   if (
-    userPermissions.length === 0 ||
-    !userPermissions[0].permissions.includes("write")
+    (userPermissions.length === 0 ||
+      !userPermissions[0].permissions.includes("write")) &&
+    !isPreviewing
   ) {
     showToast("Bạn không có quyền chỉnh sửa mẫu");
     return <Navigate to={`/documents/templates`} />;

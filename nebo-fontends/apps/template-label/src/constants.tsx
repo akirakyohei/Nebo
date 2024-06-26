@@ -36,7 +36,7 @@ export const defaultBlankTemplate: Template = {
 
 export const defaultFileUpload: FileDataUpload = {
   id: 0,
-  file_name: "djksh djsknd dfjhsbknf fdjbn dsfjhbn fjdhbng fjnbg jfdng jgfnkbg",
+  name: "djksh djsknd dfjhsbknf fdjbn dsfjhbn fjdhbng fjnbg jfdng jgfnkbg",
   key: blankThumbImage,
   extension: "jepg",
   size: 0,

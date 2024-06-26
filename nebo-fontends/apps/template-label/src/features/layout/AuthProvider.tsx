@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: Props) => {
     isFetching: isFetchingRefresh,
   } = useRefreshTokenQuery(undefined, {
     skip: !cookies.get(TOKEN_HEADER) && !urlParams.get("token"),
-    pollingInterval: 180000,
+    pollingInterval: 7200000,
   });
   const {
     data: user,

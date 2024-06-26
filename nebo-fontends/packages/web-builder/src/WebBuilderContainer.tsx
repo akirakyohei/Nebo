@@ -39,11 +39,13 @@ import styleBgPlugin from "grapesjs-style-bg";
 import borderPlugin from "grapesjs-style-border";
 import iconPlugin from "grapesjs-icons";
 import formsPlugin from "grapesjs-plugin-forms";
+import toolboxPlugin from "grapesjs-plugin-toolbox";
 import zoomPlugin from "./plugins/zoom";
 import draggableDocumentPlugin from "./plugins/draggable-document";
 import barcodePlugin from "./plugins/barcode";
 import qrcodePlugin from "./plugins/qrcode";
 import customFormsPlugin from "./plugins/forms";
+import gridSystemPlugin from "@documint/grapesjs-grid-system";
 // import gridSystemPlugin from "./plugins/grid-system";
 import { Data, FileUploadData, Template } from "./types/template";
 import BlockManager from "./components/BlockManager";
@@ -148,19 +150,19 @@ export const WebBuilderContainer = ({
       (!template.options.landscape
         ? template.options.width
         : template.options.height) as any,
-      "px"
+      "pt"
     );
     const width = split_unit(widthPx);
     const heightPx = convertUnits(
       (template.options.landscape
         ? template.options.width
         : template.options.height) as any,
-      "px"
+      "pt"
     );
     const height = split_unit(heightPx);
     const opt: EditorConfig = {
       container: "nebo-editor",
-      mediaCondition: "min-width",
+      mediaCondition: "max-width",
       i18n: {
         locale: "vi",
         messages: { vi },
@@ -184,14 +186,24 @@ export const WebBuilderContainer = ({
         devices: [
           {
             name: "Desktop",
-            width: `${Math.round(Number(width.value || 100))}`,
-            height: `${Math.round(Number(height.value || 100))}`,
-            widthMedia: `${Math.round(Number(width.value || 100) + 10)}`,
+            width: `${Math.round(Number(width.value || 100))}pt`,
+            height: `${Math.round(Number(height.value || 100))}pt`,
+            widthMedia: `${Math.round(Number(width.value || 100))}pt`,
           },
         ],
       },
-      styleManager: {},
-      protectedCss: `body { padding: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};}  ${defaultGridStyle} `,
+      protectedCss: `body 
+      { 
+      padding: ${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left};
+            /* width: ${Math.round(Number(width.value || 100))}pt;
+             height: ${Math.round(Number(height.value || 100))}pt;*/
+            margin: 0;
+      } 
+            p{
+            margin-block:0;
+            }
+             ${defaultGridStyle}
+        `,
       // pageManager: {},
       // showDevices: false,
       // panels: {
@@ -205,11 +217,6 @@ export const WebBuilderContainer = ({
     (window as any).editor = editor;
     //css
     const { Css } = editor;
-
-    Css.setRule("body", {
-      margin: `${template.options.margin.top} ${template.options.margin.right} ${template.options.margin.bottom} ${template.options.margin.left}`,
-    });
-
     //add remote-local storage
     const { Storage } = editor;
 
@@ -225,7 +232,9 @@ export const WebBuilderContainer = ({
             components: editor.getComponents(),
             html: `<html><head>    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${css}</style></head> ${html}</html>`,
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <style>${css}   </style></head> ${html}</html>`,
             css: css,
             styles: editor.getStyle(),
           });
@@ -256,11 +265,17 @@ export const WebBuilderContainer = ({
               category: "Nội dung",
               blocks: ["text", "image"],
               flexGrid: true,
+              labelImage: "Ảnh",
+              labelText: "Văn bản",
             }),
             usePlugin(blockBasicPlugin, {
               category: "Bố cục",
               blocks: ["column1", "column2", "column3"],
               flexGrid: true,
+              // addBasicStyle: false,
+              labelColumn1: "Cột",
+              labelColumn2: "Cột 2",
+              labelColumn3: "cột 3",
             }),
             usePlugin(imageEditorPlugin, {
               config: {
@@ -268,6 +283,8 @@ export const WebBuilderContainer = ({
                   initMenu: "filter",
                 },
               },
+              labelImageEditor: "Chỉnh sửa",
+              labelApply: "Lưu",
             }),
             styleBgPlugin,
             borderPlugin,
@@ -296,11 +313,11 @@ export const WebBuilderContainer = ({
               blocks: [],
               category: "Biểu mẫu",
             }),
+            // usePlugin(toolboxPlugin, { categoryGrid: "Bố cục" }),
             usePlugin(customFormsPlugin),
             // usePlugin(gridSystemPlugin, {
             //   default_css: true,
-            //   default_components: true,
-            //   imgDefault: "",
+            //   default_components: false,
             // }),
             usePlugin(zoomPlugin),
             usePlugin(draggableDocumentPlugin),

@@ -83,8 +83,8 @@ public class TemplatePermissionService {
         if (!Objects.equals(template.getSharedStatus(), request.getSharedStatus())) {
             if (Template.SharedStatus.only_you.equals(request.getSharedStatus())) {
                 userPermissionRepository.deleteAllByOwnerUserIdAndTemplateId(userId, template.getId());
+                return;
             }
-            return;
         }
         if (Template.SharedStatus.only_you.equals(request.getSharedStatus()))
             return;
@@ -107,10 +107,14 @@ public class TemplatePermissionService {
             userPermissionRepository.saveAll(userPermissions);
         }
 
-        if (CollectionUtils.isEmpty(request.getRemoveUsers())) {
+        if (!CollectionUtils.isEmpty(request.getRemoveUsers())) {
             var removeUseIds = request.getRemoveUsers();
-            userPermissionRepository.findAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(userId, template.getId(), removeUseIds);
+            userPermissionRepository.deleteAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(userId, template.getId(), removeUseIds);
         }
+    }
+
+    void deleteUserPermissionByOwnerIdAndTemplateId(long userId, long templateId) {
+        userPermissionRepository.deleteAllByOwnerUserIdAndTemplateId(userId, templateId);
     }
 
     //# region [AppPermission]

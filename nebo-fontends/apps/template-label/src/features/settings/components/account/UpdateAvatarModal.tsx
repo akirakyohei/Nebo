@@ -130,7 +130,11 @@ export const UpdateAvatarModal = ({ open, onClose, user }: Props) => {
                 <Avatar
                   src={
                     !watch("file")
-                      ? user?.avatar_url
+                      ? user.avatar_url
+                        ? user.avatar_url.startsWith("http")
+                          ? user.avatar_url
+                          : `/api/files/data/${user.avatar_url}`
+                        : undefined
                       : URL.createObjectURL(
                           new Blob([Buffer.from(watch("file.data"), "base64")])
                         )

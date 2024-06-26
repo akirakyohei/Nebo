@@ -17,7 +17,7 @@ public class CategorySpecification {
             var predicates = new ArrayList<Predicate>();
             predicates.add(cb.equal(root.get(Category_.USER_ID), userId));
             if (StringUtils.isNotBlank(request.getQuery())) {
-                predicates.add(cb.like(root.get(Category_.NAME), request.getQuery()));
+                predicates.add(cb.like(root.get(Category_.NAME),"%"+ request.getQuery()+"%"));
             }
             if (!CollectionUtils.isEmpty(request.getIds())) {
                 predicates.add(root.get(Category_.ID).in(request.getIds()));

@@ -5,11 +5,19 @@ import com.github.jknack.handlebars.Handlebars;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.font.FontProvider;
+import com.itextpdf.styledxmlparser.css.util.CssDimensionParsingUtils;
 import com.nebo.lib.feignclient.client.B;
 import com.nebo.lib.feignclient.client.NeboFeignClient;
 import com.nebo.template.applications.services.handlebars.EncodeURICompHelper;
 import com.nebo.template.applications.model.template.TemplatePrintModel;
+import com.nebo.template.infrastructures.utils.CustomTagWorkerFactory;
+import com.nebo.template.infrastructures.utils.SizeUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -23,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Map;
 
 @Service
@@ -86,18 +95,33 @@ public class TemplatePrintService {
     private Document parseDocument(String html, TemplatePrintModel request) {
         var document = Jsoup.parse(html, "UTF-8");
         document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        document.body().attr("padding", MessageFormat.format("{0} {1} {2} {3}", request.getOptions().getMargin().getTop(),
+        var styles = new ArrayList<>();
+        if (request.getOptions().isLandscape()) {
+            styles.add("height:" + request.getOptions().getWidth() + ";");
+            styles.add("width:" + request.getOptions().getHeight() + ";");
+        } else {
+            styles.add("height:" + request.getOptions().getHeight() + ";");
+            styles.add("width:" + request.getOptions().getWidth() + ";");
+        }
+        styles.add("padding:" + MessageFormat.format("{0} {1} {2} {3};", request.getOptions().getMargin().getTop(),
                 request.getOptions().getMargin().getRight(),
                 request.getOptions().getMargin().getBottom(),
                 request.getOptions().getMargin().getLeft()));
+        document.body().attr("style", StringUtils.join(styles, " "));
         return document;
     }
 
     private void parseToPdf(Document document, OutputStream outputStream, TemplatePrintModel request) throws IOException, IllegalAccessException {
         var convertProperties = new ConverterProperties();
         convertProperties.setBaseUri("");
-        HtmlConverter.convertToPdf(document.html(), outputStream, convertProperties);
-
+        convertProperties.setTagWorkerFactory(new CustomTagWorkerFactory());
+        var pdfDoc = new PdfDocument(new PdfWriter(outputStream));
+        var widthSplit = SizeUtils.splitSize(request.getOptions().isLandscape() ? request.getOptions().getHeight() : request.getOptions().getWidth());
+        var heightSplit = SizeUtils.splitSize(!request.getOptions().isLandscape() ? request.getOptions().getHeight() : request.getOptions().getWidth());
+        var width = CssDimensionParsingUtils.parseLengthValueToPt(request.getOptions().isLandscape() ? request.getOptions().getHeight() : request.getOptions().getWidth(), 12, 12).getValue();
+        var height = CssDimensionParsingUtils.parseLengthValueToPt(!request.getOptions().isLandscape() ? request.getOptions().getHeight() : request.getOptions().getWidth(), 12, 12).getValue();
+        pdfDoc.setDefaultPageSize(new PageSize(width, height));
+        HtmlConverter.convertToPdf(document.html(), pdfDoc, convertProperties);
     }
 
     private void parseToImage(PDDocument document, OutputStream outputStream) throws IOException, IllegalAccessException {

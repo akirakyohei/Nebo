@@ -35,7 +35,6 @@ public class AuthenticationGrpcController extends AuthenticationServiceGrpc.Auth
                     .setId(app.getId())
                     .setUserId(app.getUserId())
                     .setName(app.getName())
-                    .addAllScopes(app.getScopes())
                     .build());
         } catch (Exception exception) {
             responseObserver.onError(new AuthenticationException());

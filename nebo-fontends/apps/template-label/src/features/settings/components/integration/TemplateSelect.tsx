@@ -117,7 +117,7 @@ export const TemplateSelect = ({ values, onChange }: Props) => {
                     onChange([option.value, ...(values || [])]);
                   else {
                     onChange([
-                      ...(values || []).filter((a) => a === option.value),
+                      ...(values || []).filter((a) => a !== option.value),
                     ]);
                   }
                 }}

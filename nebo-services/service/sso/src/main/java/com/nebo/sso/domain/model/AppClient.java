@@ -37,13 +37,6 @@ public class AppClient implements Serializable {
     private String prefix;
     private String accessToken;
 
-    @Convert(converter = ListStringConverter.class)
-    private List<String> scopes;
-
-    @Column(updatable = false)
-    private boolean status;
-
-
     @CreationTimestamp
     private Instant createdAt;
 
@@ -56,7 +49,5 @@ public class AppClient implements Serializable {
         this.name = name;
         this.accessToken = accessToken;
         this.prefix = accessToken.substring(0,PREFIX_LENGTH);
-        this.status = true;
-        this.scopes = new ArrayList<>();
     }
 }

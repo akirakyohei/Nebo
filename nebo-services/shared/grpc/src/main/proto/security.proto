@@ -30,5 +30,4 @@ message AppClientAuthenticationResponse {
   int64  user_id = 2;
   string name=3;
   string access_token=4;
-  repeated string scopes =5;
 }

@@ -40,8 +40,6 @@ public class AppService {
         var appClient = appClientRepository.findAppClientByUserIdAndId(userId, id).orElseThrow(NotFoundException::new);
         if (request.getName() != null)
             appClient.setName(request.getName());
-        if (request.getStatus() != null)
-            appClient.setStatus(request.getStatus());
         appClientRepository.save(appClient);
         return appClientMapper.fromDomainToDetailResponse(appClient);
     }

@@ -51,10 +51,10 @@ public class TemplateRepositoryImpl implements TemplateRepository {
             strQuery.add("(" + buildFindInSetCategoryId(request.getCategoryIds()) + ")");
         }
         if (StringUtils.isNotBlank(request.getQuery())) {
-            strQuery.add(" T.name LIKE '%:query%' ");
-            parameterSource.addValue("query", request.getQuery());
+            strQuery.add(" T.name LIKE :query ");
+            parameterSource.addValue("query", "%" + request.getQuery() + "%");
         }
-        if (!CollectionUtils.isEmpty(request.getCategoryIds())) {
+        if (!CollectionUtils.isEmpty(request.getIds())) {
             strQuery.add(" T.id in (:ids) ");
             parameterSource.addValue("ids", StringUtils.join(request.getIds(), ","));
         }
@@ -70,10 +70,12 @@ public class TemplateRepositoryImpl implements TemplateRepository {
         var whereBuilder = StringUtils.join(strQuery, " AND ");
         var orderBy = buildOrderBy(request);
         var limitOffset = buildLimitOffset(request, parameterSource);
-
+        if (StringUtils.isNotBlank(whereBuilder)) {
+            whereBuilder = " WHERE " + whereBuilder;
+        }
         /// selection
-        var sqlSelect = "Select T.id from templates as T  WHERE " +
-                whereBuilder.toString() + orderBy + limitOffset;
+        var sqlSelect = "Select T.id from templates as T " +
+                whereBuilder + orderBy + limitOffset;
 
         var templateIds = parameterJdbcTemplate.query(sqlSelect, parameterSource, (rs, rowNum) -> rs.getLong(1));
 
@@ -81,8 +83,8 @@ public class TemplateRepositoryImpl implements TemplateRepository {
         templates = templates.stream().sorted(Comparator.comparingInt(a -> templateIds.indexOf(a.getId()))).toList();
 
         /// count
-        var sqlCount = "Select count(*) from templates as T  WHERE " +
-                whereBuilder.toString();
+        var sqlCount = "Select count(*) from templates as T " +
+                whereBuilder;
 
         var total = parameterJdbcTemplate.queryForObject(sqlCount, parameterSource, Long.class);
         return new PageImpl<Template>(templates, request.toPageable(), total);
@@ -91,16 +93,16 @@ public class TemplateRepositoryImpl implements TemplateRepository {
     private Page<Template> buildSqlWithShared(long userId, TemplateFilterRequest request) {
         var parameterSource = new MapSqlParameterSource();
 
-        parameterSource.addValue("userId", userId);
         var strQuery = new ArrayList<String>();
+        parameterSource.addValue("userId", userId);
         if (!CollectionUtils.isEmpty(request.getCategoryIds())) {
             strQuery.add("(" + buildFindInSetCategoryId(request.getCategoryIds()) + ")");
         }
         if (StringUtils.isNotBlank(request.getQuery())) {
-            strQuery.add(" T.name LIKE '%:query%' ");
-            parameterSource.addValue("query", request.getQuery());
+            strQuery.add(" T.name LIKE :query ");
+            parameterSource.addValue("query", "%" + request.getQuery() + "%");
         }
-        if (!CollectionUtils.isEmpty(request.getCategoryIds())) {
+        if (!CollectionUtils.isEmpty(request.getIds())) {
             strQuery.add(" T.id in (:ids) ");
             parameterSource.addValue("ids", StringUtils.join(request.getIds(), ","));
         }
@@ -149,7 +151,7 @@ public class TemplateRepositoryImpl implements TemplateRepository {
         if (request.getSortDirection() != null) {
 
             sortDirection = Sort.Direction.fromOptionalString(
-                    request.getSortBy()
+                    request.getSortDirection()
             ).orElse(Sort.Direction.DESC);
         }
         var sortBy = "created_at";

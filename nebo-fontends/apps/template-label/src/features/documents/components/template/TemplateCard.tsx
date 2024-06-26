@@ -95,8 +95,9 @@ export const TemplateCard = ({
     try {
       const res = await createTemplate({
         ...data,
+        name: `${data.name} (Sao chép)`,
       }).unwrap();
-      navigate(`/documents/templates/${res.id}`);
+      // navigate(`/documents/templates/${res.id}`);
       showToast("Sao chép mẫu thành công");
     } catch (ex) {
       if (isClientError(ex)) {
@@ -230,6 +231,7 @@ export const TemplateCard = ({
                   aria-label="settings"
                   {...bindTrigger(popupState)}
                   sx={{ background: popupState.isOpen ? "#aacc" : undefined }}
+                  disabled={!writePermission}
                 >
                   <MoreVert />
                 </IconButton>
@@ -373,7 +375,7 @@ export const TemplateCard = ({
           ]}
         >
           <Modal.Section>
-            <Typography>Thao tác này sẽ xóa vĩnh vĩnh viễn mẫu</Typography>
+            <Typography>Thao tác này sẽ xóa vĩnh viễn mẫu</Typography>
           </Modal.Section>
         </Modal>
       )}

@@ -30,7 +30,6 @@ public class TemplateResponse {
 
     private TemplateOptionResponse options;
     private boolean active;
-    private boolean trashed;
     private ImageResponse thumbnail;
     private long size;
     private Instant createdAt;

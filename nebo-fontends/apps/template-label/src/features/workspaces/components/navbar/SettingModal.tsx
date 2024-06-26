@@ -73,19 +73,11 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
         },
       });
       showToast("Lưu mẫu thành công");
+      window.location.reload();
     } catch (ex) {
       if (isClientError(ex)) {
-        let error = ex.data.message;
-        if (/Authenticated/.test(error)) {
-          showToast("Lưu mẫu thất bại thành công trước đó");
-          return;
-        }
-
-        if (/Email or password incorrect/.test(error))
-          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-        if (/Phone number or password incorrect/.test(error))
-          error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-        showToast(error, { variant: "error" });
+        const error = ex.data.message;
+        showToast(error || "Có lỗi xảy ra", { variant: "error" });
       }
     }
   });
@@ -200,7 +192,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                 </Grid>
               </Box>
             </Grid>
-            <Grid item xs={6} padding={2}>
+            {/* <Grid item xs={6} padding={2}>
               <Box>
                 <Typography
                   component={"h3"}
@@ -245,7 +237,7 @@ export const SettingModal = ({ open, onClose, template }: Props) => {
                   </Grid>
                 </Grid>
               </Box>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Divider />
           <Grid container>

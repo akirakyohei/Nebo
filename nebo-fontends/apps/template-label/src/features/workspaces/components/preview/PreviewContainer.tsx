@@ -12,9 +12,9 @@ import {
 import * as HelperUtils from "@repo/web-builder";
 import _ from "lodash/fp";
 import {
+  useLazyExportTemplateQuery,
   usePreviewTemplateQuery,
   useUpdateTemplateMutation,
-  useExportTemplateMutation,
 } from "../../../../data/template.api";
 import { FormPanel } from "./FormPanel";
 import { Loading } from "../../../../components/loading";
@@ -50,7 +50,7 @@ export const PreviewContainer = React.forwardRef(
     }, [template.test_data]);
 
     const [updateTemplate] = useUpdateTemplateMutation();
-    const [exportTemplate] = useExportTemplateMutation();
+    const [exportTemplate] = useLazyExportTemplateQuery();
     const {
       data: _dataPreview,
       isLoading: isLoadingDataPreview,
@@ -67,7 +67,7 @@ export const PreviewContainer = React.forwardRef(
     useImperativeHandle(ref, () => ({
       downloadTemplate: () => {
         if (_dataPreview) {
-          downloadTemplate();
+          downloadTemplate(_dataPreview);
         }
       },
       printTemplate: async () => {
@@ -77,13 +77,19 @@ export const PreviewContainer = React.forwardRef(
       },
     }));
 
-    const downloadTemplate = useCallback(() => {
-      exportTemplate({
-        id: template.id,
-        request: { variables: testData },
-      }).unwrap();
-      downloadFile(_dataPreview as any, `${template.name}.pdf`);
-      showToast("Đang tải xuống...");
+    const downloadTemplate = useCallback(async (_dataPreview: any) => {
+      try {
+        await exportTemplate({
+          id: template.id,
+          request: { variables: testData },
+        }).unwrap();
+        downloadFile(_dataPreview as any, `${template.name}.pdf`);
+        showToast("Đang tải xuống...");
+      } catch (ex) {
+        debugger;
+
+        showToast("Có lỗi xảy ra", { variant: "error" });
+      }
     }, []);
 
     const printFile = async (blob: Blob) => {
@@ -98,6 +104,7 @@ export const PreviewContainer = React.forwardRef(
       const link = document.createElement("a");
       // create a blobURI pointing to our Blob
       link.href = URL.createObjectURL(blob);
+      debugger;
       link.download = fileName;
       // some browser needs the anchor to be in the doc
       document.body.append(link);
@@ -151,16 +158,7 @@ export const PreviewContainer = React.forwardRef(
       } catch (ex) {
         if (isClientError(ex)) {
           let error = ex.data.message;
-          if (/Authenticated/.test(error)) {
-            showToast("Lưu mẫu thất bại thành công trước đó");
-            return;
-          }
-
-          if (/Email or password incorrect/.test(error))
-            error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-          if (/Phone number or password incorrect/.test(error))
-            error = "Tài khoản không tồn tại hoặc mật khẩu không đúng";
-          showToast(error, { variant: "error" });
+          showToast(error || "Có lỗi xảy ra", { variant: "error" });
         }
       }
     };

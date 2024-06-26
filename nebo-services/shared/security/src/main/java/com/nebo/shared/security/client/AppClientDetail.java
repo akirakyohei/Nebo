@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 public class AppClientDetail implements UserDetails {
@@ -22,7 +23,7 @@ public class AppClientDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return appClient.getScopes().stream().map(SimpleGrantedAuthority::new).toList();
+        return List.of();
     }
 
     @Override

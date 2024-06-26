@@ -159,7 +159,7 @@ export const CategoryCard = ({ category }: Props) => {
           ]}
         >
           <Modal.Section>
-            <Typography>Thao tác này sẽ xóa vĩnh vĩnh viễn danh mục</Typography>
+            <Typography>Thao tác này sẽ xóa vĩnh viễn danh mục</Typography>
           </Modal.Section>
         </Modal>
       )}

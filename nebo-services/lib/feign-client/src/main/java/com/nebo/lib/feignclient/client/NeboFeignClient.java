@@ -18,7 +18,7 @@ public interface NeboFeignClient {
     @RequestMapping(method = RequestMethod.PUT, value = "/api/files/{id}")
     FileDataUploadResponse updateFile(@PathVariable("id") long id, @RequestBody FileDataUploadRequest request, @RequestHeader Map<String, Object> accessToken);
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/api/files/metadata/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/api/files/{id}")
     void deleteFileMetadata(@PathVariable("id") long id, @RequestHeader Map<String, Object> accessToken);
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/files/metadata/{id}")

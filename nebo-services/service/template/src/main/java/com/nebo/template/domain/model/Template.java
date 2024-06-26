@@ -57,7 +57,6 @@ public class Template implements Serializable {
 
     @Builder.Default
     private boolean active = true;
-    private boolean trashed;
     private Long thumbnailImageId;
 
     @Builder.Default

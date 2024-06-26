@@ -75,11 +75,11 @@ export const MediaFileCard = ({ asset }: Props) => {
           onError={(event) => {
             event.currentTarget.src = blankThumbImage;
           }}
-          alt={asset.file_name}
+          alt={asset.name}
         />
         <CardContent>
           <Typography variant="body1" color="text.secondary">
-            {asset.file_name}
+            {asset.name}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -126,7 +126,7 @@ export const MediaFileCard = ({ asset }: Props) => {
           ]}
         >
           <Modal.Section>
-            <Typography>Thao tác này sẽ xóa vĩnh vĩnh viễn ảnh</Typography>
+            <Typography>Thao tác này sẽ xóa vĩnh viễn ảnh</Typography>
           </Modal.Section>
         </Modal>
       )}

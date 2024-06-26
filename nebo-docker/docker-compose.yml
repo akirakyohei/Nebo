@@ -156,16 +156,16 @@ services:
     environment:
       KAFKA_CONNECT_URIS: http://kafka-connect:8083
     restart: on-failure
-  rabbitmq:
-    image: rabbitmq:latest
-    container_name: rabbitmq
-    hostname: rabbitmq
-    ports:
-      - "15672:15672"
-    environment:
-      - RABBITMQ_ERLANG_COOKIE=cluster_cookie
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
+  # rabbitmq:
+  #   image: rabbitmq:latest
+  #   container_name: rabbitmq
+  #   hostname: rabbitmq
+  #   ports:
+  #     - "15672:15672"
+  #   environment:
+  #     - RABBITMQ_ERLANG_COOKIE=cluster_cookie
+  #     - RABBITMQ_DEFAULT_USER=admin
+  #     - RABBITMQ_DEFAULT_PASS=admin
   redis:
     image: docker.io/bitnami/redis:7.2
     container_name: redis

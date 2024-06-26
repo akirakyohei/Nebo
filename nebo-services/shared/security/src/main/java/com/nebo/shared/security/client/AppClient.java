@@ -17,5 +17,4 @@ public class AppClient {
     private String name;
     private long userId;
     private String accessToken;
-    private List<String> scopes;
 }

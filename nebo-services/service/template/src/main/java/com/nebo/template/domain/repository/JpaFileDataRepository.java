@@ -10,5 +10,6 @@ import java.util.List;
 public interface JpaFileDataRepository extends JpaRepository<FileData, Long>, JpaSpecificationExecutor<FileData> {
 
     List<FileData> findFileDataByUserIdAndIdIn(long userId, List<Long> ids);
+    List<FileData> findFileDataByIdIn(List<Long> ids);
 
 }

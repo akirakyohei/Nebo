@@ -6,6 +6,8 @@ import com.nebo.shared.security.constant.TokenType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -17,7 +19,7 @@ public class SecurityConfig {
         var openPatternApiAnMethodPOSTForApiApp = getOpenPatternApiAnMethodPOSTForApiApp();
         var openPatternApiAnMethodGETForApiApp = getOpenPatternApiAnMethodGETForApiApp();
         return authz -> authz
-                .requestMatchers(NeboRequestMatcher.matcher(TokenType.cookie_token, publicPatternApi)).permitAll()
+                .requestMatchers(HttpMethod.GET, publicPatternApi).permitAll()
                 .requestMatchers(NeboRequestMatcher.matcher(TokenType.basic_auth, publicPatternApi)).authenticated()
                 .requestMatchers(NeboRequestMatcher.matcher(TokenType.app_client, publicPatternApi)).authenticated()
                 .requestMatchers(NeboRequestMatcher.matcher(TokenType.cookie_token, categoryPatternApi)).authenticated()
@@ -33,7 +35,9 @@ public class SecurityConfig {
 
     private String[] getPublicPatternApi() {
         return new String[]{
-                "/api/paper_types"
+                "/api/paper_types",
+                "/api/templates/default",
+                "/api/templates/default/**"
         };
     }
 
@@ -53,7 +57,7 @@ public class SecurityConfig {
 
     private String[] getOpenPatternApiAnMethodPOSTForApiApp() {
         return new String[]{
-                "/api/templates/{id:\\d+}/preview",
+//                "/api/templates/{id:\\d+}/preview",
                 "/api/templates/{id:\\d+}/export"
         };
     }

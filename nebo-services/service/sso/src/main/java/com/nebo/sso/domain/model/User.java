@@ -45,9 +45,6 @@ public class User implements Serializable {
 
     private String password;
 
-    @Column(updatable = false)
-    private boolean status;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;

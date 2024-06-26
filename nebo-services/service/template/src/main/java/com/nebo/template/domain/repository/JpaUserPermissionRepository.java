@@ -19,6 +19,10 @@ public interface JpaUserPermissionRepository extends JpaRepository<UserPermissio
     List<UserPermission> findAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(long userId, long templateId, List<Long> userIds);
 
     @Modifying
+    @Query("DELETE FROM UserPermission AS U WHERE U.ownerUserId=:userId AND U.templateId=:templateId AND U.sharedUserId in (:userIds)")
+    void deleteAllByOwnerUserIdAndTemplateIdAndSharedUserIdIn(long userId, long templateId, List<Long> userIds);
+
+    @Modifying
     @Query("DELETE FROM UserPermission AS U WHERE U.ownerUserId=:userId AND  U.templateId=:templateId")
     void deleteAllByOwnerUserIdAndTemplateId(long userId, long templateId);
 }

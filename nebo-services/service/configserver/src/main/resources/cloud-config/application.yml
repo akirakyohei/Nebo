@@ -49,7 +49,7 @@ nebo:
       header_token: X-Nebo-Access-Token
       header_refresh_token: X-Nebo-Refresh-Token
       secret_key: 5jhbfdjhbvdhjvdfous9586jgfn9854ongjk4354589t5bsddsuj4jbsj43jf3jsj4jnbjsk4tp4k08897h6fgo5
-      expiration: 300000
+      expiration: 7200000
       refresh_expiration: 86400000
       session_oauth_id: JSESSIONID
     basic-auth:

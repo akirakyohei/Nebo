@@ -93,7 +93,7 @@ export const NavbarMenu = ({
     >
       <Grid xs={5} item>
         <Stack direction={"row"} gap={3}>
-          <Link href="/" underline="none">
+          <Link href="/documents/templates" underline="none">
             <Stack direction={"row"} alignItems={"center"} gap={1}>
               <ArrowBackIosNew />
               <img src={documentImg} width={"42"} height={"42"} />
@@ -184,7 +184,7 @@ export const NavbarMenu = ({
             variant="outlined"
             startIcon={
               <Switch
-                checked={!template.active}
+                checked={template.active}
                 value={template.active}
                 disabled
                 readOnly

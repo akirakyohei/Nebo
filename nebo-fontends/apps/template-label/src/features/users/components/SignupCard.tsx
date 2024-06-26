@@ -1,4 +1,8 @@
-import { AccountCircleOutlined, KeyOffOutlined } from "@mui/icons-material";
+import {
+  AccountCircleOutlined,
+  ArrowBackIosNewOutlined,
+  KeyOffOutlined,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -6,6 +10,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  IconButton,
   InputAdornment,
   Link,
   Paper,
@@ -108,7 +113,19 @@ export const SignupCard = () => {
             lg={7}
           >
             <Stack spacing={3}>
-              <Typography variant="h6">Đăng ký</Typography>
+              <Stack direction={"row"} gap={2} alignContent={"center"}>
+                <IconButton
+                  sx={{
+                    borderRadius: "5px",
+                  }}
+                  href="/"
+                >
+                  <ArrowBackIosNewOutlined />
+                </IconButton>
+                <Typography variant="h6" alignSelf={"center"}>
+                  Đăng ký
+                </Typography>
+              </Stack>
               <Stack spacing={3}>
                 <Stack direction={"row"} spacing={3}>
                   <Controller
