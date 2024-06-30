@@ -282,6 +282,8 @@ export const TemplateCard = ({
             alt={template?.thumbnail?.name}
             sx={(theme) => ({
               width: "auto",
+              maxWidth: "218px",
+              objectFit: "contain",
             })}
           />
         </Box>

@@ -112,7 +112,7 @@ export const Toolbar = () => {
             <Button variant="outline-secondary" className="nebo-border-btn">
               {dragMode === "absolute"
                 ? "Vị trí tuyệt đối"
-                : "Vị trí tương đổi"}
+                : "Vị trí tương đối"}
             </Button>
             <Dropdown.Toggle
               split
